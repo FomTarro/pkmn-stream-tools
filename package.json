@@ -1,0 +1,34 @@
+{
+  "name": "pkmn-stream-tools",
+  "version": "1.0.0",
+  "description": "Web tools to enhance Pokemon streams",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FomTarro/pkmn-stream-tools.git"
+  },
+  "keywords": [
+    "pokemon",
+    "pkmn",
+    "node",
+    "overlay",
+    "stream",
+    "ui",
+    "frontend",
+    "js",
+    "html"
+  ],
+  "author": "Skeletom",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FomTarro/pkmn-stream-tools/issues"
+  },
+  "homepage": "https://github.com/FomTarro/pkmn-stream-tools#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "jsdom": "^22.1.0"
+  }
+}
