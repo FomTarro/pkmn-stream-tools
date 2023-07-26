@@ -1,7 +1,6 @@
 const http = require('http');
 const path = require('path');
 const express = require('express');
-const { Usecase } = require('./ribbon-tracker/assemble.page');
 
 // Apply the rate limiting middleware to API calls only
 const app = express();
@@ -15,16 +14,18 @@ async function launch(){
 
     app.use('/ribbon-tracker', express.static(path.join(__dirname, './ribbon-tracker')));
     app.get(['/ribbon-tracker'], async (req, res) => {
-        const fileIn = path.join(__dirname, './ribbon-tracker', 'index.template.html')
-        const fileOut = path.join(__dirname, './ribbon-tracker', 'index.html')
-        const html = await new Usecase().execute("", fileIn, fileOut)
-        res.status(200).send(html);
+        const filePath = path.join(__dirname, './ribbon-tracker', 'index.template.html')
+        res.status(200).sendFile(filePath);
     });
 
     app.get(['/ribbon-tracker/:ribbon'], async (req, res) => {
         const ribbonName = req.params.ribbon;
         const status = req.query.status;
-        res.status(200).send();
+        console.log(`${ribbonName}=${status}`);
+        res.status(200).send(
+            {
+
+            });
     });
 
 

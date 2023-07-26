@@ -2,32 +2,17 @@ const ribbons = {
     ribbons: [
         {
             name: "Alert",
-            description: "LOREM IPSUM",
+            description: "Monday",
             gen: 6
         },
         {
             name: "Beauty Master",
-            description: "LOREM IPSUM",
+            description: "A Ribbon awarded to a Pokémon that has perfectly embodied Beauty in Pokémon Contests.",
             gen: 6
         },
         {
             name: "Careless",
-            description: "LOREM IPSUM",
-            gen: 6
-        },
-        {
-            name: "Careless",
-            description: "LOREM IPSUM",
-            gen: 6
-        },
-        {
-            name: "Careless",
-            description: "LOREM IPSUM",
-            gen: 6
-        },
-        {
-            name: "Careless",
-            description: "LOREM IPSUM",
+            description: "Tuesday",
             gen: 6
         },
         {
