@@ -22,9 +22,8 @@ function drawGrid(){
         const div = document.createElement('div');
         div.classList.add('ribbon-grid-cell');
         const name = ribbon.name;
-        ribbon.completed = false;
         const desc = ribbon.description;
-        const imgSrc = `./img/Ribbons/Gen ${ribbon.gen}/40px-${name.replaceAll(' ', '_')}_Ribbon_VIII.png`;
+        const imgSrc = `./img/ribbons/${ribbon.img}.png`;
         const img = document.createElement('img');
         img.src = imgSrc;
         img.classList.add('ribbon-image');
