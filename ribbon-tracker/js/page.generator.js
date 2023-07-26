@@ -1,9 +1,24 @@
 
+/**
+ * A filtering configuration.
+ * @typedef {Object} Config
+ * @property {number[]} gens - Which gens to filter by? If emtpy, use all gens.
+ * @property {string[]} games - Which specific games to filter by? If emtpy, use all games in provided gens.
+ * @property {string[]} ribbons - Which specific ribbons to filter by? If emtpy, use all ribbons in provided games
+ */
+
+/**
+ * Generates a filtering config based on provided optional query parameters
+ * @returns {Config} config - The generated configuration based on query parameters
+ */
 function getQueryParameters(){
     const urlSearchParams = new URLSearchParams(location.search);
     const params = Object.fromEntries(urlSearchParams.entries());
     console.log(params);
-    const config = {}
+    const config = {
+        gens: [],
+        ribbons: [],
+    }
     if(params.gens && params.gens.startsWith('[') && params.gens.endsWith(']')){
         const commaDelimited = params.gens.replace('[', '').replace(']','').split(',');
         config.gens = commaDelimited;
@@ -13,12 +28,22 @@ function getQueryParameters(){
         config.ribbons = commaDelimited;
     }
     console.log(config);
+    return config;
 }
 
-function drawGrid(){
+/**
+ * Draws the grid of Ribbon buttons
+ * @param {Config} config 
+ */
+function drawGrid(config){
     const container = document.getElementById('container');
-    container.innerHTML =' ';
-    for(const ribbon of ribbons.ribbons){
+    container.innerHTML ='';
+    const sortedRibbons = RIBBONS.filter(r => {
+        return config.gens.length === 0 
+        ? RIBBONS 
+        : config.gens.some(gen => (r.games.findIndex(game => game.gen == gen) > -1));
+    })
+    for(const ribbon of sortedRibbons){
         const div = document.createElement('div');
         div.classList.add('ribbon-grid-cell');
         const name = ribbon.name;
@@ -61,4 +86,4 @@ function onResponse(data){
     console.log(response);
 }
 
-drawGrid();
+drawGrid(getQueryParameters());
