@@ -1,10 +1,13 @@
 
+const REGEX_WHITESPACE = /([ ])+/g;
+const REGEX_ARRAY = /([\[\]])+/g
+
 /**
  * A filtering configuration.
  * @typedef {Object} Config
  * @property {number[]} gens - Which gens to filter by? If emtpy, use all gens.
  * @property {string[]} games - Which specific games to filter by? If emtpy, use all games in provided gens.
- * @property {string[]} ribbons - Which specific ribbons to filter by? If emtpy, use all ribbons in provided games
+ * @property {string[]} ribbons - Which specific ribbons to filter by? If emtpy, use all ribbons in provided games.
  */
 
 /**
@@ -17,15 +20,17 @@ function getQueryParameters(){
     console.log(params);
     const config = {
         gens: [],
+        games: [],
         ribbons: [],
     }
     if(params.gens && params.gens.startsWith('[') && params.gens.endsWith(']')){
-        const commaDelimited = params.gens.replace('[', '').replace(']','').split(',');
-        config.gens = commaDelimited;
+        config.gens = params.gens.replace(REGEX_ARRAY, '').split(',');
+    }
+    if(params.games && params.games.startsWith('[') && params.games.endsWith(']')){
+        config.games = params.games.replace(REGEX_ARRAY, '').split(',');
     }
     if(params.ribbons && params.ribbons.startsWith('[') && params.ribbons.endsWith(']')){
-        const commaDelimited = params.ribbons.replace('[', '').replace(']','').split(',');
-        config.ribbons = commaDelimited;
+        config.ribbons = params.ribbons.replace(REGEX_ARRAY, '').split(',');
     }
     console.log(config);
     return config;
@@ -36,10 +41,8 @@ function getQueryParameters(){
  * @returns {string} key - The unique ribbon ID
  */
 function ribbonToKey(ribbon){
-    const regex = /([ ])+/g;
     const uniqueGens = ribbon.games.map(game => game.gen).filter((value, index, array) => array.indexOf(value) === index);
-    const key = `${ribbon.name.toLowerCase().replace(regex, '_')}_${uniqueGens.join('_')}`;
-    return key;
+    return `${ribbon.name.toLowerCase().replace(REGEX_WHITESPACE, '_')}_${uniqueGens.join('_')}`;
 }
 
 /**
@@ -88,26 +91,56 @@ var CURRENT_RIBBON;
 function drawGrid(config){
     const container = document.getElementById('container');
     container.innerHTML ='';
-    const sortedRibbons = RIBBONS.filter(r => {
+
+    // Find all ribbons in the provided gens list
+    const ribbonsByGen = RIBBONS.filter(r => {
         return config.gens.length === 0 
-        ? RIBBONS 
-        : config.gens.some(gen => (r.games.findIndex(game => game.gen == gen) > -1));
+        ? false 
+        : config.gens.some(gen => (r.games.findIndex(
+            game => game.gen == gen) > -1));
     })
+
+    // Find all ribbons from the provided games list
+    const ribbonsByGame = RIBBONS.filter(r => {
+        return config.games.length === 0 
+        ? false 
+        : config.games.some(gameName => (r.games.findIndex(
+            game => game.id.toLowerCase() === gameName.toLowerCase() 
+            || (game.names.findIndex(
+                n => n.toLowerCase() === gameName.toLowerCase()) > -1)) > -1))
+    })
+
+    const ribbonsByName = RIBBONS.filter(r => {
+        return config.ribbons.length === 0 
+        ? false 
+        : config.ribbons.some(ribbonName => (ribbonName.toLowerCase() === r.name.toLowerCase()))
+    })
+
+    const ribbonsByAll = ribbonsByGen.concat(ribbonsByGame).concat(ribbonsByName);
+    const uniqueRibbons = [...new Set(ribbonsByAll.length > 0 ? ribbonsByAll : RIBBONS)];
+    const sortedRibbons = uniqueRibbons.sort((a, b) => a.games[0].gen - b.games[0].gen);
+    if(sortedRibbons.length > 0){
+        CURRENT_RIBBON = sortedRibbons[0];
+        displayRibbon();
+    }
     for(const ribbon of sortedRibbons){
         const div = document.createElement('div');
+        div.id = ribbonToKey(ribbon);
         div.classList.add('ribbon-grid-cell');
+        const status = getRibbonStatus(ribbon);
+        if(status){
+            console.log(ribbon.name + " " + JSON.stringify(status));
+        }
+        if(status && status.completed){
+            div.classList.add('completed');
+        }
         const name = ribbon.name;
         const img = document.createElement('img');
         img.src = ribbonToImagePath(ribbon);
         img.classList.add('ribbon-image');
         div.addEventListener('click', () => {
             CURRENT_RIBBON = ribbon;
-            console.log(CURRENT_RIBBON.name)
-            const status = JSON.parse(localStorage.getItem(ribbonToKey(CURRENT_RIBBON)));
-            document.getElementById('info-box-ribbon-image').src = ribbonToImagePath(CURRENT_RIBBON);
-            document.getElementById('info-box-name-key').innerHTML = CURRENT_RIBBON.name;
-            document.getElementById('info-box-desc').innerHTML = CURRENT_RIBBON.description;
-            document.getElementById('isCompleted').checked = status ? status.completed : false;
+            displayRibbon();
         });
         div.id = name;
         div.appendChild(img);
@@ -115,10 +148,20 @@ function drawGrid(config){
     }
 }
 
+function displayRibbon(){
+    console.log(CURRENT_RIBBON.name)
+    const status = getRibbonStatus(CURRENT_RIBBON);
+    document.getElementById('info-box-ribbon-image').src = ribbonToImagePath(CURRENT_RIBBON);
+    document.getElementById('info-box-name-key').innerHTML = CURRENT_RIBBON.name;
+    document.getElementById('info-box-desc').innerHTML = CURRENT_RIBBON.description;
+    document.getElementById('isCompleted').checked = status ? status.completed : false;
+}
+
 document.getElementById('isCompleted').addEventListener('change', onCheck);
 
 function onCheck(event){
     setRibbonStatus(CURRENT_RIBBON, event.target.checked);
+    drawGrid(getQueryParameters());
 }
 
 drawGrid(getQueryParameters());

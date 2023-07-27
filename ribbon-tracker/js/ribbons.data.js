@@ -2,6 +2,7 @@
  * A game data structure.
  * @typedef {Object} Game
  * @property {string[]} names - What names does this game go by?
+ * @property {string} id - What is the unique ID of the game (likely just the full name)?
  * @property {number} gen - Which gen is this game from?
  */
 
@@ -12,127 +13,159 @@
 const GAMES = {
     RUBY: {
         names: ['R', 'ruby'],
-        gen: 3
+        gen: 3,
+        id: 'ruby'
     },
     SAPPHIRE: {
         names: ['S', 'sapphire'],
-        gen: 3
+        gen: 3,
+        id: 'sapphire'
     },
     EMERALD: {
         names: ['E', 'emerald'],
-        gen: 3
+        gen: 3,
+        id: 'emerald'
     },
     FIRE_RED: {
         names: ['FR', 'fire red', 'firered', 'red'],
-        gen: 3
+        gen: 3,
+        id: 'fire-red'
     },
     LEAF_GREEN: {
         names: ['LG', 'leaf green', 'leafgreen', 'green'],
-        gen: 3
+        gen: 3,
+        id: 'leaf-green'
     },
     COLOSSEUM: {
         names: ['C', 'colo', 'colosseum'],
-        gen: 3
+        gen: 3,
+        id: 'colosseum'
     },
     XD: {
-        names: ['XD'],
-        gen: 3
+        names: ['XD', 'gale', 'gale of darkness'],
+        gen: 3,
+        id: 'XD'
+
     },
     DIAMOND: {
         names: ['D', 'diamond'],
-        gen: 4
+        gen: 4,
+        id: 'diamond'
     },
     PEARL: {
         names: ['P', 'pearl'],
-        gen: 4
+        gen: 4,
+        id: 'pearl'
     },
     PLATINUM: {
-        names: ['PT', 'platinum'],
-        gen: 4
+        names: ['Pt', 'platinum'],
+        gen: 4,
+        id: 'platinum'
     },
     HEART_GOLD: {
         names: ['HG', 'heart gold', 'heartgold', 'gold'],
-        gen: 4
+        gen: 4,
+        id: 'heart-gold'
     },
     SOUL_SILVER: {
         names: ['SS', 'soul silver', 'soulsilver', 'silver'],
-        gen: 4
+        gen: 4,
+        id: 'soul-silver'
     },
     BLACK: {
         names: ['B', 'black'],
-        gen: 5
+        gen: 5,
+        id: 'black'
     },
     WHITE: {
         names: ['W', 'white'],
-        gen: 5
+        gen: 5,
+        id: 'white'
     },
     BLACK_2: {
         names: ['B2', 'black 2', 'black2'],
-        gen: 5
+        gen: 5,
+        id: 'black-2'
     },
     WHITE_2: {
         names: ['W2', 'white 2', 'white2'],
-        gen: 5
+        gen: 5,
+        id: 'white-2'
     },
     X: {
         names: ['X'],
         gen: 6,
+        id: 'x'
     },
     Y: {
         names: ['Y'],
-        gen: 6
+        gen: 6,
+        id: 'y'
     },
     OMEGA_RUBY: {
         names: ['OR', 'omega ruby', 'omegaruby'],
-        gen: 6
+        gen: 6,
+        id: 'omega-ruby'
     },
     ALPHA_SAPPHIRE: {
         names: ['AS', 'alpha sapphire', 'alphasapphire'],
-        gen: 6
+        gen: 6,
+        id: 'alpha-sapphire'
     },
     SUN: {
         names: ['S', 'sun'],
-        gen: 7
+        gen: 7,
+        id: 'sun'
     },
     MOON: {
         names: ['M', 'moon'],
-        gen: 7
+        gen: 7,
+        id: 'moon'
     },
     ULTRA_SUN: {
         names: ['US', 'ultra sun', 'ultrasun'],
-        gen: 7
+        gen: 7,
+        id: 'ultra-sun'
     },
     ULTRA_MOON: {
         names: ['UM', 'ultra moon', 'ultramoon'],
-        gen: 7
+        gen: 7,
+        id: 'ultra-moon'
     },
     SWORD: {
-        names: ['SW', 'sword'],
-        gen: 8
+        names: ['Sw', 'sword'],
+        gen: 8,
+        id: 'sword'
     },
     SHIELD: {
-        names: ['SH', 'shield'],
-        gen: 8
+        names: ['Sh', 'shield'],
+        gen: 8,
+        id: 'shield'
     },
     BRILLIANT_DIAMOND: {
         names: ['BD', 'brilliant diamond', 'brilliantdiamond'],
-        gen: 8
+        gen: 8,
+        id: 'brilliant-diamond'
     },
     SHINING_PEARL: {
         names: ['SP', 'shining pearl', 'shiningpearl'],
-        gen: 8
+        gen: 8,
+        id: 'shining-pearl'
     },
     LEGENDS_ARCEUS: {
-        names: ['PLA', 'arceus', 'legends', 'legends arceus', 'legendsarceus'],
-        gen: 8
+        names: ['LA', 'PLA', 'arceus', 'legends', 'legends arceus', 'legendsarceus'],
+        gen: 8,
+        id: 'legends-arceus'
     },
     SCARLET:{
-        names: ['SC', 'scarlet'],
-        gen: 9
+        names: ['Sc', 'scarlet'],
+        gen: 9,
+        id: 'scarlet'
     },
     VIOLET: {
-        names: ['VI', 'violet'],
-        gen: 9
+        names: ['Vi', 'violet'],
+        gen: 9,
+        id: 'violet'
     },
 
 }
