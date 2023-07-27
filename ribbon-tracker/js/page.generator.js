@@ -32,6 +32,56 @@ function getQueryParameters(){
 }
 
 /**
+ * @param {Ribbon} ribbon - The Ribbon to generate a key for
+ * @returns {string} key - The unique ribbon ID
+ */
+function ribbonToKey(ribbon){
+    const regex = /([ ])+/g;
+    const uniqueGens = ribbon.games.map(game => game.gen).filter((value, index, array) => array.indexOf(value) === index);
+    const key = `${ribbon.name.toLowerCase().replace(regex, '_')}_${uniqueGens.join('_')}`;
+    return key;
+}
+
+/**
+ * @param {Ribbon} ribbon - The Ribbon to generate an image path for
+ * @returns {string} key - The imahe path for the ribbon
+ */
+function ribbonToImagePath(ribbon){
+    const imgSrc = `./img/ribbons/${ribbon.img}.png`;
+    return imgSrc;
+}
+
+/**
+ * The completion status of a ribbon.
+ * @typedef {Object} RibbonStatus
+ * @property {string} key - The unique ribbon ID
+ * @property {boolean} completed - Has this ribbon been collected?
+ */
+
+/**
+ * @param {Ribbon} ribbon - The ribbon to query
+ * @returns {RibbonStatus} - The status of the ribbon
+ */
+function getRibbonStatus(ribbon){
+    return JSON.parse(localStorage.getItem(ribbonToKey(ribbon)));
+}
+
+/**
+ * @param {Ribbon} ribbon - The ribbon
+ * @param {boolean} completed - Has this ribbon been collected?
+ */
+function setRibbonStatus(ribbon, completed){
+    const key = ribbonToKey(ribbon);
+    const status = {
+        key,
+        completed
+    }
+    localStorage.setItem(key, JSON.stringify(status));
+}
+
+var CURRENT_RIBBON;
+
+/**
  * Draws the grid of Ribbon buttons
  * @param {Config} config 
  */
@@ -47,43 +97,28 @@ function drawGrid(config){
         const div = document.createElement('div');
         div.classList.add('ribbon-grid-cell');
         const name = ribbon.name;
-        const desc = ribbon.description;
-        const imgSrc = `./img/ribbons/${ribbon.img}.png`;
         const img = document.createElement('img');
-        img.src = imgSrc;
+        img.src = ribbonToImagePath(ribbon);
         img.classList.add('ribbon-image');
         div.addEventListener('click', () => {
-            console.log(name)
-            const ribbonStorage = JSON.parse(localStorage.getItem(name));
-            document.getElementById('info-box-ribbon-image').src = imgSrc;
-            document.getElementById('info-box-name-key').innerHTML = name;
-            document.getElementById('info-box-desc').innerHTML = desc;
-            document.getElementById('isCompleted').checked = ribbonStorage.completed;
+            CURRENT_RIBBON = ribbon;
+            console.log(CURRENT_RIBBON.name)
+            const status = JSON.parse(localStorage.getItem(ribbonToKey(CURRENT_RIBBON)));
+            document.getElementById('info-box-ribbon-image').src = ribbonToImagePath(CURRENT_RIBBON);
+            document.getElementById('info-box-name-key').innerHTML = CURRENT_RIBBON.name;
+            document.getElementById('info-box-desc').innerHTML = CURRENT_RIBBON.description;
+            document.getElementById('isCompleted').checked = status ? status.completed : false;
         });
         div.id = name;
         div.appendChild(img);
         container.appendChild(div);
-        localStorage.setItem(ribbon.name, JSON.stringify(ribbon));
     }
 }
 
 document.getElementById('isCompleted').addEventListener('change', onCheck);
 
 function onCheck(event){
-    const currentRibbon = document.getElementById('info-box-name-key').innerHTML;
-    const ribbonStorage = JSON.parse(localStorage.getItem(currentRibbon));
-    console.log(ribbonStorage);
-    if(ribbonStorage){
-        ribbonStorage.completed = (event.target.checked);
-        console.log(ribbonStorage);
-        localStorage.setItem(currentRibbon, JSON.stringify(ribbonStorage));
-        console.log("ribbon status updated")
-    }
-}
-
-function onResponse(data){
-    const response = JSON.parse(data.target.response);
-    console.log(response);
+    setRibbonStatus(CURRENT_RIBBON, event.target.checked);
 }
 
 drawGrid(getQueryParameters());

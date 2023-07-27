@@ -245,12 +245,6 @@ const RIBBONS = [
         games: [GAMES.RUBY, GAMES.SAPPHIRE, GAMES.EMERALD]
     },
     {
-        name: "Beauty Ribbon Master",
-        img: 'contests/Beauty_Ribbon_Master_Hoenn',
-        description: "Hoenn Beauty Contest Hyper Rank winner!",
-        games: [GAMES.RUBY, GAMES.SAPPHIRE, GAMES.EMERALD]
-    },
-    {
         name: "Cute Ribbon",
         img: 'contests/Cute_Ribbon_Hoenn',
         description: "Hoenn Cute Contest Normal Rank winner!",
@@ -296,12 +290,6 @@ const RIBBONS = [
         name: "Smart Ribbon Master",
         img: 'contests/Smart_Ribbon_Master_Hoenn',
         description: "Hoenn Smart Contest Master Rank winner!",
-        games: [GAMES.RUBY, GAMES.SAPPHIRE, GAMES.EMERALD]
-    },
-    {
-        name: "Tough Ribbon",
-        img: 'contests/Tough_Ribbon_Hoenn',
-        description: "Hoenn Tough Contest Normal Rank winner!",
         games: [GAMES.RUBY, GAMES.SAPPHIRE, GAMES.EMERALD]
     },
     {
@@ -581,13 +569,13 @@ const RIBBONS = [
     },
     // Tower Memories
     {
-        name: "Contest Memory Ribbon",
+        name: "Battle Memory Ribbon",
         img: 'memory_towers/40px-Battle_Memory_Ribbon_VIII',
         description: "A commemorative Ribbon representing all of the Ribbons you collected for battling somewhere long ago.",
         games: [GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE]
     },
     {
-        name: "Contest Memory Ribbon",
+        name: "Battle Memory Ribbon",
         img: 'memory_towers/40px-Battle_Memory_Ribbon_gold_VIII',
         description: "A commemorative Ribbon representing all of the Ribbons you collected for battling somewhere long ago.",
         games: [GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE]
