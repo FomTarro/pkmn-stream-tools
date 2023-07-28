@@ -1,3 +1,7 @@
+html{
+    font-size: 3vmin;
+}
+
 #container { 
     width: 100%;
 }
@@ -14,8 +18,10 @@
 }
 
 .ribbon-image-small {
-    width: 30px;
-    height: 30px;
+    width: 2em;
+    min-width: 30px;
+    height: 2em;
+    min-height: 30px;
 }
 
 .ribbon-image-large {
@@ -49,9 +55,9 @@
     height: 40px;
     text-align: center;
     align-content: center;
-    border-radius: 40px;
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
+    border-radius: 100%;
+    -moz-border-radius: 100%;
+    -webkit-border-radius: 100%;
     background: #FF7267;
     border: 2px solid #940C15;
     padding: 3px;
@@ -61,6 +67,12 @@
     opacity: 50%;
 }
 
+.fire-red {
+    color:#FF7327;
+}
+.leaf-green {
+    color: #00DD00;
+}
 .ruby {
     color: #A00000;
 }
@@ -90,4 +102,61 @@
 }
 .soul-silver {
     color: #7D7D92;
+}
+.black {
+    color: #444444;
+}
+.white {
+    color: #E1E1E1;
+}
+.black-2 {
+    color: #424B50;
+}
+.white-2 {
+    color: #E3CED0;
+}
+.x {
+    color: #025DA6;
+}
+.y {
+    color: #EA1A3E;
+}
+.omega-ruby {
+    color: #AB2813;
+}
+.alpha-sapphire {
+    color: #26649C;
+}
+.sun {
+    color: #F1912B;
+}
+.moon {
+    color: #5599CA;
+}
+.ultra-sun {
+    color: #E95B2B;
+}
+.ultra-moon {
+    color: #226DB5;
+}
+.sword { 
+    color: #00A1E9;
+}
+.shield {
+    color: #BF004F;
+}
+.brilliant-diamond {
+    color: #44BAE5;
+}
+.shining-pearl {
+    color: #DA7D99;
+}
+.legends-arceus {
+    color: #36597B;
+}
+.scarlet {
+    color: #F34134;
+}
+.violet { 
+    color: #8334B7;
 }

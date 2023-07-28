@@ -119,10 +119,10 @@ function drawGrid(config){
     const ribbonsByAll = ribbonsByGen.concat(ribbonsByGame).concat(ribbonsByName);
     const uniqueRibbons = [...new Set(ribbonsByAll.length > 0 ? ribbonsByAll : RIBBONS)];
     const sortedRibbons = uniqueRibbons.sort((a, b) => a.games[0].gen - b.games[0].gen);
-    if(sortedRibbons.length > 0){
-        CURRENT_RIBBON = sortedRibbons[0];
-        displayRibbon();
-    }
+    // if(sortedRibbons.length > 0){
+    //     CURRENT_RIBBON = sortedRibbons[0];
+    //     displayRibbon();
+    // }
     for(const ribbon of sortedRibbons){
         const div = document.createElement('div');
         div.id = ribbonToKey(ribbon);
