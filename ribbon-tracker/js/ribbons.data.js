@@ -176,6 +176,7 @@ const GAMES = {
  * @property {string} name - What is the name of the ribbon?
  * @property {string} img - What is the icon file path for the ribbon?
  * @property {string} description - What is the in-game description of the ribbon?
+ * @property {string} title - What title does this ribbon confer?
  * @property {Game[]} games - Which games is this ribbon obtainable in?
  */
 
@@ -190,42 +191,49 @@ const RIBBONS = [
         name: "Champion Ribbon",
         img: 'champions/40px-Champion_Ribbon_VIII',
         description: "A Ribbon awarded for clearing the Pokémon League and entering the Hall of Fame somewhere long ago.",
+        title: 'the Champion',
         games: [GAMES.RUBY, GAMES.SAPPHIRE, GAMES.EMERALD, GAMES.FIRE_RED, GAMES.LEAF_GREEN]
     },
     {
         name: "Sinnoh Champion Ribbon",
         img: 'champions/40px-Sinnoh_Champion_Ribbon_VIII',
         description: "A Ribbon awarded for beating the Sinnoh Champion and entering the Sinnoh Hall of Fame.",
+        title: 'the Sinnoh Champion',
         games: [GAMES.DIAMOND, GAMES.PEARL, GAMES.PLATINUM, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL],
     },
     {
         name: "Kalos Champion Ribbon",
         img: 'champions/40px-Kalos_Champion_Ribbon_VIII',
         description: "A Ribbon awarded for beating the Kalos Champion and entering the Kalos Hall of Fame.",
+        title: 'the Kalos Champion',
         games: [GAMES.X, GAMES.Y]
     },
     {
         name: "Hoenn Champion Ribbon",
         img: 'champions/40px-Hoenn_Champion_Ribbon_VIII',
         description: "A Ribbon awarded for beating the Hoenn Champion and entering the Hoenn Hall of Fame.",
+        title: 'the Hoenn Champion',
         games: [GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE]
     },
     {
         name: "Alola Champion Ribbon",
         img: 'champions/40px-Alola_Champion_Ribbon_VIII',
         description: "A Ribbon awarded for becoming the Alola Champion and entering the Alola Hall of Fame.",
+        title: 'the Alola Champion',
         games: [GAMES.SUN, GAMES.MOON, GAMES.ULTRA_SUN, GAMES.ULTRA_MOON]
     },
     {
         name: "Galar Champion Ribbon",
         img: 'champions/40px-Galar_Champion_Ribbon_VIII',
         description: "A Ribbon awarded for becoming the Galar Champion and entering the Galar Hall of Fame.",
+        title: 'the Galar Champion',
         games: [GAMES.SWORD, GAMES.SHIELD]
     },
     {
         name: "Paldea Champion Ribbon",
         img: 'champions/40px-Paldea_Champion_Ribbon_IX',
         description: "A Ribbon awarded for becoming a Paldea Champion and entering the Paldea Hall of Fame.",
+        title: 'the Paldea Champion',
         games: [GAMES.SCARLET, GAMES.VIOLET]
     },
     // Contest Ribbons
@@ -475,42 +483,49 @@ const RIBBONS = [
         name: "Coolness Master Ribbon",
         img: 'spectacular_contests/40px-Coolness_Master_Ribbon_VIII',
         description: "A Ribbon awarded to a Pokémon that has perfectly embodied Coolness in Pokémon Contests.",
+        title: 'the Former Star',
         games: [GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     {
         name: "Beauty Master Ribbon",
         img: 'spectacular_contests/40px-Beauty_Master_Ribbon_VIII',
         description: "A Ribbon awarded to a Pokémon that has perfectly embodied Beauty in Pokémon Contests.",
+        title: 'the Vintage Beauty',
         games: [GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     {
         name: "Cuteness Master Ribbon",
         img: 'spectacular_contests/40px-Cuteness_Master_Ribbon_VIII',
         description: "A Ribbon awarded to a Pokémon that has perfectly embodied Cuteness in Pokémon Contests.",
+        title: 'the Former Idol',
         games: [GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     {
         name: "Cleverness Master Ribbon",
         img: 'spectacular_contests/40px-Cleverness_Master_Ribbon_VIII',
         description: "A Ribbon awarded to a Pokémon that has perfectly embodied Cleverness in Pokémon Contests.",
+        title: 'the Historic Genius',
         games: [GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     {
         name: "Toughness Master Ribbon",
         img: 'spectacular_contests/40px-Toughness_Master_Ribbon_VIII',
         description: "A Ribbon awarded to a Pokémon that has perfectly embodied Toughness in Pokémon Contests.",
+        title: 'the Formerly Buff',
         games: [GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     {
         name: "Contest Star Ribbon",
         img: 'spectacular_contests/40px-Contest_Star_Ribbon_VIII',
         description: "A Ribbon awarded to a Pokémon that has performed superbly in every kind of contest.",
+        title: 'the Shining Star',
         games: [GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     {
         name: "Contest Star Ribbon",
         img: 'spectacular_contests/40px-Twinkling_Star_Ribbon_VIII',
         description: "A Ribbon awarded to a Pokémon that has perfectly embodied shining brilliance in Super Contest Shows.",
+        title: 'the Twinkling Star',
         games: [GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     // Contest Memories
@@ -518,12 +533,14 @@ const RIBBONS = [
         name: "Contest Memory Ribbon",
         img: 'memory_contests/40px-Contest_Memory_Ribbon_VIII',
         description: "A commemorative Ribbon representing all of the Ribbons you collected for contests somewhere long ago.",
+        title: 'the Treasured Memory',
         games: [GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE]
     },
     {
         name: "Contest Memory Ribbon",
         img: 'memory_contests/40px-Contest_Memory_Ribbon_gold_VIII',
         description: "A commemorative Ribbon representing all of the Ribbons you collected for contests somewhere long ago.",
+        title: 'the Treasured Memory',
         games: [GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE]
     },
     // Battle Towers
@@ -574,30 +591,35 @@ const RIBBONS = [
         name: "Skillful Battler Ribbon",
         img: 'towers/40px-Skillful_Battler_Ribbon_VIII',
         description: "A Ribbon that can be given to a Pokémon that has achieved victory in difficult battles.",
+        title: 'the Veteran',
         games: [GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE]
     },
     {
         name: "Expert Battler Ribbon",
         img: 'towers/40px-Expert_Battler_Ribbon_VIII',
         description: "A Ribbon that can be given to a brave Pokémon that has honed its battle skills to an art.",
+        title: 'the Master',
         games: [GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE]
     },
     {
         name: "Battle Tree Great Ribbon",
         img: 'towers/40px-Battle_Tree_Great_Ribbon_VIII',
         description: "A Ribbon awarded for winning against a Battle Legend in the Battle Tree.",
+        title: 'the Tree Victor',
         games: [GAMES.SUN, GAMES.MOON, GAMES.ULTRA_SUN, GAMES.ULTRA_MOON]
     },
     {
         name: "Battle Tree Master Ribbon",
         img: 'towers/40px-Battle_Tree_Master_Ribbon_VIII',
         description: "A Ribbon awarded for winning against a Battle Legend in super battles in the Battle Tree.",
+        title: 'the Tree Master',
         games: [GAMES.SUN, GAMES.MOON, GAMES.ULTRA_SUN, GAMES.ULTRA_MOON]
     },
     {
         name: "Tower Master Ribbon",
         img: 'towers/40px-Tower_Master_Ribbon_VIII',
         description: "A Ribbon awarded for winning against a champion in the Battle Tower.",
+        title: 'the Tower Master',
         games: [GAMES.SWORD, GAMES.SHIELD, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     // Tower Memories
@@ -605,12 +627,14 @@ const RIBBONS = [
         name: "Battle Memory Ribbon",
         img: 'memory_towers/40px-Battle_Memory_Ribbon_VIII',
         description: "A commemorative Ribbon representing all of the Ribbons you collected for battling somewhere long ago.",
+        title: 'the Exciting Memory',
         games: [GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE]
     },
     {
         name: "Battle Memory Ribbon",
         img: 'memory_towers/40px-Battle_Memory_Ribbon_gold_VIII',
         description: "A commemorative Ribbon representing all of the Ribbons you collected for battling somewhere long ago.",
+        title: 'the Exciting Memory',
         games: [GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE]
     },
     // Memorial
@@ -618,78 +642,91 @@ const RIBBONS = [
         name: "Artist Ribbon",
         img: 'memorial/40px-Artist_Ribbon_VIII',
         description: "A Ribbon awarded for being chosen as a super sketch model in the Hoenn region.",
+        title: 'the Model for Paintings',
         games: [GAMES.RUBY, GAMES.SAPPHIRE, GAMES.EMERALD]
     },
     {
         name: "Effort Ribbon",
         img: 'memorial/40px-Effort_Ribbon_VIII',
         description: "A Ribbon awarded for being an exceptionally hard worker.",
+        title: 'the Once Well-Trained',
         games: [GAMES.RUBY, GAMES.SAPPHIRE, GAMES.EMERALD, GAMES.DIAMOND, GAMES.PEARL, GAMES.PLATINUM, GAMES.HEART_GOLD, GAMES.SOUL_SILVER, GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.SUN, GAMES.MOON, GAMES.ULTRA_SUN, GAMES.ULTRA_MOON, GAMES.SWORD, GAMES.SHIELD, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL, GAMES.SCARLET, GAMES.VIOLET]
     },
     {
         name: "Alert Ribbon",
         img: 'memorial/40px-Alert_Ribbon_VIII',
         description: "A Ribbon for recalling an invigorating event that created life energy.",
+        title: 'the Once Vigilant',
         games: [GAMES.DIAMOND, GAMES.PEARL, GAMES.PLATINUM, GAMES.HEART_GOLD, GAMES.SOUL_SILVER, GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     {
         name: "Shock Ribbon",
         img: 'memorial/40px-Shock_Ribbon_VIII',
         description: "A Ribbon for recalling a thrilling event that made life more exciting.",
+        title: 'the Once Cowardly',
         games: [GAMES.DIAMOND, GAMES.PEARL, GAMES.PLATINUM, GAMES.HEART_GOLD, GAMES.SOUL_SILVER, GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     {
         name: "Downcast Ribbon",
         img: 'memorial/40px-Downcast_Ribbon_VIII',
         description: "A Ribbon for recalling feelings of sadness that added spice to life.",
+        title: 'the Once Shaken',
         games: [GAMES.DIAMOND, GAMES.PEARL, GAMES.PLATINUM, GAMES.HEART_GOLD, GAMES.SOUL_SILVER, GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     {
         name: "Careless Ribbon",
         img: 'memorial/40px-Careless_Ribbon_VIII',
         description: "A Ribbon for recalling a careless error that helped steer life decisions.",
+        title: 'the Once Imperfect',
         games: [GAMES.DIAMOND, GAMES.PEARL, GAMES.PLATINUM, GAMES.HEART_GOLD, GAMES.SOUL_SILVER, GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     {
         name: "Relax Ribbon",
         img: 'memorial/40px-Relax_Ribbon_VIII',
         description: "A Ribbon for recalling a refreshing event that added sparkle to life.",
+        title: 'the Once Well-Rested',
         games: [GAMES.DIAMOND, GAMES.PEARL, GAMES.PLATINUM, GAMES.HEART_GOLD, GAMES.SOUL_SILVER, GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     {
         name: "Snooze Ribbon",
         img: 'memorial/40px-Snooze_Ribbon_VIII',
         description: "A Ribbon for recalling a deep slumber that made life soothing.",
+        title: 'the Once Sleepy',
         games: [GAMES.DIAMOND, GAMES.PEARL, GAMES.PLATINUM, GAMES.HEART_GOLD, GAMES.SOUL_SILVER, GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     {
         name: "Smile Ribbon",
         img: 'memorial/40px-Smile_Ribbon_VIII',
         description: "A Ribbon for recalling that smiles enrich the quality of life.",
+        title: 'the Once Cheery',
         games: [GAMES.DIAMOND, GAMES.PEARL, GAMES.PLATINUM, GAMES.HEART_GOLD, GAMES.SOUL_SILVER, GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     {
         name: "Gorgeous Ribbon",
         img: 'memorial/40px-Gorgeous_Ribbon_VIII',
         description: "An extraordinarily gorgeous and extravagant Ribbon.",
+        title: 'the Gorgeous',
         games: [GAMES.DIAMOND, GAMES.PEARL, GAMES.PLATINUM, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     {
         name: "Royal Ribbon",
         img: 'memorial/40px-Royal_Ribbon_VIII',
         description: "An incredibly regal Ribbon with an air of nobility.",
+        title: 'the Royal',
         games: [GAMES.DIAMOND, GAMES.PEARL, GAMES.PLATINUM, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     {
         name: "Gorgeous Royal Ribbon",
         img: 'memorial/40px-Gorgeous_Royal_Ribbon_VIII',
         description: "A gorgeous and regal Ribbon that is the peak of fabulous.",
+        title: 'the Gorgeous Royal',
         games: [GAMES.DIAMOND, GAMES.PEARL, GAMES.PLATINUM, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     {
         name: "Footprint Ribbon",
         img: 'memorial/40px-Footprint_Ribbon_VIII',
         description: "A Ribbon awarded to a Pokémon deemed to have a top-quality footprint.",
+        title: 'the Strutter',
         games: [GAMES.DIAMOND, GAMES.PEARL, GAMES.PLATINUM, GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.SUN, GAMES.MOON, GAMES.ULTRA_SUN, GAMES.ULTRA_MOON, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL]
     },
     // Had never been made available
@@ -703,36 +740,42 @@ const RIBBONS = [
         name: "Legend Ribbon",
         img: 'memorial/40px-Legend_Ribbon_VIII',
         description: "A Ribbon awarded for setting a legendary record.",
+        title: 'the Living Legend',
         games: [GAMES.HEART_GOLD, GAMES.SOUL_SILVER]
     },
     {
         name: "Best Friends Ribbon",
         img: 'memorial/40px-Best_Friends_Ribbon_VIII',
         description: "A Ribbon that can be given to a Pokémon with which you share a close and meaningful bond.",
+        title: 'the Great Friend',
         games: [GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE, GAMES.SUN, GAMES.MOON, GAMES.ULTRA_SUN, GAMES.ULTRA_MOON, GAMES.SWORD, GAMES.SHIELD, GAMES.BRILLIANT_DIAMOND, GAMES.SHINING_PEARL, GAMES.SCARLET, GAMES.VIOLET]
     },
     {
         name: "Training Ribbon",
         img: 'memorial/40px-Training_Ribbon_VIII',
         description: "A Ribbon that can be given to a Pokémon that has overcome rigorous trials and training.",
+        title: 'the Tried and True',
         games: [GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE]
     },
     {
         name: "Battle Royal Master Ribbon",
         img: 'memorial/40px-Battle_Royal_Master_Ribbon_VIII',
         description: "A Ribbon that can be given to a Pokémon that has achieved victory in the Battle Royal.",
+        title: 'the Royal Master',
         games: [GAMES.SUN, GAMES.MOON, GAMES.ULTRA_SUN, GAMES.ULTRA_MOON]
     },
     {
         name: "Master Rank Ribbon",
         img: 'memorial/40px-Master_Rank_Ribbon_VIII',
         description: "A Ribbon awarded for winning against a Trainer in the Master Ball Tier of Ranked Battles.",
+        title: 'the Rank Master',
         games: [GAMES.SWORD, GAMES.SHIELD, GAMES.SCARLET, GAMES.VIOLET]
     },
     {
         name: "Hisui Ribbon",
         img: 'memorial/40px-Hisui_Ribbon_IX',
         description: "A ribbon awarded to a Pokémon that posed for a photograph in Hisui in the distant past.",
+        title: 'of the Distant Past',
         games: [GAMES.LEGENDS_ARCEUS]
     },
     // Event Ribbons
@@ -740,12 +783,14 @@ const RIBBONS = [
         name: "National Ribbon",
         img: 'memorial/40px-National_Ribbon_VIII',
         description: "A Ribbon awarded for overcoming all difficult challenges.",
+        title: 'the Triumphant',
         games: [GAMES.COLOSSEUM, GAMES.XD]
     },
     {
         name: "Earth Ribbon",
         img: 'memorial/40px-Earth_Ribbon_VIII',
         description: "A Ribbon awarded for winning one hundred battles in a row.",
+        title: 'the 100× Victorious',
         games: [GAMES.COLOSSEUM, GAMES.XD]
     },
 ]

@@ -47,7 +47,7 @@ function ribbonToKey(ribbon){
 
 /**
  * @param {Ribbon} ribbon - The Ribbon to generate an image path for
- * @returns {string} key - The imahe path for the ribbon
+ * @returns {string} path - The image path for the ribbon
  */
 function ribbonToImagePath(ribbon){
     const imgSrc = `./img/ribbons/${ribbon.img}.png`;
@@ -89,7 +89,7 @@ var CURRENT_RIBBON;
  * @param {Config} config 
  */
 function drawGrid(config){
-    const container = document.getElementById('container');
+    const container = document.getElementById('ribbon-grid');
     container.innerHTML ='';
 
     // Find all ribbons in the provided gens list
@@ -137,7 +137,7 @@ function drawGrid(config){
         const name = ribbon.name;
         const img = document.createElement('img');
         img.src = ribbonToImagePath(ribbon);
-        img.classList.add('ribbon-image');
+        img.classList.add('ribbon-image-small');
         div.addEventListener('click', () => {
             CURRENT_RIBBON = ribbon;
             displayRibbon();
@@ -151,13 +151,13 @@ function drawGrid(config){
 function displayRibbon(){
     console.log(CURRENT_RIBBON.name)
     const status = getRibbonStatus(CURRENT_RIBBON);
-    document.getElementById('info-box-ribbon-image').src = ribbonToImagePath(CURRENT_RIBBON);
-    document.getElementById('info-box-name-key').innerHTML = CURRENT_RIBBON.name;
-    document.getElementById('info-box-desc').innerHTML = CURRENT_RIBBON.description;
-    document.getElementById('isCompleted').checked = status ? status.completed : false;
+    document.getElementById('ribbon-info-box-image').src = ribbonToImagePath(CURRENT_RIBBON);
+    document.getElementById('ribbon-info-box-name').innerHTML = CURRENT_RIBBON.name;
+    document.getElementById('ribbon-info-box-desc').innerHTML = CURRENT_RIBBON.description;
+    document.getElementById('is-completed').checked = status ? status.completed : false;
 }
 
-document.getElementById('isCompleted').addEventListener('change', onCheck);
+document.getElementById('is-completed').addEventListener('change', onCheck);
 
 function onCheck(event){
     setRibbonStatus(CURRENT_RIBBON, event.target.checked);

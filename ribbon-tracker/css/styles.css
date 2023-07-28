@@ -1,35 +1,54 @@
-#container {
+#container { 
+    width: 100%;
+}
+
+#ribbon-grid {
     display: flex;
     flex-wrap: wrap;
-    width: 660px;
+    align-items: center;
+    justify-content: center;
 }
 
 .ribbon-grid-cell {
     padding: 5px;
 }
 
-.ribbon-image {
+.ribbon-image-small {
     width: 30px;
     height: 30px;
 }
 
-#info-box {
-    display: flex;
-    margin: auto;
+.ribbon-image-large {
+    height: 100%;
+    width: auto;
+}
+
+.rounded {
     border-radius: 10px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
+    padding: 5px;
+}
+
+#ribbon-info-box {
+    display: flex;
+    margin: auto;
     background: #E85840;
     border: 2px solid #8e1b1b;
-    padding: 3px;
 }
 .stack {
     display: block;
 }
-#info-box > .ribbon-image {
+
+.row {
+    display: flex;
+}
+
+.ribbon-info-box-image-container {
     width: 40px;
     height: 40px;
     text-align: center;
+    align-content: center;
     border-radius: 40px;
     -moz-border-radius: 40px;
     -webkit-border-radius: 40px;
@@ -38,10 +57,37 @@
     padding: 3px;
 }
 
-#info-box-row {
-    display: flex;
-}
-
 .completed {
     opacity: 50%;
+}
+
+.ruby {
+    color: #A00000;
+}
+.sapphire {
+    color: #0000A0;
+}
+.emerald {
+    color: #00A000;
+}
+.colosseum {
+    color: #B6CAE4;
+}
+.xd {
+    color: #604E82;
+}
+.diamond {
+    color: #AAAAFF;
+}
+.pearl {
+    color: #FFAAAA;
+}
+.platinum {
+    color: #999999;
+}
+.heart-gold {
+    color: #B69E00;
+}
+.soul-silver {
+    color: #7D7D92;
 }
