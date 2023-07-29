@@ -37,6 +37,47 @@ function getQueryParameters(){
 }
 
 /**
+ * @param {Config} config - The filtering config
+ * @returns {Ribbon[]} ribbons - The filtered and sorted ribbon list
+ */
+function getFilteredRibbonList(config){
+    // Find all ribbons in the provided gens list
+    const ribbonsByGen = RIBBONS.filter(r => {
+        return config.gens.length === 0 
+        ? false 
+        : config.gens.some(gen => (r.games.findIndex(
+            game => game.gen == gen) > -1));
+    })
+
+    // Find all ribbons from the provided games list
+    const ribbonsByGame = RIBBONS.filter(r => {
+        return config.games.length === 0 
+        ? false 
+        : config.games.some(gameName => (r.games.findIndex(
+            game => game.id.toLowerCase() === gameName.toLowerCase() 
+            || (game.names.findIndex(
+                n => n.toLowerCase() === gameName.toLowerCase()) > -1)) > -1))
+    })
+
+    const ribbonsByName = RIBBONS.filter(r => {
+        return config.ribbons.length === 0 
+        ? false 
+        : config.ribbons.some(ribbonName => (ribbonName.toLowerCase() === r.name.toLowerCase()))
+    })
+
+    const ribbonsByAll = ribbonsByGen.concat(ribbonsByGame).concat(ribbonsByName);
+    const uniqueRibbons = [...new Set(ribbonsByAll.length > 0 ? ribbonsByAll : RIBBONS)];
+    const sortedRibbons = uniqueRibbons.sort((a, b) => a.games[0].gen - b.games[0].gen);
+
+    if(sortedRibbons.length > 0 && (CURRENT_RIBBON === undefined || !sortedRibbons.includes(CURRENT_RIBBON))){
+        CURRENT_RIBBON = sortedRibbons[0];
+        displayRibbon();
+    }
+
+    return sortedRibbons;
+}
+
+/**
  * @param {Ribbon} ribbon - The Ribbon to generate a key for
  * @returns {string} key - The unique ribbon ID
  */
@@ -82,48 +123,22 @@ function setRibbonStatus(ribbon, completed){
     localStorage.setItem(key, JSON.stringify(status));
 }
 
+/** 
+ * @constant - The currently selected Ribbon.
+ * @type {Ribbon}
+*/
 var CURRENT_RIBBON;
 
 /**
  * Draws the grid of Ribbon buttons
- * @param {Config} config 
+ * @param {Ribbon[]} ribbons 
  */
-function drawGrid(config){
+function drawGrid(ribbons){
     const container = document.getElementById('ribbon-grid');
     container.innerHTML ='';
 
-    // Find all ribbons in the provided gens list
-    const ribbonsByGen = RIBBONS.filter(r => {
-        return config.gens.length === 0 
-        ? false 
-        : config.gens.some(gen => (r.games.findIndex(
-            game => game.gen == gen) > -1));
-    })
-
-    // Find all ribbons from the provided games list
-    const ribbonsByGame = RIBBONS.filter(r => {
-        return config.games.length === 0 
-        ? false 
-        : config.games.some(gameName => (r.games.findIndex(
-            game => game.id.toLowerCase() === gameName.toLowerCase() 
-            || (game.names.findIndex(
-                n => n.toLowerCase() === gameName.toLowerCase()) > -1)) > -1))
-    })
-
-    const ribbonsByName = RIBBONS.filter(r => {
-        return config.ribbons.length === 0 
-        ? false 
-        : config.ribbons.some(ribbonName => (ribbonName.toLowerCase() === r.name.toLowerCase()))
-    })
-
-    const ribbonsByAll = ribbonsByGen.concat(ribbonsByGame).concat(ribbonsByName);
-    const uniqueRibbons = [...new Set(ribbonsByAll.length > 0 ? ribbonsByAll : RIBBONS)];
-    const sortedRibbons = uniqueRibbons.sort((a, b) => a.games[0].gen - b.games[0].gen);
-    // if(sortedRibbons.length > 0){
-    //     CURRENT_RIBBON = sortedRibbons[0];
-    //     displayRibbon();
-    // }
-    for(const ribbon of sortedRibbons){
+    var completed = 0;
+    for(const ribbon of ribbons){
         const div = document.createElement('div');
         div.id = ribbonToKey(ribbon);
         div.classList.add('ribbon-grid-cell');
@@ -132,6 +147,7 @@ function drawGrid(config){
             console.log(ribbon.name + " " + JSON.stringify(status));
         }
         if(status && status.completed){
+            completed++;
             div.classList.add('completed');
         }
         const name = ribbon.name;
@@ -145,6 +161,9 @@ function drawGrid(config){
         div.id = name;
         div.appendChild(img);
         container.appendChild(div);
+
+        const bar = document.getElementById('progress-bar-fill');
+        bar.style.width = `${(completed/ribbons.length)*100}%`;
     }
 }
 
@@ -155,13 +174,21 @@ function displayRibbon(){
     document.getElementById('ribbon-info-box-name').innerHTML = CURRENT_RIBBON.name;
     document.getElementById('ribbon-info-box-desc').innerHTML = CURRENT_RIBBON.description;
     document.getElementById('is-completed').checked = status ? status.completed : false;
+    const availableIn = document.getElementById('available-in');
+    availableIn.innerHTML = '';
+    for(var game of CURRENT_RIBBON.games){
+        const span = document.createElement('span');
+        span.innerText = `${game.names[0]}`;
+        span.classList.add(game.id);
+        availableIn.appendChild(span);
+    }
 }
 
 document.getElementById('is-completed').addEventListener('change', onCheck);
 
 function onCheck(event){
     setRibbonStatus(CURRENT_RIBBON, event.target.checked);
-    drawGrid(getQueryParameters());
+    drawGrid(getFilteredRibbonList(getQueryParameters()));
 }
 
-drawGrid(getQueryParameters());
+drawGrid(getFilteredRibbonList(getQueryParameters()));

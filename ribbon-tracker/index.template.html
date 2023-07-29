@@ -7,18 +7,22 @@
             <div id="ribbon-grid">
                 <!-- The ribbon grid will go here -->
             </div>
+            <div id="progress-bar" class="rounded">
+                <span id="progress-bar-text">0/24</span>
+                <div id="progress-bar-fill"></div>
+            </div>
             <div id="ribbon-info-box" class="rounded">
                 <div class="stack">
-                    <div class="row">
+                    <div class="row" id="ribbon-info-box-top">
                         <div class="ribbon-info-box-image-container">
                             <img id="ribbon-info-box-image" class="ribbon-image-large"/>
                         </div>
-                        <div id="ribbon-info-box-top">
+                        <div>
                             <div class="stack">
                                 <h3>
                                     <span id="ribbon-info-box-name">Placeholder</span>
                                 </h3>
-                                <span>Available in: </span>
+                                <div class='font-small'><span>Available in: </span><span id="available-in"></span></div>
                             </div>
                         </div>
                         <input id="is-completed" type="checkbox"></input>

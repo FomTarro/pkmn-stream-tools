@@ -1,5 +1,23 @@
 html{
-    font-size: 3vmin;
+    font-size: 2vmax;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    /* text-shadow: 1px 1px 2px black; */
+}
+
+h3 {
+    margin: 0;
+}
+
+.font-small {
+    font-size: 0.75em;
+}
+
+.font-medium {
+    font-size: 1em;
+}
+
+.font-large {
+    font-size: 1.2em;
 }
 
 #container { 
@@ -14,6 +32,7 @@ html{
 }
 
 .ribbon-grid-cell {
+    filter: drop-shadow(0 0 3px white);
     padding: 5px;
 }
 
@@ -42,6 +61,15 @@ html{
     background: #E85840;
     border: 2px solid #8e1b1b;
 }
+
+#available-in{
+    font-weight: bold;
+}
+
+#ribbon-info-box-top {
+    height:3em;
+}
+
 .stack {
     display: block;
 }
@@ -51,8 +79,10 @@ html{
 }
 
 .ribbon-info-box-image-container {
-    width: 40px;
-    height: 40px;
+    aspect-ratio: 1 / 1;
+    /* width: 40px;
+    height: 40px; */
+    width: auto;
     text-align: center;
     align-content: center;
     border-radius: 100%;
@@ -61,6 +91,21 @@ html{
     background: #FF7267;
     border: 2px solid #940C15;
     padding: 3px;
+}
+
+#progress-bar {
+    width: 100%;
+    height: 2em;
+}
+
+#progress-bar-text {
+    position: absolute;
+}
+
+#progress-bar-fill {
+    /* position: absolute; */
+    background-color: green;
+    height: 100%;
 }
 
 .completed {
