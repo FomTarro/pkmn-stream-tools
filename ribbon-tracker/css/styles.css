@@ -65,7 +65,9 @@ h3 {
 
 
 #container { 
-    width: 100%;
+    margin: auto;
+    width: 95%;
+    height: 100%;
 }
 
 #ribbon-grid {
@@ -142,16 +144,46 @@ h3 {
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 2;
 }
 
 #progress-bar-fill {
-    /* position: absolute; */
-    background-color: green;
+    background-color: limegreen;
     height: 100%;
 }
 
 .completed {
     opacity: 50%;
+}
+
+input {
+    position: relative;
+    appearance: none;
+    background: white;
+    width: 1em;
+    height: 1em;
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+input::after {
+    font-weight: bold;
+    position: relative;
+    content: "\2713";
+    color: black;
+    opacity: 0;
+    /* height: 100%; */
+    font-size: 0.8rem;
+    /* width: 100%; */
+    display: block;
+}
+
+input:checked::after {
+    opacity: 1;
 }
 
 .fire-red {
