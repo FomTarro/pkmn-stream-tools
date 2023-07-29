@@ -163,6 +163,7 @@ function drawGrid(ribbons){
         container.appendChild(div);
 
         const bar = document.getElementById('progress-bar-fill');
+        document.getElementById('progress-bar-text').innerText = `${completed}/${ribbons.length}`;
         bar.style.width = `${(completed/ribbons.length)*100}%`;
     }
 }
@@ -176,12 +177,15 @@ function displayRibbon(){
     document.getElementById('is-completed').checked = status ? status.completed : false;
     const availableIn = document.getElementById('available-in');
     availableIn.innerHTML = '';
+    const gensSet = new Set();
     for(var game of CURRENT_RIBBON.games){
+        gensSet.add(game.gen)
         const span = document.createElement('span');
         span.innerText = `${game.names[0]}`;
         span.classList.add(game.id);
         availableIn.appendChild(span);
     }
+    // availableIn.innerText = [...gensSet].join(', ');
 }
 
 document.getElementById('is-completed').addEventListener('change', onCheck);
