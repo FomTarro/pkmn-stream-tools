@@ -1,5 +1,5 @@
 html{
-    font-size: 2vmax;
+    font-size: 4vmin;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     /* text-shadow: 1px 1px 2px black; */
     color: white;
@@ -42,27 +42,30 @@ h3 {
 }
 
 .stack {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
 }
 
 .row {
     display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+}
+
+.wrap {
+    overflow-wrap: anywhere;
 }
 
 .filled-box {
     background: #2E2D31;
-    border: 2px solid white;
-    padding: 0.5em;
+    border: 0.15em solid white;
     box-sizing: border-box;
-    filter: drop-shadow(0 0 3px white);
 }
 
 
 #container { 
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
 }
 
 #ribbon-grid {
@@ -87,18 +90,19 @@ h3 {
 .ribbon-image-large {
     height: 100%;
     width: auto;
+    filter: drop-shadow(0 0 10px lightgray);
 }
 
 .rounded {
-    border-radius: 10px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    padding: 5px;
+    border-radius: 1em;
+    -moz-border-radius: 1em;
+    -webkit-border-radius: 1em;
+    /* padding: 5px; */
 }
 
 #ribbon-info-box {
     display: flex;
-    padding: 0.5em;
+    padding: 0.75em;
 }
 
 #available-in {
@@ -107,8 +111,6 @@ h3 {
 
 #ribbon-info-box-top {
     height: 4em;
-    /* margin: auto 0 auto 0.25em; */
-    margin-bottom: 0.5em;
 }
 
 .ribbon-info-box-image-container {
@@ -121,15 +123,16 @@ h3 {
     border-radius: 100%;
     -moz-border-radius: 100%;
     -webkit-border-radius: 100%;
-    background: gray;
+    /* background: gray; */
     /* border: 2px solid #940C15; */
-    padding: 2%;
+    /* padding: 2%; */
 }
 
 #progress-bar {
     width: 100%;
     height: 2em;
     position: relative;
+    overflow: hidden;
 }
 
 #progress-bar-text {

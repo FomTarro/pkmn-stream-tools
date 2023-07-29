@@ -173,7 +173,7 @@ function displayRibbon(){
     const status = getRibbonStatus(CURRENT_RIBBON);
     document.getElementById('ribbon-info-box-image').src = ribbonToImagePath(CURRENT_RIBBON);
     document.getElementById('ribbon-info-box-name').innerHTML = CURRENT_RIBBON.name;
-    document.getElementById('ribbon-info-box-desc').innerHTML = CURRENT_RIBBON.description;
+    document.getElementById('ribbon-info-box-desc').innerHTML = CURRENT_RIBBON.description.replaceAll('é', '&eacute;');
     document.getElementById('is-completed').checked = status ? status.completed : false;
     const availableIn = document.getElementById('available-in');
     availableIn.innerHTML = '';

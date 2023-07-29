@@ -3,13 +3,13 @@
         <link rel='stylesheet' href="./css/styles.css"></link>
     </head>
     <body>
-        <div id="container">
+        <div id="container" class="stack">
             <div id="ribbon-grid">
                 <!-- The ribbon grid will go here -->
             </div>
             <div id="progress-bar" class="rounded filled-box">
-                <span id="progress-bar-text">0/24</span>
-                <div id="progress-bar-fill"></div>
+                <span id="progress-bar-text" class="font-small">0/24</span>
+                <div id="progress-bar-fill" class="rounded"></div>
             </div>
             <div id="ribbon-info-box" class="rounded filled-box">
                 <div class="stack">
@@ -17,17 +17,17 @@
                         <div class="ribbon-info-box-image-container">
                             <img id="ribbon-info-box-image" class="ribbon-image-large"/>
                         </div>
-                        <div class="vertical-center horizontal-spacing">
+                        <div class="vertical-center">
                             <div class="stack">
                                 <h3 class="font-large">
                                     <span id="ribbon-info-box-name">Placeholder</span>
                                 </h3>
-                                <div class='font-small'><span></span><span id="available-in"></span></div>
                             </div>
                         </div>
                         <input id="is-completed" type="checkbox"></input>
                     </div>
-                    <div id="ribbon-info-box-desc">
+                    <div class='font-small wrap'><span></span><span id="available-in"></span></div>
+                    <div id="ribbon-info-box-desc" class="font-medium">
                         Lorem Ipsum!
                     </div>
                 </div>
