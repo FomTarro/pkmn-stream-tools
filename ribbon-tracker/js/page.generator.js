@@ -32,6 +32,17 @@ function getQueryParameters(){
     if(params.ribbons && params.ribbons.startsWith('[') && params.ribbons.endsWith(']')){
         config.ribbons = params.ribbons.replace(REGEX_ARRAY, '').split(',');
     }
+    if(params.playing){
+        for(var property in GAMES){
+            const game = GAMES[property];
+            if(game.names.findIndex(name => name.toLowerCase() === params.playing.toLowerCase()) > -1){
+                document.getElementById('logo').classList.remove('hidden')
+                document.getElementById('logo').src = `./img/logos/${game.id}.png`
+            }
+        }
+    }else{
+        document.getElementById('logo').classList.add('hidden');
+    }
     console.log(config);
     return config;
 }

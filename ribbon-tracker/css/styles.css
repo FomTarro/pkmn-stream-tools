@@ -1,4 +1,4 @@
-html{
+html {
     font-size: 4vmin;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     /* text-shadow: 1px 1px 2px black; */
@@ -57,6 +57,11 @@ h3 {
     overflow-wrap: anywhere;
 }
 
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
 .filled-box {
     background: #2E2D31;
     border: 0.15em solid white;
@@ -67,7 +72,12 @@ h3 {
 #container { 
     margin: auto;
     width: 95%;
-    height: 100%;
+}
+
+#logo {
+    height: 7em;
+    width: max-content;
+    filter: drop-shadow(0 0 3px white);
 }
 
 #ribbon-grid {
