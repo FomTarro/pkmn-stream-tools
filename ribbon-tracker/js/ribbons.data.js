@@ -794,3 +794,34 @@ const RIBBONS = [
         games: [GAMES.COLOSSEUM, GAMES.XD]
     },
 ]
+
+/**
+ * Is the the ribbon available in the provided generation?
+ * @param {Ribbon} ribbon - The ribbon being queried
+ * @param {number} gen - The generation to check for
+ * @returns {boolean} included - Is the ribbon available in the provided generation?
+ */
+function includedInGen(ribbon, gen){
+    return (ribbon.games.findIndex(game => game.gen == gen) > -1)
+}
+
+/**
+ * Is the the ribbon available in the provided game?
+ * @param {Ribbon} ribbon - The ribbon being queried
+ * @param {string} gameName - The name of the game to check for
+ * @returns {boolean} included - Is the ribbon available in the provided game?
+ */
+function includedInGame(ribbon, gameName){
+    return (ribbon.games.findIndex(
+        game => game.id.toLowerCase() === gameName.toLowerCase() || (game.names.findIndex(n => n.toLowerCase() === gameName.toLowerCase()) > -1)) > -1);
+}
+
+/**
+ * Does this robbon match by name?
+ * @param {Ribbon} ribbon - The ribbon being queried
+ * @param {string} name - The name of the ribbon to check for
+ * @returns {boolean} included - Does this ribbon match by name?
+ */
+function isMatchedByName(ribbon, name){
+    return name.toLowerCase() === ribbon.name.toLowerCase();
+}

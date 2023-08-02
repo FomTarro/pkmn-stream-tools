@@ -52,32 +52,23 @@ function getQueryParameters(){
  * @returns {Ribbon[]} ribbons - The filtered and sorted ribbon list
  */
 function getFilteredRibbonList(config){
-    // Find all ribbons in the provided gens list
-    const ribbonsByGen = RIBBONS.filter(r => {
-        return config.gens.length === 0 
-        ? false 
-        : config.gens.some(gen => (r.games.findIndex(
-            game => game.gen == gen) > -1));
+
+    const filteredRibbons = RIBBONS.filter(ribbon => {
+        return config.gens.some(gen => includedInGame(ribbon, gen)) 
+        || config.games.some(gameName => includedInGame(ribbon, gameName))
+        || config.ribbons.some(ribbonName => isMatchedByName(ribbon, ribbonName))
+    }).filter(ribbon => {
+        return (config.ribbons.length === 0 
+        || !config.ribbons.some(ribbonName => (ribbonName.startsWith('-') && isMatchedByName(ribbon, ribbonName.substring(1)))))
     })
 
-    // Find all ribbons from the provided games list
-    const ribbonsByGame = RIBBONS.filter(r => {
-        return config.games.length === 0 
-        ? false 
-        : config.games.some(gameName => (r.games.findIndex(
-            game => game.id.toLowerCase() === gameName.toLowerCase() 
-            || (game.names.findIndex(
-                n => n.toLowerCase() === gameName.toLowerCase()) > -1)) > -1))
-    })
+    // If the filtered set is empty
+    if (filteredRibbons.length === 0){
+        console.log("List empty after all filters, using whole list...");
+        filteredRibbons.concat(RIBBONS);
+    }
 
-    const ribbonsByName = RIBBONS.filter(r => {
-        return config.ribbons.length === 0 
-        ? false 
-        : config.ribbons.some(ribbonName => (ribbonName.toLowerCase() === r.name.toLowerCase()))
-    })
-
-    const ribbonsByAll = ribbonsByGen.concat(ribbonsByGame).concat(ribbonsByName);
-    const uniqueRibbons = [...new Set(ribbonsByAll.length > 0 ? ribbonsByAll : RIBBONS)];
+    const uniqueRibbons = [...new Set(filteredRibbons.length > 0 ? filteredRibbons : RIBBONS)];
     const sortedRibbons = uniqueRibbons.sort((a, b) => a.games[0].gen - b.games[0].gen);
 
     if(sortedRibbons.length > 0 && (CURRENT_RIBBON === undefined || !sortedRibbons.includes(CURRENT_RIBBON))){
@@ -155,7 +146,7 @@ function drawGrid(ribbons){
         div.classList.add('ribbon-grid-cell');
         const status = getRibbonStatus(ribbon);
         if(status){
-            console.log(ribbon.name + " " + JSON.stringify(status));
+            console.log(`${ribbon.name} -> ${JSON.stringify(status)}`);
         }
         if(status && status.completed){
             completed++;
@@ -176,16 +167,25 @@ function drawGrid(ribbons){
         const bar = document.getElementById('progress-bar-fill');
         document.getElementById('progress-bar-text').innerText = `${completed}/${ribbons.length}`;
         bar.style.width = `${(completed/ribbons.length)*100}%`;
+        displayRibbon();
     }
 }
 
 function displayRibbon(){
-    console.log(CURRENT_RIBBON.name)
+    console.log(`Displaying ${CURRENT_RIBBON.name}...`);
     const status = getRibbonStatus(CURRENT_RIBBON);
     document.getElementById('ribbon-info-box-image').src = ribbonToImagePath(CURRENT_RIBBON);
     document.getElementById('ribbon-info-box-name').innerHTML = CURRENT_RIBBON.name;
     document.getElementById('ribbon-info-box-desc').innerHTML = CURRENT_RIBBON.description.replaceAll('é', '&eacute;');
-    document.getElementById('is-completed').checked = status ? status.completed : false;
+    
+    if(status && status.completed){
+        document.getElementById('is-completed').checked = status.completed;
+        // document.getElementById('ribbon-info-box-image-container').classList.add('completed');
+    }else{
+        document.getElementById('is-completed').checked = false;
+        // document.getElementById('ribbon-info-box-image-container').classList.remove('completed');
+    }
+    
     const availableIn = document.getElementById('available-in');
     availableIn.innerHTML = '';
     const gensSet = new Set();
@@ -196,7 +196,8 @@ function displayRibbon(){
         span.classList.add(game.id);
         availableIn.appendChild(span);
     }
-    // availableIn.innerText = [...gensSet].join(', ');
+    const titleConferred = document.getElementById('title-conferred');
+    titleConferred.innerHTML = CURRENT_RIBBON.title ? `"...${CURRENT_RIBBON.title}"` : 'N/A';
 }
 
 document.getElementById('is-completed').addEventListener('change', onCheck);

@@ -15,7 +15,7 @@
             <div id="ribbon-info-box" class="rounded filled-box">
                 <div class="stack">
                     <div class="row" id="ribbon-info-box-top">
-                        <div class="ribbon-info-box-image-container">
+                        <div id="ribbon-info-box-image-container">
                             <img id="ribbon-info-box-image" class="ribbon-image-large"/>
                         </div>
                         <div class="vertical-center">
@@ -26,11 +26,18 @@
                             </div>
                         </div>
                     </div>
+                    <hr>
                     <div class='font-small wrap'>
                         <input class="rounded" id="is-completed" type="checkbox" value="value1">
                         <label for="is-completed">Completed?</label>
                     </div>
-                    <div class='font-small wrap'><span></span><span id="available-in"></span></div>
+                    <div class='font-small wrap'>
+                        <span></span><span id="available-in"></span>
+                    </div>
+                    <div id="ribbon-info-box-title" class="font-small">
+                        <span>Title Conferred: </span><span id="title-conferred">the Placeholder</span>
+                    </div>
+                    <hr>
                     <div id="ribbon-info-box-desc" class="font-medium">
                         Lorem Ipsum!
                     </div>
