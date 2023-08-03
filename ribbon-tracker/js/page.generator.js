@@ -54,7 +54,7 @@ function getQueryParameters(){
 function getFilteredRibbonList(config){
 
     const filteredRibbons = RIBBONS.filter(ribbon => {
-        return config.gens.some(gen => includedInGame(ribbon, gen)) 
+        return config.gens.some(gen => includedInGen(ribbon, gen)) 
         || config.games.some(gameName => includedInGame(ribbon, gameName))
         || config.ribbons.some(ribbonName => isMatchedByName(ribbon, ribbonName))
     }).filter(ribbon => {
