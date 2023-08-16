@@ -58,6 +58,7 @@ hr{
     display: flex;
     flex-direction: row;
     gap: 0.5em;
+    align-items: baseline;
 }
 
 .wrap {
@@ -109,6 +110,7 @@ hr{
 .ribbon-image-large {
     height: 100%;
     width: auto;
+    aspect-ratio: 1/1;
     filter: drop-shadow(0 0 10px lightgray);
     animation: anim-pulse 1s ease-in-out infinite alternate;
 }
