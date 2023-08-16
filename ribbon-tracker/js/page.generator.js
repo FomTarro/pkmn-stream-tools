@@ -1,6 +1,7 @@
 
 const REGEX_WHITESPACE = /([ ])+/g;
-const REGEX_ARRAY = /([\[\]])+/g
+const REGEX_ARRAY = /([\[\]])+/g;
+const REGEX_HYPHEN = /([-])+/g;
 
 /**
  * A filtering configuration.
@@ -80,6 +81,14 @@ function getFilteredRibbonList(config){
 }
 
 /**
+ * @param {Game} game - The game to display the tooltip of
+ * @returns 
+ */
+function getGameTooltip(game) {
+    return (game.id.replace(REGEX_HYPHEN, ' ')).toUpperCase();
+}
+
+/**
  * @param {Ribbon} ribbon - The Ribbon to generate a key for
  * @returns {string} key - The unique ribbon ID
  */
@@ -145,9 +154,6 @@ function drawGrid(ribbons){
         div.id = ribbonToKey(ribbon);
         div.classList.add('ribbon-grid-cell');
         const status = getRibbonStatus(ribbon);
-        if(status){
-            console.log(`${ribbon.name} -> ${JSON.stringify(status)}`);
-        }
         if(status && status.completed){
             completed++;
             div.classList.add('completed');
@@ -161,18 +167,19 @@ function drawGrid(ribbons){
             displayRibbon();
         });
         div.id = name;
+        div.title = name;
         div.appendChild(img);
         container.appendChild(div);
 
         const bar = document.getElementById('progress-bar-fill');
         document.getElementById('progress-bar-text').innerText = `${completed}/${ribbons.length}`;
         bar.style.width = `${(completed/ribbons.length)*100}%`;
-        displayRibbon();
     }
+    displayRibbon();
 }
 
 function displayRibbon(){
-    console.log(`Displaying ${CURRENT_RIBBON.name}...`);
+    console.trace(`Displaying ${CURRENT_RIBBON.name}...`);
     const status = getRibbonStatus(CURRENT_RIBBON);
     document.getElementById('ribbon-info-box-image').src = ribbonToImagePath(CURRENT_RIBBON);
     document.getElementById('ribbon-info-box-name').innerHTML = CURRENT_RIBBON.name;
@@ -180,10 +187,8 @@ function displayRibbon(){
     
     if(status && status.completed){
         document.getElementById('is-completed').checked = status.completed;
-        // document.getElementById('ribbon-info-box-image-container').classList.add('completed');
     }else{
         document.getElementById('is-completed').checked = false;
-        // document.getElementById('ribbon-info-box-image-container').classList.remove('completed');
     }
     
     const availableIn = document.getElementById('available-in');
@@ -193,9 +198,11 @@ function displayRibbon(){
         gensSet.add(game.gen)
         const span = document.createElement('span');
         span.innerText = `${game.names[0]}`;
+        span.title = getGameTooltip(game);
         span.classList.add(game.id);
         availableIn.appendChild(span);
     }
+    console.log(`Available in gens: ${[...gensSet].join(', ')}`)
     const titleConferred = document.getElementById('title-conferred');
     titleConferred.innerHTML = CURRENT_RIBBON.title ? `"...${CURRENT_RIBBON.title}"` : 'N/A';
 }

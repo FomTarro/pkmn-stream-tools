@@ -3,6 +3,7 @@ html {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     text-shadow: 0.1em 0.1em 0.2em black;
     color: white;
+    background: rgba(0, 0, 0, 0)
 }
 
 h3 {
