@@ -18,14 +18,9 @@ async function launch(){
         res.status(200).sendFile(filePath);
     });
 
-    app.get(['/ribbon-tracker/:ribbon'], async (req, res) => {
-        const ribbonName = req.params.ribbon;
-        const status = req.query.status;
-        console.log(`${ribbonName}=${status}`);
-        res.status(200).send(
-            {
-
-            });
+    app.get(['/ribbon-tracker/readme'], async (req, res) => {
+        const filePath = path.join(__dirname, './ribbon-tracker', 'readme.html')
+        res.status(200).sendFile(filePath);
     });
 
 

@@ -214,4 +214,8 @@ function onCheck(event){
     drawGrid(getFilteredRibbonList(getQueryParameters()));
 }
 
+window.addEventListener('resize', function(event) {
+    this.parent.setDimensions(window.innerHeight, window.innerWidth);
+}, true);
+
 drawGrid(getFilteredRibbonList(getQueryParameters()));

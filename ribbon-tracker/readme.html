@@ -1,0 +1,16 @@
+<html>
+    <head>
+        <link rel='stylesheet' href="./css/readme.styles.css"></link>
+        <script>
+            // function resizeIframe(obj) {
+            //   obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+            // }
+            function setDimensions(){
+                document.getElementById('frame').style.height  = document.getElementById('frame').contentWindow.document.documentElement.scrollHeight + 'px';
+            }
+          </script>
+    </head>
+    <body>
+        <iframe id='frame' class="resizable" src="./index.template.html"></iframe>
+    </body>
+</html>

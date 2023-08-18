@@ -627,14 +627,14 @@ const RIBBONS = [
         img: 'memory_towers/battlememoryribbon',
         description: "A commemorative Ribbon representing all of the Ribbons you collected for battling somewhere long ago.",
         title: 'the Exciting Memory',
-        games: [GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE]
+        games: [GAMES.BLACK, GAMES.WHITE, GAMES.BLACK_2, GAMES.WHITE_2]
     },
     {
         name: "Gold Battle Memory Ribbon",
         img: 'memory_towers/battlememoryribbon2',
         description: "A commemorative Ribbon representing all of the Ribbons you collected for battling somewhere long ago.",
         title: 'the Exciting Memory',
-        games: [GAMES.X, GAMES.Y, GAMES.OMEGA_RUBY, GAMES.ALPHA_SAPPHIRE]
+        games: [GAMES.BLACK, GAMES.WHITE, GAMES.BLACK_2, GAMES.WHITE_2]
     },
     // Memorial
     {
