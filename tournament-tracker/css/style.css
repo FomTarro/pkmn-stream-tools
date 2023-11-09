@@ -1,0 +1,25 @@
+.table-header {
+    background: red;
+    position: sticky;
+    top: 2px;
+    z-index: 10;
+}
+
+tbody {
+    display: block;
+    overflow: scroll;
+    resize: vertical;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(0,0,0, .1);
+}
+
+.flex {
+    display: flex;
+}
+
+.icon {
+    height: 56/2px;
+    width: 68/2px;
+}

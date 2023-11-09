@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="https://unpkg.com/obs-websocket-js@5.0.3/dist/obs-ws.min.js"></script>
+        <link rel="stylesheet" href="./css/style.css">
+        <datalist id="sceneOptions">
+            <!-- Scenes in OBS -->
+        </datalist>
+        <datalist id="playerOptions">
+            <option id="abc-def" value="3"></option>
+        </datalist>
+        <datalist id="pokemonOptions">
+        </datalist>
+    </head>
+  <body>
+    <h2>Connect</h2>
+    <form>
+        <input id="address" placeholder="Address" type="text" minlength="7" maxlength="15" value="localhost" pattern="^(localhost|((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5]))$" required>
+        <input id="port" placeholder="Port" type="number" min="1" max="65535" size=5 value="4455">
+        <input id="password" placeholder="Password (optional)" type="password">
+        <button id="connect" type='button'>Connect to OBS</button>
+    </form>
+    <div>
+        <input id="sceneSelect" autoComplete="on" list="sceneOptions"/> 
+    </div>
+
+    <div>
+        <select id="playerLeftSelect" autoComplete="on" list="playerOptions">
+            <option value="first">Dog</option>
+            <option value="second">Cat</option>
+            <option value="third">Dragon</option>
+        </select>
+    </div>
+
+    <h1>Players</h1>
+    <div id="players">
+        <table>
+            <tbody id="players_table">
+                <tr id="players_table_header" class="table-header">
+                    <th><button id="player_add" type='button'>+</button></th>
+                    <th>Player Name</th>
+                    <th>Mon #1</th>
+                    <th>Mon #2</th>
+                    <th>Mon #3</th>
+                    <th>Mon #4</th>
+                    <th>Mon #5</th>
+                    <th>Mon #6</th>
+                </tr>
+            <!-- Want to add new rows starting here -->
+                <template id="player_template_row">
+                    <tr id="player_x_row">
+                        <td>
+                            <button id="player_x_delete" type='button'>X</button>
+                        </td>
+                        <td>
+                            <div class='flex'>
+                                <input id="player_x_name" placeholder="Player Name" type="text">
+                            </div>
+                        </td>
+                        <td>
+                            <div class='flex'>
+                                <input id="player_x_mon_1" placeholder="Mon #1" type="text" list="pokemonOptions">
+                            </div>
+                        </td>
+                        <td>
+                            <div class='flex'>
+                                <input id="player_x_mon_2" placeholder="Mon #2" type="text" list="pokemonOptions">
+                            </div>
+                        </td>
+                        <td>
+                            <div class='flex'>
+                                <input id="player_x_mon_3" placeholder="Mon #3" type="text" list="pokemonOptions">
+                            </div>
+                        </td>
+                        <td>
+                            <div class='flex'>
+                                <input id="player_x_mon_4" placeholder="Mon #4" type="text" list="pokemonOptions">
+                            </div>
+                        </td>
+                        <td>
+                            <div class='flex'>
+                                <input id="player_x_mon_5" placeholder="Mon #5" type="text" list="pokemonOptions">
+                            </div>
+                        </td>
+                        <td>
+                            <div class='flex'>
+                                <input id="player_x_mon_6" placeholder="Mon #6" type="text" list="pokemonOptions">
+                            </div>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+  </body>
+  <footer>
+    <script src="./js/species.js"></script>
+    <script src="./js/script.js"></script>
+  </footer>
+</html>

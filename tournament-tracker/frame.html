@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <style>
+            #content {
+                margin: auto;
+                width: 100%;
+                height: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <img id="content">
+    </body>
+    <footer>
+        <script>
+            const urlParams = new URLSearchParams(window.location.search);
+            const image = urlParams.get('img');
+            const element = document.getElementById("content");
+            element.src = `./img/${image}.png`
+        </script>
+    </footer>
+</html>
