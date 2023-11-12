@@ -1,36 +1,90 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script type="text/javascript" src="https://unpkg.com/obs-websocket-js@5.0.3/dist/obs-ws.min.js"></script>
         <link rel="stylesheet" href="./css/style.css">
         <datalist id="sceneOptions">
             <!-- Scenes in OBS -->
         </datalist>
-        <datalist id="playerOptions">
-            <option id="abc-def" value="3"></option>
+        <datalist id="browserSourceOptions">
+            <!-- Browser Sources in OBS -->
         </datalist>
         <datalist id="pokemonOptions">
+            <!-- Every single Pokemon -->
         </datalist>
     </head>
   <body>
-    <h2>Connect</h2>
-    <form>
-        <input id="address" placeholder="Address" type="text" minlength="7" maxlength="15" value="localhost" pattern="^(localhost|((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5]))$" required>
-        <input id="port" placeholder="Port" type="number" min="1" max="65535" size=5 value="4455">
-        <input id="password" placeholder="Password (optional)" type="password">
-        <button id="connect" type='button'>Connect to OBS</button>
-    </form>
-    <div>
-        <input id="sceneSelect" autoComplete="on" list="sceneOptions"/> 
+    <h1>Tournament Dashboard - v0.1.0</h1>
+    <div id="obs_settings">
+        <div>
+            OBS Status: <span id="obs_status" class="disconnected">Disconnected</span>
+        </div>
+        <form>
+            <input id="address" placeholder="Address" type="text" minlength="7" maxlength="15" value="localhost" pattern="^(localhost|((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5]))$" required>
+            <input id="port" placeholder="Port" type="number" min="1" max="65535" size=5 value="4455">
+            <input id="password" placeholder="Password (optional)" type="password">
+            <button id="connect" type='button'>Connect to OBS</button>
+        </form>
     </div>
 
     <div>
-        <select id="playerLeftSelect" autoComplete="on" list="playerOptions">
-            <option value="first">Dog</option>
-            <option value="second">Cat</option>
-            <option value="third">Dragon</option>
-        </select>
+        <h2>Source Settings</h2>
+        <div>
+            <label for="sceneSelect">OBS Scene Selection</label>
+            <input id="sceneSelect" autoComplete="on" list="sceneOptions"/> 
+        </div>
     </div>
+
+    <div class="dashboard">
+        <div id="player_1_dashboard">
+            <h3>Player 1</h3>
+            <div>
+                <div>
+                    <label for="player_1_select">Player #1</label>
+                </div>
+                <div>
+                    <select class="playerSelect" id="player_1_select"></select> → 
+                    <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions"/>
+                </div>
+            </div>
+
+            <div class="monModule">
+                <div>
+                    <label>Mon #1</label>
+                </div>
+                <div>
+                    <select class="monSelect"></select> → 
+                    <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions"/>
+                </div>
+                <div>
+                    <label>Fainted?</label>
+                    <input class="faintedToggle" type="checkbox">
+                </div>
+            </div>
+
+            <div class="monModule">
+                <div>
+                    <label>Mon #2</label>
+                </div>
+                <div>
+                    <select class="monSelect"></select> → 
+                    <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions"/>
+                </div>
+                <div>
+                    <label>Fainted?</label>
+                    <input class="faintedToggle" type="checkbox">
+                </div>
+            </div>
+        </div>
+        <div>
+            <h3>Player 2</h3>
+        </div>
+    </div>
+
+    
+    <!-- <div>
+        <select class="playerSelect" id="playerRightSelect">
+        </select>
+    </div> -->
 
     <h1>Players</h1>
     <div id="players">
@@ -94,7 +148,10 @@
     </div>
   </body>
   <footer>
-    <script src="./js/species.js"></script>
-    <script src="./js/script.js"></script>
+    <script type="text/javascript" src="./js/species.js"></script>
+    <script type="text/javascript" src="./js/players.js"></script>
+    <script type="text/javascript" src="./js/obs-ws.min.js"></script>
+    <script type="text/javascript" src="./js/obs.js"></script>
+    <script type="text/javascript" src="./js/script.js"></script>
   </footer>
 </html>

@@ -39,3 +39,20 @@ const SPECIES = [
         ]
     }
 ]
+
+SPECIES.forEach(species => {
+    makeSpeciesOption({name: species.name, number: species.natdex});
+    if(species.formes){
+        species.formes.forEach(forme => {
+            makeSpeciesOption({name: forme.name, number: `${species.natdex}-${forme.index}`})
+        })
+    }
+});
+
+function makeSpeciesOption(species){
+    const opt = document.createElement("option");
+    opt.id = species.name;
+    opt.innerHTML = species.name;
+    opt.number = species.number;
+    document.getElementById("pokemonOptions").appendChild(opt);
+}
