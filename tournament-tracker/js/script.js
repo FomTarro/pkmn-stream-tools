@@ -1,47 +1,91 @@
-document.getElementById('connect').addEventListener('click', e => {
+/**
+ * Connects to OBS using the settings input on the DOM
+ */
+function connectToOBS() {
     const address = document.getElementById('address').value;
     const port = document.getElementById('port').value;
     const password = document.getElementById('password').value;
-    console.log(address);
     const ws = `ws://${address.length > 0 ? address : 'localhost'}:${port}`;
     obs.connect(ws, password.length > 0 ? password : undefined);
-});
+}
 
-document.getElementById('sceneSelect').addEventListener('change', e => {
+/**
+ * Populates the auto-complete suggestions on the DOM with the sources pulled from the given scene.
+ * @param {string} sceneName - The name of the scene to pull sources from
+ */
+function populateSourceOptionsFromScene(sceneName){
     const browserSourceOptions = document.getElementById("browserSourceOptions");
     browserSourceOptions.innerHTML = '';
-    getBrowserSourcesInScene(e.target.value).then(list => {
+    getBrowserSourcesInScene(sceneName).then(list => {
         list.forEach(source => {
             const option = document.createElement('option');
             option.textContent = source;
             browserSourceOptions.appendChild(option);
         })
     });
-});
 
-function relativeToAbsolutePath(relative) {
-    return new URL(relative, window.location.href).href;
+    const textSourceOptions = document.getElementById("textSourceOptions");
+    textSourceOptions.innerHTML = '';
+    getTextSourcesInScene(sceneName).then(list => {
+        list.forEach(source => {
+            const option = document.createElement('option');
+            option.textContent = source;
+            textSourceOptions.appendChild(option);
+        })
+    });
 }
 
-const modules = document.querySelectorAll('.monModule');
-for(let m of modules){
-    const monSelector = m.querySelector(".monSelect");
+// Hook up mon selection dropdowns
+const monModules = document.querySelectorAll('.monModule');
+for(let monModule of monModules){
+    const monSelector = monModule.querySelector(".monSelect");
     monSelector.addEventListener('change', e => {
-        const source = m.querySelector('.sourceSelect').value;
+        const source = monModule.querySelector('.sourceSelect').value;
         const opt = document.getElementById(e.target.value);
         setBrowserSourceURL(source, relativeToAbsolutePath(`./frame.html?img=a_${opt ? opt.number : 0}`))
     });
-    const faintedToggle = m.querySelector(".faintedToggle");
+    const faintedToggle = monModule.querySelector(".faintedToggle");
         faintedToggle.addEventListener('change', e => {
             console.log(e.target.checked);
     });
 }
 
-document.getElementById('player_1_select').addEventListener('change', e => {
-    const modules = document.getElementById('player_1_dashboard').querySelectorAll('.monModule');
-    const entry = PLAYER_LIST.find((p) => p.uuid === e.target.value);
-    for(let m of modules){
-        const monSelector = m.querySelector(".monSelect");
+// Hook up player selection dropdowns
+const playerModules = document.querySelectorAll('.playerModule');
+for(let playerModule of playerModules){
+    const playerSelector = playerModule.querySelector('.playerSelect');
+    const sourceSelector = playerModule.querySelector('.sourceSelect');
+    const toggleAccess = () => {
+        if(sourceSelector.value == ''){
+            playerSelector.disabled = true;
+        }else{
+            playerSelector.disabled = false;
+        }
+    }
+    sourceSelector.addEventListener('change', toggleAccess);
+    playerSelector.addEventListener('change', e => {
+        populatePlayerModule(playerModule, e.target.value);
+        console.log(e.target.value);
+        setTextSourceText(sourceSelector.value, e.target.value)
+    });
+    toggleAccess();
+}
+
+/**
+ * Populates a given player module with details from the player table (name, team, etc).
+ * @param {HTMLElement} element - The player module element.
+ * @param {string} uuid - The UUID of the player to pull details for.
+ * @returns 
+ */
+function populatePlayerModule(element, uuid){
+    const entry = PLAYER_LIST.find((p) => p.uuid === uuid);
+    if(!entry){
+        console.warn(`No player with UUID ${uuid} found...`);
+        return;
+    }
+    const modules = element.querySelectorAll('.monModule');
+    for(let item of modules){
+        const monSelector = item.querySelector(".monSelect");
         monSelector.innerHTML = '';
         const opt = document.createElement('option')
         opt.innerText = "None";
@@ -55,7 +99,13 @@ document.getElementById('player_1_select').addEventListener('change', e => {
             }
         }
     }
+}
+
+document.getElementById('connect').addEventListener('click', connectToOBS);
+document.getElementById('sceneSelect').addEventListener('change', e => {
+    populateSourceOptionsFromScene(e.target.value);
 });
+connectToOBS();
 
 /**
  * A player data structure

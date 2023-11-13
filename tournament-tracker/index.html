@@ -8,6 +8,9 @@
         <datalist id="browserSourceOptions">
             <!-- Browser Sources in OBS -->
         </datalist>
+        <datalist id="textSourceOptions">
+            <!-- Text Sources in OBS -->
+        </datalist>
         <datalist id="pokemonOptions">
             <!-- Every single Pokemon -->
         </datalist>
@@ -16,7 +19,7 @@
     <h1>Tournament Dashboard - v0.1.0</h1>
     <div id="obs_settings">
         <div>
-            OBS Status: <span id="obs_status" class="disconnected">Disconnected</span>
+            <label for="connect">OBS Status: <span id="obs_status" class="disconnected">Disconnected</span></label>
         </div>
         <form>
             <input id="address" placeholder="Address" type="text" minlength="7" maxlength="15" value="localhost" pattern="^(localhost|((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5]))$" required>
@@ -29,21 +32,24 @@
     <div>
         <h2>Source Settings</h2>
         <div>
-            <label for="sceneSelect">OBS Scene Selection</label>
+            <div>
+                <label for="sceneSelect">OBS Scene Selection</label>
+            </div>
             <input id="sceneSelect" autoComplete="on" list="sceneOptions"/> 
         </div>
     </div>
 
     <div class="dashboard">
-        <div id="player_1_dashboard">
+        <div id="player_1_dashboard" class="playerModule">
             <h3>Player 1</h3>
             <div>
                 <div>
                     <label for="player_1_select">Player #1</label>
                 </div>
                 <div>
-                    <select class="playerSelect" id="player_1_select"></select> → 
-                    <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions"/>
+                    <select class="playerSelect" id="player_1_select">
+                    </select> → 
+                    <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="textSourceOptions"/>
                 </div>
             </div>
 
@@ -149,6 +155,7 @@
   </body>
   <footer>
     <script type="text/javascript" src="./js/species.js"></script>
+    <script type="text/javascript" src="./js/utils.js"></script>
     <script type="text/javascript" src="./js/players.js"></script>
     <script type="text/javascript" src="./js/obs-ws.min.js"></script>
     <script type="text/javascript" src="./js/obs.js"></script>

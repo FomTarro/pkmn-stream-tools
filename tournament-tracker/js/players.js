@@ -64,10 +64,12 @@ function addPlayer(existingData) {
     const buttons = row.querySelectorAll("button");
     const elements = [...inputs, ...buttons]
     elements.forEach(element => {
-        element.id = element.id.replace('_x_', `_${playerData.uuid}_`);
+        if(element.id){
+            element.id = element.id.replace('_x_', `_${playerData.uuid}_`);
+        }
     });
 
-    // Add player to dropdown
+    // Add player to dashboard dropdowns
     const playerSelectors = document.getElementsByClassName("playerSelect");
     const opts = [];
     for(var selector of playerSelectors){
@@ -78,6 +80,8 @@ function addPlayer(existingData) {
         selector.insertBefore(opt, selector.firstChild);
         opts.push(opt);
     }
+
+    // Hook up setting player name
     const nameInput = row.querySelector(`#player_${playerData.uuid}_name`);
     if(playerData.name){
         nameInput.value = playerData.name;
@@ -86,11 +90,12 @@ function addPlayer(existingData) {
         playerData.name = e.target.value;
         for(var opt of opts){
             opt.innerText = playerData.name;
+            // TODO: find some way to invoke the OBS update if this option is active while
         }
         savePlayerList();
     });
 
-    // Hook up setting mons
+    // Hook up setting team mons
     for (let monIndex = 1; monIndex <= 6; monIndex++) {
         const monInput = row.querySelector(`#player_${playerData.uuid}_mon_${monIndex}`);
         if(playerData && playerData[`mon${monIndex}`]){

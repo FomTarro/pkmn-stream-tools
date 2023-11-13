@@ -1,19 +1,20 @@
 const obs = new OBSWebSocket();
 
-const intervalID = window.setInterval(() => {
+function checkConnectionStatus(){
     const statusIndicator = document.getElementById("obs_status");
     obs.call("GetVersion").then(() => {
-        statusIndicator.innerText = "Connected!"
+        statusIndicator.innerText = "🟢 Connected!"
         statusIndicator.classList.remove("disconnected");
         statusIndicator.classList.add("connected");
     }).catch(() => {
-        statusIndicator.innerText = "Disconnected!"
+        statusIndicator.innerText = "🔴 Disconnected!"
         statusIndicator.classList.add("disconnected");
         statusIndicator.classList.remove("connected");
-    })
-}, 2000);
+    });
+}
+const intervalID = window.setInterval(checkConnectionStatus, 1000);
 
-obs.on('Identified', () => {
+function populateScenesOptionsFromOBS(){
     getAllScenes().then(scenes => {
         const sceneOptions = document.getElementById('sceneOptions');
         // clear current options
@@ -24,7 +25,15 @@ obs.on('Identified', () => {
             sceneOptions.appendChild(option);
         });
     })
+}
+
+obs.on('Identified', () => {
+    populateScenesOptionsFromOBS();
 });
+
+checkConnectionStatus();
+
+// Utility functions
 
 const SOURCE_TYPE = {
     IMAGE: 'image_source',

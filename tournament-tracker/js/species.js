@@ -12,7 +12,8 @@ const SPECIES = [
         natdex: 3,
         formes: [
             {
-                name: "Mega-Venusaur"
+                name: "Mega-Venusaur",
+                index: 1
             }
         ]
     },
