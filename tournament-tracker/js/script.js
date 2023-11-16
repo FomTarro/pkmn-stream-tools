@@ -65,41 +65,23 @@ for(let playerModule of playerModules){
     sourceSelector.addEventListener('change', toggleAccess);
     playerSelector.addEventListener('change', e => {
         populatePlayerModule(playerModule, e.target.value);
-        console.log(e.target.value);
-        setTextSourceText(sourceSelector.value, e.target.value)
+        setTextSourceText(sourceSelector.value, e.target.options[e.target.options.selectedIndex].innerText)
     });
     toggleAccess();
 }
 
-/**
- * Populates a given player module with details from the player table (name, team, etc).
- * @param {HTMLElement} element - The player module element.
- * @param {string} uuid - The UUID of the player to pull details for.
- * @returns 
- */
-function populatePlayerModule(element, uuid){
-    const entry = PLAYER_LIST.find((p) => p.uuid === uuid);
-    if(!entry){
-        console.warn(`No player with UUID ${uuid} found...`);
-        return;
-    }
-    const modules = element.querySelectorAll('.monModule');
-    for(let item of modules){
-        const monSelector = item.querySelector(".monSelect");
-        monSelector.innerHTML = '';
-        const opt = document.createElement('option')
-        opt.innerText = "None";
-        monSelector.appendChild(opt);
-        for(var i = 1; i <= 4; i++){
-            const mon = entry[`mon${i}`]
-            if(mon){
-                const opt = document.createElement('option');
-                opt.innerText = mon;
-                monSelector.appendChild(opt);
-            }
+const resetButtons = document.querySelectorAll('.resetButton');
+for(let resetButton of resetButtons){
+    resetButton.addEventListener('click', e => {
+        for(let monModule of monModules){
+            const monSelector = monModule.querySelector(".monSelect");
+            monSelector.value = "None"
+            const event = new Event('change');
+            monSelector.dispatchEvent(event);
         }
-    }
+    })
 }
+
 
 document.getElementById('connect').addEventListener('click', connectToOBS);
 document.getElementById('sceneSelect').addEventListener('change', e => {

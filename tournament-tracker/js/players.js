@@ -41,6 +41,15 @@ function loadPlayerList() {
 
 function savePlayerList() {
     localStorage.setItem(PLAYER_LIST_KEY, JSON.stringify(PLAYER_LIST));
+    const selectors = document.querySelectorAll('.playerSelect');
+    for(let selector of selectors){
+        for(let player of PLAYER_LIST){
+            if(player.uuid === selector.value){
+                const event = new Event('change');
+                selector.dispatchEvent(event);
+            }
+        }
+    }
 }
 
 /**
@@ -74,10 +83,11 @@ function addPlayer(existingData) {
     const opts = [];
     for(var selector of playerSelectors){
         const opt = document.createElement('option');
-        opt.id = `player_${playerData.uuid}_option`;
+        // opt.id = `player_${playerData.uuid}_option`;
         opt.value = playerData.uuid;
         opt.innerText = playerData.name;
-        selector.insertBefore(opt, selector.firstChild);
+        const optGroup = selector.querySelector('.optionContent');
+        optGroup.insertBefore(opt, optGroup.firstChild);
         opts.push(opt);
     }
 
@@ -90,7 +100,12 @@ function addPlayer(existingData) {
         playerData.name = e.target.value;
         for(var opt of opts){
             opt.innerText = playerData.name;
-            // TODO: find some way to invoke the OBS update if this option is active while
+            // If the player is currently selected when their name is changed,
+            // update their name in-place and in OBS
+            // if(opt.selected){
+            //     const sourceSelector = opt.closest('.playerModule').querySelector('.sourceSelect');
+            //     setTextSourceText(sourceSelector.value, playerData.name);
+            // }
         }
         savePlayerList();
     });
@@ -125,6 +140,35 @@ function addPlayer(existingData) {
     });
 
     savePlayerList();
+}
+
+/**
+ * Populates a given player module with details from the player table (name, team, etc).
+ * @param {HTMLElement} element - The player module element.
+ * @param {string} uuid - The UUID of the player to pull details for.
+ * @returns 
+ */
+function populatePlayerModule(element, uuid){
+    const entry = PLAYER_LIST.find((p) => p.uuid === uuid);
+    if(!entry){
+        console.warn(`No player with UUID ${uuid} found...`);
+    }
+    const modules = element.querySelectorAll('.monModule');
+    for(let item of modules){
+        const monSelector = item.querySelector(".monSelect");
+        const opts = monSelector.querySelectorAll(".monOption")
+        for(var i = 1; i <= 6; i++){
+            const mon = entry ? entry[`mon${i}`] : undefined;
+            if(mon){
+                opts[i].innerText = mon;
+                opts[i].hidden = false;
+            }else{
+                opts[i].hidden = true;
+            }
+        }
+        const event = new Event('change');
+        monSelector.dispatchEvent(event);
+    }
 }
 
 loadPlayerList();
