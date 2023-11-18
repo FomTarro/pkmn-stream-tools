@@ -6,6 +6,9 @@
                 width: 100%;
                 height: auto;
             }
+            .fainted {
+                opacity: 50%;
+            }
         </style>
     </head>
     <body>
@@ -17,6 +20,10 @@
             const image = urlParams.get('img');
             const element = document.getElementById("content");
             element.src = `./img/pkmn/${image}.png`
+            const fainted = urlParams.get('fainted');
+            if(fainted === 'true'){
+                element.classList.add('fainted')
+            }
         </script>
     </footer>
 </html>

@@ -31,8 +31,6 @@ obs.on('Identified', () => {
     populateScenesOptionsFromOBS();
 });
 
-checkConnectionStatus();
-
 // Utility functions
 
 const SOURCE_TYPE = {
@@ -58,14 +56,19 @@ async function getAllScenes() {
  * @returns {Promise<string[]>} List of source names.
  */
 async function getSourcesOfTypeInScene(sourceType, sceneName) {
-    const results = await obs.call('GetSceneItemList', {
-        sceneName: sceneName
-    });
-    console.log(results);
-    const filtered = results.sceneItems.filter(
-        (item) => item.inputKind.includes(sourceType)).map(
-            (item) => item.sourceName);
-    return filtered;
+    try{
+        const results = await obs.call('GetSceneItemList', {
+            sceneName: sceneName
+        });
+        console.log(results);
+        const filtered = results.sceneItems.filter(
+            (item) => item.inputKind.includes(sourceType)).map(
+                (item) => item.sourceName);
+        return filtered;
+    }catch(e){
+        console.warn(`Error fetching sources of type ${sourceType} from scene ${sceneName}: ${e}`);
+        return [];
+    }
 }
 
 /**
@@ -83,12 +86,16 @@ async function getImageSourcesInScene(sceneName) {
  * @param {string} filePath Absolute filepath to set the source to.
  */
 async function setImageSourceFilePath(sourceName, filePath) {
-    results = await obs.call('SetInputSettings', {
-        inputName: sourceName,
-        inputSettings: {
-            file: filePath
-        }
-    });
+    try{
+        await obs.call('SetInputSettings', {
+            inputName: sourceName,
+            inputSettings: {
+                file: filePath
+            }
+        });
+    }catch(e){
+        console.warn(`Error trying to set image source: ${e}`);
+    }
 }
 
 /**
@@ -106,13 +113,17 @@ async function getBrowserSourcesInScene(sceneName) {
  * @param {string} url Absolute URL to set the source to.
  */
 async function setBrowserSourceURL(sourceName, url) {
-    results = await obs.call('SetInputSettings', {
-        inputName: sourceName,
-        inputSettings: {
-            url: url
-        }
-    });
-    return results;
+    try{
+        await obs.call('SetInputSettings', {
+            inputName: sourceName,
+            inputSettings: {
+                url: url
+            }
+        });
+    }
+    catch(e){
+        console.warn(`Error trying to set browser source: ${e}`);
+    }
 }
 
 /**
@@ -130,10 +141,14 @@ async function getTextSourcesInScene(sceneName) {
  * @param {string} text The text to set.
  */
 async function setTextSourceText(sourceName, text) {
-    results = await obs.call('SetInputSettings', {
-        inputName: sourceName,
-        inputSettings: {
-            text: text
-        }
-    });
+    try{
+        await obs.call('SetInputSettings', {
+            inputName: sourceName,
+            inputSettings: {
+                text: text
+            }
+        });
+    }catch(e){
+        console.warn(`Error trying to set text source: ${e}`);
+    }
 }

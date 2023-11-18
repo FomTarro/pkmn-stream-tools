@@ -42,11 +42,17 @@
     <div class="dashboard">
         <div id="player_1_dashboard" class="playerModule">
             <h3>Player 1</h3>
+            <div class="scoreModule">
+                <div class="scoreDisplay">0</div>
+                <button class="scoreButton plus" type='button'>+</button>
+                <button class="scoreButton minus" type='button'>-</button>
+                → <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="textSourceOptions"/>
+            </div>
             <div>
                 <div>
                     <label for="player_1_select">Player #1</label>
                 </div>
-                <div>
+                <div class="nameModule">
                     <select class="playerSelect" id="player_1_select">
                         <optgroup label="Default">
                             <option>None</option>
@@ -65,13 +71,17 @@
                 </div>
                 <div>
                     <select class="monSelect">
-                        <option class="monOption">None</option>
-                        <option class="monOption">Mon1</option>
-                        <option class="monOption">Mon2</option>
-                        <option class="monOption">Mon3</option>
-                        <option class="monOption">Mon4</option>
-                        <option class="monOption">Mon5</option>
-                        <option class="monOption">Mon6</option>
+                        <optgroup label="Default">
+                            <option class="monOption">None</option>
+                        </optgroup>
+                        <optgroup label="Mons" class="optionContent">
+                            <option class="monOption">Mon1</option>
+                            <option class="monOption">Mon2</option>
+                            <option class="monOption">Mon3</option>
+                            <option class="monOption">Mon4</option>
+                            <option class="monOption">Mon5</option>
+                            <option class="monOption">Mon6</option>
+                        </optgroup>
                     </select> → 
                     <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions"/>
                 </div>
@@ -102,18 +112,53 @@
                     <input class="faintedToggle" type="checkbox">
                 </div>
             </div>
+
+            <div class="monModule">
+                <div>
+                    <label>Mon #3</label>
+                </div>
+                <div>
+                    <select class="monSelect">
+                        <option class="monOption">None</option>
+                        <option class="monOption">Mon1</option>
+                        <option class="monOption">Mon2</option>
+                        <option class="monOption">Mon3</option>
+                        <option class="monOption">Mon4</option>
+                        <option class="monOption">Mon5</option>
+                        <option class="monOption">Mon6</option>
+                    </select> → 
+                    <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions"/>
+                </div>
+                <div>
+                    <label>Fainted?</label>
+                    <input class="faintedToggle" type="checkbox">
+                </div>
+            </div>
+
+            <div class="monModule">
+                <div>
+                    <label>Mon #4</label>
+                </div>
+                <div>
+                    <select class="monSelect">
+                        <option class="monOption">None</option>
+                        <option class="monOption">Mon1</option>
+                        <option class="monOption">Mon2</option>
+                        <option class="monOption">Mon3</option>
+                        <option class="monOption">Mon4</option>
+                        <option class="monOption">Mon5</option>
+                        <option class="monOption">Mon6</option>
+                    </select> → 
+                    <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions"/>
+                </div>
+                <div>
+                    <label>Fainted?</label>
+                    <input class="faintedToggle" type="checkbox">
+                </div>
+            </div>
             <button class="resetButton" type='button'>Reset All Mons</button>
         </div>
-        <div>
-            <h3>Player 2</h3>
-        </div>
     </div>
-
-    
-    <!-- <div>
-        <select class="playerSelect" id="playerRightSelect">
-        </select>
-    </div> -->
 
     <h1>Players</h1>
     <div id="players">

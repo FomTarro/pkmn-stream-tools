@@ -34,18 +34,28 @@ function uuidv4() {
 function loadPlayerList() {
     var loaded = JSON.parse(localStorage.getItem(PLAYER_LIST_KEY));
     loaded = loaded ? loaded : [];
-    for (var player of loaded) {
-        addPlayer(player);
+    if (loaded.length > 0) {
+        for (var player of loaded) {
+            addPlayer(player);
+        }
+    } else {
+        addPlayer()
+    }
+    const selectors = document.querySelectorAll('.playerSelect');
+    for (let selector of selectors) {
+        selector.value = 'None'
+        const event = new Event('refresh');
+        selector.dispatchEvent(event);
     }
 }
 
 function savePlayerList() {
     localStorage.setItem(PLAYER_LIST_KEY, JSON.stringify(PLAYER_LIST));
     const selectors = document.querySelectorAll('.playerSelect');
-    for(let selector of selectors){
-        for(let player of PLAYER_LIST){
-            if(player.uuid === selector.value){
-                const event = new Event('change');
+    for (let selector of selectors) {
+        for (let player of PLAYER_LIST) {
+            if (player.uuid === selector.value) {
+                const event = new Event('refresh');
                 selector.dispatchEvent(event);
             }
         }
@@ -73,7 +83,7 @@ function addPlayer(existingData) {
     const buttons = row.querySelectorAll("button");
     const elements = [...inputs, ...buttons]
     elements.forEach(element => {
-        if(element.id){
+        if (element.id) {
             element.id = element.id.replace('_x_', `_${playerData.uuid}_`);
         }
     });
@@ -81,7 +91,7 @@ function addPlayer(existingData) {
     // Add player to dashboard dropdowns
     const playerSelectors = document.getElementsByClassName("playerSelect");
     const opts = [];
-    for(var selector of playerSelectors){
+    for (var selector of playerSelectors) {
         const opt = document.createElement('option');
         // opt.id = `player_${playerData.uuid}_option`;
         opt.value = playerData.uuid;
@@ -93,19 +103,13 @@ function addPlayer(existingData) {
 
     // Hook up setting player name
     const nameInput = row.querySelector(`#player_${playerData.uuid}_name`);
-    if(playerData.name){
+    if (playerData.name) {
         nameInput.value = playerData.name;
     }
     nameInput.addEventListener('change', e => {
         playerData.name = e.target.value;
-        for(var opt of opts){
+        for (var opt of opts) {
             opt.innerText = playerData.name;
-            // If the player is currently selected when their name is changed,
-            // update their name in-place and in OBS
-            // if(opt.selected){
-            //     const sourceSelector = opt.closest('.playerModule').querySelector('.sourceSelect');
-            //     setTextSourceText(sourceSelector.value, playerData.name);
-            // }
         }
         savePlayerList();
     });
@@ -113,12 +117,12 @@ function addPlayer(existingData) {
     // Hook up setting team mons
     for (let monIndex = 1; monIndex <= 6; monIndex++) {
         const monInput = row.querySelector(`#player_${playerData.uuid}_mon_${monIndex}`);
-        if(playerData && playerData[`mon${monIndex}`]){
+        if (playerData && playerData[`mon${monIndex}`]) {
             monInput.value = playerData[`mon${monIndex}`];
         }
         monInput.addEventListener('change', e => {
             const entry = PLAYER_LIST.find(player => player.uuid === playerData.uuid)
-            if(entry) {
+            if (entry) {
                 entry[`mon${monIndex}`] = e.target.value;
                 savePlayerList();
             }
@@ -128,7 +132,7 @@ function addPlayer(existingData) {
     // Hook up delete button
     const deleteButton = row.querySelector(`#player_${playerData.uuid}_delete`);
     deleteButton.addEventListener('click', e => {
-        for(var opt of opts){
+        for (var opt of opts) {
             opt.remove();
         }
         row.remove();
@@ -148,21 +152,21 @@ function addPlayer(existingData) {
  * @param {string} uuid - The UUID of the player to pull details for.
  * @returns 
  */
-function populatePlayerModule(element, uuid){
+function populatePlayerModule(element, uuid) {
     const entry = PLAYER_LIST.find((p) => p.uuid === uuid);
-    if(!entry){
+    if (!entry) {
         console.warn(`No player with UUID ${uuid} found...`);
     }
     const modules = element.querySelectorAll('.monModule');
-    for(let item of modules){
+    for (let item of modules) {
         const monSelector = item.querySelector(".monSelect");
         const opts = monSelector.querySelectorAll(".monOption")
-        for(var i = 1; i <= 6; i++){
+        for (var i = 1; i <= 6; i++) {
             const mon = entry ? entry[`mon${i}`] : undefined;
-            if(mon){
+            if (mon) {
                 opts[i].innerText = mon;
                 opts[i].hidden = false;
-            }else{
+            } else {
                 opts[i].hidden = true;
             }
         }
@@ -170,5 +174,3 @@ function populatePlayerModule(element, uuid){
         monSelector.dispatchEvent(event);
     }
 }
-
-loadPlayerList();
