@@ -82,11 +82,11 @@ function addPlayer(existingData) {
     const inputs = row.querySelectorAll("input");
     const buttons = row.querySelectorAll("button");
     const elements = [...inputs, ...buttons]
-    elements.forEach(element => {
+    for(let element of elements) {
         if (element.id) {
             element.id = element.id.replace('_x_', `_${playerData.uuid}_`);
         }
-    });
+    }
 
     // Add player to dashboard dropdowns
     const playerSelectors = document.getElementsByClassName("playerSelect");
@@ -111,7 +111,6 @@ function addPlayer(existingData) {
         for (var opt of opts) {
             opt.innerText = playerData.name;
         }
-        savePlayerList();
     });
 
     // Hook up setting team mons
@@ -124,7 +123,6 @@ function addPlayer(existingData) {
             const entry = PLAYER_LIST.find(player => player.uuid === playerData.uuid)
             if (entry) {
                 entry[`mon${monIndex}`] = e.target.value;
-                savePlayerList();
             }
         })
     }
@@ -142,7 +140,11 @@ function addPlayer(existingData) {
             savePlayerList();
         }
     });
-
+    for(let element of elements){
+        element.addEventListener('change', e => {
+            savePlayerList();
+        });
+    }
     savePlayerList();
 }
 

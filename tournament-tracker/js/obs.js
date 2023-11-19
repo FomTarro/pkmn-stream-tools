@@ -29,6 +29,10 @@ function populateScenesOptionsFromOBS(){
 
 obs.on('Identified', () => {
     populateScenesOptionsFromOBS();
+    const sceneSelector = document.getElementById('sceneSelect');
+    if(sceneSelector.value){
+        populateSourceOptionsFromScene(sceneSelector.value);
+    }
 });
 
 // Utility functions
@@ -60,7 +64,6 @@ async function getSourcesOfTypeInScene(sourceType, sceneName) {
         const results = await obs.call('GetSceneItemList', {
             sceneName: sceneName
         });
-        console.log(results);
         const filtered = results.sceneItems.filter(
             (item) => item.inputKind.includes(sourceType)).map(
                 (item) => item.sourceName);

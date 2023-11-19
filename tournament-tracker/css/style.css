@@ -25,6 +25,22 @@ select, input[type="text"] {
 
 .flex {
     display: flex;
+    gap: 0.5em;
+}
+
+.flex-col{
+    display: flex;
+    flex-direction: column
+}
+
+.flex-row{
+    display: flex;
+    justify-content: space-between;
+}
+
+.rounded-corner {
+    border-radius: 1em;
+    padding: 0.5em;
 }
 
 .icon {
@@ -39,23 +55,22 @@ select, input[type="text"] {
 .disconnected {
     color: maroon;
 }
+
 .connected {
     color: green;
 }
 
 .dashboard {
     display: flex;
-    justify-content: space-between;
-}
-
-.playerModule {
-    display: flex;
     flex-direction: column;
-    gap: 0.5em;
+    justify-content: space-between;
+    gap: 1em
 }
 
-.monModule {
-    
+.monIcon{
+    height: 56px;
+    width: 56px;
+    background-color: gainsboro;
 }
 
 .scoreDisplay {

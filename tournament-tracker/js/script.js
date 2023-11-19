@@ -36,93 +36,113 @@ function populateSourceOptionsFromScene(sceneName){
     saveSourceSettings();
 }
 
-// Hook up mon selection dropdowns
-const monModules = document.querySelectorAll('.monModule');
-for(let monModule of monModules){
-    const monSelector = monModule.querySelector(".monSelect");
-    const faintedToggle = monModule.querySelector(".faintedToggle");
-    monSelector.addEventListener('change', e => {
-        const source = monModule.querySelector('.sourceSelect').value;
-        const opt = document.getElementById(monSelector.value);
-        setBrowserSourceURL(source, relativeToAbsolutePath(`./frame.html?img=a_${opt ? opt.number : 0}&fainted=${faintedToggle.checked}`))
-    });
-    faintedToggle.addEventListener('change', e => {
-        const source = monModule.querySelector('.sourceSelect').value;
-        const opt = document.getElementById(monSelector.value);
-        setBrowserSourceURL(source, relativeToAbsolutePath(`./frame.html?img=a_${opt ? opt.number : 0}&fainted=${faintedToggle.checked}`))
-    });
-}
-
-// Hook up scores
-const scoreModules = document.querySelectorAll('.scoreModule');
-for(let scoreModule of scoreModules){
-    const score = scoreModule.querySelector('.scoreDisplay');
-    const sourceSelector = scoreModule.querySelector('.sourceSelect');
-    const plus = scoreModule.querySelector('.plus');
-    plus.addEventListener('click', e => {
-        score.innerText = `${Math.max(0, Number(score.innerText) + 1)}`;
-        console.log(score.innerText)
-        setTextSourceText(sourceSelector.value, score.innerText);
-    });
-    const minus = scoreModule.querySelector('.minus');
-    minus.addEventListener('click', e => {
-        score.innerText = `${Math.max(0, Number(score.innerText) - 1)}`;
-        setTextSourceText(sourceSelector.value, score.innerText);
-    })
-}
-
-// Hook up player selection dropdowns
-const nameModules = document.querySelectorAll('.nameModule');
-for(let nameModule of nameModules){
-    const playerSelector = nameModule.querySelector('.playerSelect');
-    const sourceSelector = nameModule.querySelector('.sourceSelect');
-    // changed via dropdown
-    playerSelector.addEventListener('change', e => {
-        for(monSelect of nameModule.querySelectorAll('.monSelect')){
-            monSelect.value = "None";
+function attachEventListeners(){
+    // Hook up mon selection dropdowns
+    const monModules = document.querySelectorAll('.monModule');
+    for(let monModule of monModules){
+        const monSelector = monModule.querySelector(".monSelect");
+        const faintedToggle = monModule.querySelector(".faintedToggle");
+        const updateIcon = () => {
+            const source = monModule.querySelector('.sourceSelect').value;
+            const opt = document.getElementById(monSelector.value);
+            const url = relativeToAbsolutePath(`./frame.html?img=poke_icon_${opt ? opt.number : 0}&fainted=${faintedToggle.checked}`);
+            setBrowserSourceURL(source, url)
+            const icon = monModule.querySelector('.monIcon');
+            if(icon){
+                icon.src = url;
+            } 
         }
-        populatePlayerModule(nameModule.closest('.playerModule'), e.target.value);
-        const playerName = e.target.value === "None" ? "" : e.target.options[e.target.options.selectedIndex].innerText;
-        setTextSourceText(sourceSelector.value, playerName);
-    });
-    // refreshed via save data
-    playerSelector.addEventListener('refresh', e => {
-        populatePlayerModule(nameModule.closest('.playerModule'), e.target.value);
-        const playerName = e.target.value === "None" ? "" : e.target.options[e.target.options.selectedIndex].innerText;
-        setTextSourceText(sourceSelector.value, playerName);
-    });;
-}
+        monSelector.addEventListener('change', updateIcon);
+        faintedToggle.addEventListener('change', updateIcon);
+    }
 
-// Hook up reset buttons
-const resetButtons = document.querySelectorAll('.resetButton');
-for(let resetButton of resetButtons){
-    resetButton.addEventListener('click', e => {
-        console.log('resetting...')
-        const parent = resetButton.closest('.playerModule');
-        const childModules = parent.querySelectorAll('.monModule');
-        for(let monModule of childModules){
-            const monSelector = monModule.querySelector(".monSelect");
-            monSelector.value = "None"
-            const faintedToggle = monModule.querySelector('.faintedToggle');
-            faintedToggle.checked = false;
+    // Hook up scores
+    const scoreModules = document.querySelectorAll('.scoreModule');
+    for(let scoreModule of scoreModules){
+        const score = scoreModule.querySelector('.scoreDisplay');
+        const sourceSelector = scoreModule.querySelector('.sourceSelect');
+        const plus = scoreModule.querySelector('.plus');
+        const incrementScore = (num) => {
+            score.innerText = `${Math.max(0, Number(score.innerText) + num)}`;
+            setTextSourceText(sourceSelector.value, score.innerText);
+        }
+        plus.addEventListener('click', e => {
+            incrementScore(1);
+        });
+        const minus = scoreModule.querySelector('.minus');
+        minus.addEventListener('click', e => {
+            incrementScore(-1);
+        })
+    }
+
+    // Hook up player selection dropdowns
+    const nameModules = document.querySelectorAll('.nameModule');
+    for(let nameModule of nameModules){
+        const playerSelector = nameModule.querySelector('.playerSelect');
+        const sourceSelector = nameModule.querySelector('.sourceSelect');
+        const updatePlayer = (e) => {
+            populatePlayerModule(nameModule.closest('.playerModule'), e.target.value);
+            const playerName = e.target.value === "None" ? "" : e.target.options[e.target.options.selectedIndex].innerText;
+            setTextSourceText(sourceSelector.value, playerName);
+        }
+        // changed via dropdown
+        playerSelector.addEventListener('change', e => {
+            for(monSelect of nameModule.querySelectorAll('.monSelect')){
+                monSelect.value = "None";
+            }
+            updatePlayer(e);
+        });
+        // refreshed current player via save data
+        playerSelector.addEventListener('refresh', e => {
+            updatePlayer(e)
+        });
+    }
+
+    // Hook up reset buttons
+    const resetButtons = document.querySelectorAll('.resetButton');
+    for(let resetButton of resetButtons){
+        resetButton.addEventListener('click', e => {
+            const parent = resetButton.closest('.playerModule');
+            const childModules = parent.querySelectorAll('.monModule');
+            for(let monModule of childModules){
+                const monSelector = monModule.querySelector(".monSelect");
+                monSelector.value = "None"
+                const faintedToggle = monModule.querySelector('.faintedToggle');
+                faintedToggle.checked = false;
+                const event = new Event('change');
+                monSelector.dispatchEvent(event);
+            }
+        })
+    }
+
+    const resetAllButton = document.querySelector('.resetAllButton');
+    const playerSelectors = document.querySelectorAll('.playerSelect');
+    resetAllButton.addEventListener('click', e => {
+    
+        for(let playerSelector of playerSelectors){
+            playerSelector.value = 'None';
             const event = new Event('change');
-            monSelector.dispatchEvent(event);
+            playerSelector.dispatchEvent(event);
+        }
+        for(let resetButton of resetButtons){
+            const event = new Event('click');
+            resetButton.dispatchEvent(event);
         }
     })
-}
 
-// save settings every time we change a source setting
-const sourceSelectors = document.getElementsByClassName('sourceSelect');
-for(let sourceSelector of sourceSelectors){
-    sourceSelector.addEventListener('change', e => {
-        saveSourceSettings();
-    })
-}
+    // save settings every time we change a source setting
+    const sourceSelectors = document.getElementsByClassName('sourceSelect');
+    for(let sourceSelector of sourceSelectors){
+        sourceSelector.addEventListener('change', e => {
+            saveSourceSettings();
+        })
+    }
 
-document.getElementById('connect').addEventListener('click', connectToOBS);
-document.getElementById('sceneSelect').addEventListener('change', e => {
-    populateSourceOptionsFromScene(e.target.value);
-});
+    document.getElementById('connect').addEventListener('click', connectToOBS);
+    document.getElementById('sceneSelect').addEventListener('change', e => {
+        populateSourceOptionsFromScene(e.target.value);
+    });
+}
 
 /**
  * A player data structure
@@ -182,6 +202,7 @@ function saveSourceSettings(){
 }
 
 window.onload = () =>{
+    attachEventListeners();
     checkConnectionStatus();
     connectToOBS();
     loadSourceSettings();
