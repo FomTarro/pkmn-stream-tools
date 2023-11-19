@@ -188,7 +188,10 @@ const SOURCE_SETTINGS_KEY = "tournament_overlay_settings";
 
 function loadSourceSettings(){
     var settings = JSON.parse(localStorage.getItem(SOURCE_SETTINGS_KEY));
-    settings = settings ? settings : {};
+    settings = settings ? settings : {
+        scene: '',
+        sources: []
+    };
     const scene = document.getElementById('sceneSelect');
     scene.value = settings.scene;
     const playerModules = document.getElementsByClassName('playerModule');
