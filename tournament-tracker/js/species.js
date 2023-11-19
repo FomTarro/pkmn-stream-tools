@@ -1,3 +1,20 @@
+/**
+ * A Pokemon data structure
+ * @typedef {Object} Pokemon
+ * @property {string} name - Species name
+ * @property {Forme[]} formes - List of alternate Formes
+ */
+
+/**
+ * A Forme data structure
+ * @typedef {Object} Forme
+ * @property {string} name - Forme name
+ */
+
+/** 
+* @constant - List of all Pokemon.
+* @type {Pokemon[]}
+*/
 const SPECIES = [
     // Kanto
     {
@@ -4066,7 +4083,6 @@ const SPECIES = [
     }
 ]
 
-
 for(let i = 0; i < SPECIES.length; i++){
     const makeSpeciesOption = (species) => {
         const opt = document.createElement("option");
@@ -4083,4 +4099,619 @@ for(let i = 0; i < SPECIES.length; i++){
             makeSpeciesOption({name: forme.name, number: `${String(i+1).padStart(4, '0')}_${String(j+1).padStart(3, '0')}`})
         }
     }
+}
+
+/**
+ * An Item data structure
+ * @typedef {Object} Item
+ * @property {string} name - Item name
+ * @property {string} type - Item Type (Held, Berry, etc)
+ */
+
+/** 
+* @constant - List of all Held Items.
+* @type {Item[]}
+*/
+const ITEMS = [
+    {
+        name: 'Ability Shield'
+    },
+    {
+        name: 'Absorb Bulb'
+    },
+    {
+        name: 'Adamant Crystal'
+    },
+    {
+        name: 'Adamant Orb'
+    },
+    {
+        name: 'Air Balloon'
+    },
+    {
+        name: 'Amulet Coint'
+    },
+    {
+        name: 'Assault Vest'
+    },
+    {
+        name: 'Big Root'
+    },
+    {
+        name: 'Binding Band'
+    },
+    {
+        name: 'Black Belt'
+    },
+    {
+        name: 'Black Glasses'
+    },
+    {
+        name: 'Black Sludge'
+    },
+    {
+        name: 'Blunder Policy'
+    },
+    {
+        name: 'Booster Energy'
+    },
+    {
+        name: 'Bright Powder'
+    },
+    {
+        name: 'Cell Battery'
+    },
+    {
+        name: 'Charcoal'
+    },
+    {
+        name: 'Choice Band'
+    },
+    {
+        name: 'Choice Scarf'
+    },
+    {
+        name: 'Choice Specs'
+    },
+    {
+        name: 'Cleanse Tag'
+    },
+    {
+        name: 'Clear Amulet'
+    },
+    {
+        name: 'Cornerstone Mask'
+    },
+    {
+        name: 'Covert Cloak'
+    },
+    {
+        name: 'Damp Rock'
+    },
+    {
+        name: 'Destiny Knot'
+    },
+    {
+        name: 'Draco Plate'
+    },
+    {
+        name: 'Dragon Fang'
+    },
+    {
+        name: 'Dread Plate'
+    },
+    {
+        name: 'Earth Plate'
+    },
+    {
+        name: 'Eject Button'
+    },
+    {
+        name: 'Eject Pack'
+    },
+    {
+        name: 'Electric Seed'
+    },
+    {
+        name: 'Eviolite'
+    },
+    {
+        name: 'Expert Belt'
+    },
+    {
+        name: 'Fairy Feather'
+    },
+    {
+        name: 'Fist Plate'
+    },
+    {
+        name: 'Flame Orb'
+    },
+    {
+        name: 'Flame Plate'
+    },
+    {
+        name: 'Float Stone'
+    },
+    {
+        name: 'Focus Band'
+    },
+    {
+        name: 'Focus Sash'
+    },
+    {
+        name: 'Full Incense'
+    },
+    {
+        name: 'Grassy Seed'
+    },
+    {
+        name: 'Grip Claw'
+    },
+    {
+        name: 'Griseous Core'
+    },
+    {
+        name: 'Griseous Orb'
+    },
+    {
+        name: 'Hard Stone'
+    },
+    {
+        name: 'Hearthflame Mask'
+    },
+    {
+        name: 'Heavy Duty Boots'
+    },
+    {
+        name: 'Icicle Plase'
+    },
+    {
+        name: 'ICy Rock'
+    },
+    {
+        name: 'Insect Plate'
+    },
+    {
+        name: 'Iron Ball'
+    },
+    {
+        name: 'King\'s Rock'
+    },
+    {
+        name: 'Lagging Tail'
+    },
+    {
+        name: 'Lax Incense'
+    },
+    {
+        name: 'Leftovers'
+    },
+    {
+        name: 'Light Ball'
+    },
+    {
+        name: 'Light Clay'
+    },
+    {
+        name: 'Loaded Dice'
+    },
+    {
+        name: 'Luck Incense'
+    },
+    {
+        name: 'Luminous Moss'
+    },
+    {
+        name: 'Lustrous Globe'
+    },
+    {
+        name: 'Lustrous Orb'
+    },
+    {
+        name: 'Magnet'
+    },
+    {
+        name: 'Meadow Plate'
+    },
+    {
+        name: 'Mental Herb'
+    },
+    {
+        name: 'Metal Coat'
+    },
+    {
+        name: 'Metronome'
+    },
+    {
+        name: 'Mind Place'
+    },
+    {
+        name: 'Miracle Seed'
+    },
+    {
+        name: 'Mirror Herb'
+    },
+    {
+        name: 'Misty Seed'
+    },
+    {
+        name: 'Muscle Band'
+    },
+    {
+        name: 'Mystic Water'
+    },
+    {
+        name: 'Never-Melt Ice'
+    },
+    {
+        name: 'Normal Gem'
+    },
+    {
+        name: 'Odd Incense'
+    },
+    {
+        name: 'Pixie Plate'
+    },
+    {
+        name: 'Poison Barb'
+    },
+    {
+        name: 'Power Anklet'
+    },
+    {
+        name: 'Power Band'
+    },
+    {
+        name: 'Power Belt'
+    },
+    {
+        name: 'Power Bracer'
+    },
+    {
+        name: 'Power Herb'
+    },
+    {
+        name: 'Power Lens'
+    },
+    {
+        name: 'Power Weight'
+    },
+    {
+        name: 'Protective Pads'
+    },
+    {
+        name: 'Psychic Seed'
+    },
+    {
+        name: 'Punching Glove'
+    },
+    {
+        name: 'Purce Incense'
+    },
+    {
+        name: 'Quick Claw'
+    },
+    {
+        name: 'Razor Claw'
+    },
+    {
+        name: 'Razor Fang'
+    },
+    {
+        name: 'Red Card'
+    },
+    {
+        name: 'Ring Target'
+    },
+    {
+        name: 'Rock Incense'
+    },
+    {
+        name: 'Rocky Helmet'
+    },
+    {
+        name: 'Rose Incense'
+    },
+    {
+        name: 'Rusted Shield'
+    },
+    {
+        name: 'Rusted Sword'
+    },
+    {
+        name: 'Safety Goggles'
+    },
+    {
+        name: 'Scope Lens'
+    },
+    {
+        name: 'Sea Incense'
+    },
+    {
+        name: 'Sharp Beak'
+    },
+    {
+        name: 'Shed Shell'
+    },
+    {
+        name: 'Shell Bell'
+    },
+    {
+        name: 'Silk Scarf'
+    },
+    {
+        name: 'Silver Powder'
+    },
+    {
+        name: 'Sky Plate'
+    },
+    {
+        name: 'Smoke Ball'
+    },
+    {
+        name: 'Smooth Rock'
+    },
+    {
+        name: 'Snowball'
+    },
+    {
+        name: 'Soft Sand'
+    },
+    {
+        name: 'Soothe Bell'
+    },
+    {
+        name: 'Soul Dew'
+    },
+    {
+        name: 'Spell Tag'
+    },
+    {
+        name: 'Spell Tag'
+    },
+    {
+        name: 'Splash Plate'
+    },
+    {
+        name: 'Spooky Plate'
+    },
+    {
+        name: 'Sticky Barb'
+    },
+    {
+        name: 'Stone Plate'
+    },
+    {
+        name: 'Terrain Extender'
+    },
+    {
+        name: 'Throat Spray'
+    },
+    {
+        name: 'Toxic Orb'
+    },
+    {
+        name: 'Toxic Plate'
+    },
+    {
+        name: 'Twisted Spoon'
+    },
+    {
+        name: 'Utility Umbrella'
+    },
+    {
+        name: 'Wave Incense'
+    },
+    {
+        name: 'Weakness Policy'
+    },
+    {
+        name: 'White Herb'
+    },
+    {
+        name: 'Wide Lens'
+    },
+    {
+        name: 'Wise Glasses'
+    },
+    {
+        name: 'Zap Plate'
+    },
+    {
+        name: 'Zoom Lens'
+    },
+    // Berries
+    {
+        name: 'Aguav Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Apicot Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Aspear Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Babiri Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Charti Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Cheri Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Chesto Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Chilan Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Chople Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Coba Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Colbur Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Custap Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Enigma Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Figy Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Ganlon Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Haban Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Iapapa Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Jacoba Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Kasib Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Kebia Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Kee Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Lansat Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Leppa Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Lum Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Mago Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Maranga Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Micle Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Occa Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Oran Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Passho Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Payapa Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Pecha Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Persim Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Rawst Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Rindo Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Roseli Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Rowap Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Salac Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Shuca Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Sitrus Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Starf Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Tanga Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Wiki Berry',
+        type: 'Berry'
+    },
+    {
+        name: 'Yache Berry',
+        type: 'Berry'
+    },
+]
+
+for(let i = 0; i < ITEMS.length; i++){
+    /**
+     * @param {Item} item
+     */
+    const makeItemOption = (item) => {
+        const opt = document.createElement("option");
+        opt.id = item.name;
+        opt.innerHTML = item.name;
+        opt.key = item.name.toLowerCase().replaceAll(' ', '_').replaceAll('\'', '');
+        opt.type = item.type
+        document.getElementById("itemOptions").appendChild(opt);
+    }
+    const item = ITEMS[i];
+    makeItemOption(item);
 }

@@ -41,19 +41,40 @@ function attachEventListeners(){
     const monModules = document.querySelectorAll('.monModule');
     for(let monModule of monModules){
         const monSelector = monModule.querySelector(".monSelect");
+        const itemSelector = monModule.querySelector(".itemSelect");
         const faintedToggle = monModule.querySelector(".faintedToggle");
+        const itemToggle = monModule.querySelector(".itemToggle");
+        const setItem = () => {
+            const item = monSelector.options[monSelector.selectedIndex].item;
+            itemSelector.value = item ? item : '';
+        }
         const updateIcon = () => {
             const source = monModule.querySelector('.sourceSelect').value;
             const opt = document.getElementById(monSelector.value);
-            const url = relativeToAbsolutePath(`./frame.html?img=poke_icon_${opt ? opt.number : 0}&fainted=${faintedToggle.checked}`);
-            setBrowserSourceURL(source, url)
+            const itemOpt = document.getElementById(itemSelector.value);
+            const url = new URL(relativeToAbsolutePath('./frame.html?'));
+            url.searchParams.set('img', `poke_icon_${opt ? opt.number : 0}`)
+            url.searchParams.set('fainted', faintedToggle.checked);
+            if(itemOpt){
+                if(itemOpt.type === 'Berry'){
+                    url.searchParams.set('item', `berry_icon_${itemOpt.key}`);
+                }else{
+                    url.searchParams.set('item', `item_icon_${itemOpt.key}`);
+                }
+            }
+            url.searchParams.set('used', itemToggle.checked);
+            // const url = relativeToAbsolutePath(`./frame.html?img=poke_icon_${opt ? opt.number : 0}&fainted=${faintedToggle.checked}&item=item_icon_${itemOpt ? itemOpt.key: 'air_balloon'}&used=${itemToggle.checked}`);
+            setBrowserSourceURL(source, url.toString())
             const icon = monModule.querySelector('.monIcon');
             if(icon){
                 icon.src = url;
             } 
         }
+        monSelector.addEventListener('change', setItem);
         monSelector.addEventListener('change', updateIcon);
         faintedToggle.addEventListener('change', updateIcon);
+        itemSelector.addEventListener('change', updateIcon);
+        itemToggle.addEventListener('change', updateIcon);
     }
 
     // Hook up scores

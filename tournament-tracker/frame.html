@@ -1,10 +1,22 @@
 <html>
     <head>
         <style>
+            body {
+                margin: 0;
+            }
             #content {
                 margin: auto;
-                width: 100%;
-                height: auto;
+                width: auto;
+                height: 100%;
+                position: absolute;
+            }
+            #item {
+                bottom: 0;
+                right: 0;
+                margin: auto;
+                width: auto;
+                height: 50%;
+                position: absolute;
             }
             .fainted {
                 opacity: 50%;
@@ -13,6 +25,7 @@
     </head>
     <body>
         <img id="content">
+        <img id="item">
     </body>
     <footer>
         <script>
@@ -23,6 +36,15 @@
             const fainted = urlParams.get('fainted');
             if(fainted === 'true'){
                 element.classList.add('fainted')
+            }
+            const item = urlParams.get('item');
+            if(item){
+                const itemIcon = document.getElementById("item");
+                itemIcon.src = `./img/items/${item}.png`
+                const used = urlParams.get('used');
+                if(used === 'true'){
+                    itemIcon.classList.add('fainted')
+                }
             }
         </script>
     </footer>

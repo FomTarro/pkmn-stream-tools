@@ -4,11 +4,17 @@
  * @property {string} uuid - UUID for the player row
  * @property {string} name - Name of the player.
  * @property {string} mon1
+ * @property {string} item1
  * @property {string} mon2
+ * @property {string} item2
  * @property {string} mon3
+ * @property {string} item3
  * @property {string} mon4
+ * @property {string} item3
  * @property {string} mon5
+ * @property {string} item5
  * @property {string} mon6
+ * @property {string} item6
  */
 
 /** 
@@ -124,7 +130,19 @@ function addPlayer(existingData) {
             if (entry) {
                 entry[`mon${monIndex}`] = e.target.value;
             }
-        })
+        });
+        const itemInput = row.querySelector(`#player_${playerData.uuid}_mon_${monIndex}_item`);
+        if (playerData && playerData[`item${monIndex}`]) {
+            itemInput.value = playerData[`item${monIndex}`];
+        }
+        if(itemInput){
+            itemInput.addEventListener('change', e => {
+                const entry = PLAYER_LIST.find(player => player.uuid === playerData.uuid)
+                if (entry) {
+                    entry[`item${monIndex}`] = e.target.value;
+                }
+            });
+        }
     }
 
     // Hook up delete button
@@ -167,6 +185,7 @@ function populatePlayerModule(element, uuid) {
             const mon = entry ? entry[`mon${i}`] : undefined;
             if (mon) {
                 opts[i].innerText = mon;
+                opts[i].item = entry[`item${i}`];
                 opts[i].hidden = false;
             } else {
                 opts[i].hidden = true;

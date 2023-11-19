@@ -67,10 +67,16 @@ select, input[type="text"] {
     gap: 1em
 }
 
-.monIcon{
-    height: 56px;
-    width: 56px;
+.monIcon {
+    height: 5em;
+    width: 5em;
     background-color: gainsboro;
+}
+
+.monInputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
 .scoreDisplay {

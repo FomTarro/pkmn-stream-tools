@@ -14,6 +14,9 @@
         <datalist id="pokemonOptions">
             <!-- Every single Pokemon -->
         </datalist>
+        <datalist id="itemOptions">
+            <!-- Every single Hold Item -->
+        </datalist>
     </head>
   <body>
     <h1>Tournament Dashboard - v0.1.0</h1>
@@ -74,7 +77,7 @@
                 <div class="monModule">
                     <div class="flex">
                         <iframe class="monIcon" scrolling="no"></iframe>
-                        <div>
+                        <div class="monInputs">
                             <div>
                                 <label>Mon #1</label>
                             </div>
@@ -95,8 +98,13 @@
                                 <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions"/>
                             </div>
                             <div>
+                                <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
+                            </div>
+                            <div>
                                 <label>Fainted?</label>
                                 <input class="faintedToggle" type="checkbox">
+                                <label>Item Used?</label>
+                                <input class="itemToggle" type="checkbox">
                             </div>
                         </div>
                     </div>
@@ -105,7 +113,7 @@
                 <div class="monModule">
                     <div class="flex">
                         <iframe class="monIcon" scrolling="no"></iframe>
-                        <div>
+                        <div class="monInputs">
                             <div>
                                 <label>Mon #2</label>
                             </div>
@@ -126,8 +134,13 @@
                                 <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions"/>
                             </div>
                             <div>
+                                <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
+                            </div>
+                            <div>
                                 <label>Fainted?</label>
                                 <input class="faintedToggle" type="checkbox">
+                                <label>Item Used?</label>
+                                <input class="itemToggle" type="checkbox">
                             </div>
                         </div>
                     </div>
@@ -136,7 +149,7 @@
                 <div class="monModule">
                     <div class="flex">
                         <iframe class="monIcon" scrolling="no"></iframe>
-                        <div>
+                        <div class="monInputs">
                             <div>
                                 <label>Mon #3</label>
                             </div>
@@ -157,8 +170,13 @@
                                 <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions"/>
                             </div>
                             <div>
+                                <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
+                            </div>
+                            <div>
                                 <label>Fainted?</label>
                                 <input class="faintedToggle" type="checkbox">
+                                <label>Item Used?</label>
+                                <input class="itemToggle" type="checkbox">
                             </div>
                         </div>
                     </div>
@@ -167,7 +185,7 @@
                 <div class="monModule">
                     <div class="flex">
                         <iframe class="monIcon" scrolling="no"></iframe>
-                        <div>
+                        <div class="monInputs">
                             <div>
                                 <label>Mon #4</label>
                             </div>
@@ -188,8 +206,13 @@
                                 <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions"/>
                             </div>
                             <div>
+                                <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
+                            </div>
+                            <div>
                                 <label>Fainted?</label>
                                 <input class="faintedToggle" type="checkbox">
+                                <label>Item Used?</label>
+                                <input class="itemToggle" type="checkbox">
                             </div>
                         </div>
                     </div>
@@ -226,7 +249,7 @@
                 <div class="monModule">
                     <div class="flex">
                         <iframe class="monIcon" scrolling="no"></iframe>
-                        <div>
+                        <div class="monInputs">
                             <div>
                                 <label>Mon #1</label>
                             </div>
@@ -247,8 +270,13 @@
                                 <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions"/>
                             </div>
                             <div>
+                                <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
+                            </div>
+                            <div>
                                 <label>Fainted?</label>
                                 <input class="faintedToggle" type="checkbox">
+                                <label>Item Used?</label>
+                                <input class="itemToggle" type="checkbox">
                             </div>
                         </div>
                     </div>
@@ -257,7 +285,7 @@
                 <div class="monModule">
                     <div class="flex">
                         <iframe class="monIcon" scrolling="no"></iframe>
-                        <div>
+                        <div class="monInputs">
                             <div>
                                 <label>Mon #2</label>
                             </div>
@@ -278,8 +306,13 @@
                                 <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions"/>
                             </div>
                             <div>
+                                <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
+                            </div>
+                            <div>
                                 <label>Fainted?</label>
                                 <input class="faintedToggle" type="checkbox">
+                                <label>Item Used?</label>
+                                <input class="itemToggle" type="checkbox">
                             </div>
                         </div>
                     </div>
@@ -288,7 +321,7 @@
                 <div class="monModule">
                     <div class="flex">
                         <iframe class="monIcon" scrolling="no"></iframe>
-                        <div>
+                        <div class="monInputs">
                             <div>
                                 <label>Mon #3</label>
                             </div>
@@ -309,8 +342,13 @@
                                 <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions"/>
                             </div>
                             <div>
+                                <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
+                            </div>
+                            <div>
                                 <label>Fainted?</label>
                                 <input class="faintedToggle" type="checkbox">
+                                <label>Item Used?</label>
+                                <input class="itemToggle" type="checkbox">
                             </div>
                         </div>
                     </div>
@@ -319,7 +357,7 @@
                 <div class="monModule">
                     <div class="flex">
                         <iframe class="monIcon" scrolling="no"></iframe>
-                        <div>
+                        <div class="monInputs">
                             <div>
                                 <label>Mon #4</label>
                             </div>
@@ -340,8 +378,13 @@
                                 <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions"/>
                             </div>
                             <div>
+                                <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
+                            </div>
+                            <div>
                                 <label>Fainted?</label>
                                 <input class="faintedToggle" type="checkbox">
+                                <label>Item Used?</label>
+                                <input class="itemToggle" type="checkbox">
                             </div>
                         </div>
                     </div>
@@ -374,38 +417,44 @@
                             <button id="player_x_delete" type='button'>X</button>
                         </td>
                         <td>
-                            <div class='flex'>
+                            <div class='flex flex-col'>
                                 <input id="player_x_name" placeholder="Player Name" type="text">
                             </div>
                         </td>
                         <td>
-                            <div class='flex'>
+                            <div class='flex flex-col'>
                                 <input id="player_x_mon_1" placeholder="Mon #1" type="text" list="pokemonOptions">
+                                <input id="player_x_mon_1_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
                             </div>
                         </td>
                         <td>
-                            <div class='flex'>
+                            <div class='flex flex-col'>
                                 <input id="player_x_mon_2" placeholder="Mon #2" type="text" list="pokemonOptions">
+                                <input id="player_x_mon_2_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
                             </div>
                         </td>
                         <td>
-                            <div class='flex'>
+                            <div class='flex flex-col'>
                                 <input id="player_x_mon_3" placeholder="Mon #3" type="text" list="pokemonOptions">
+                                <input id="player_x_mon_3_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
                             </div>
                         </td>
                         <td>
-                            <div class='flex'>
+                            <div class='flex flex-col'>
                                 <input id="player_x_mon_4" placeholder="Mon #4" type="text" list="pokemonOptions">
+                                <input id="player_x_mon_4_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
                             </div>
                         </td>
                         <td>
-                            <div class='flex'>
+                            <div class='flex flex-col'>
                                 <input id="player_x_mon_5" placeholder="Mon #5" type="text" list="pokemonOptions">
+                                <input id="player_x_mon_5_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
                             </div>
                         </td>
                         <td>
-                            <div class='flex'>
+                            <div class='flex flex-col'>
                                 <input id="player_x_mon_6" placeholder="Mon #6" type="text" list="pokemonOptions">
+                                <input id="player_x_mon_6_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
                             </div>
                         </td>
                     </tr>
