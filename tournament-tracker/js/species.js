@@ -4126,6 +4126,9 @@ const ITEMS = [
         name: 'Adamant Orb'
     },
     {
+        name: 'Adrenaline Orb'
+    },
+    {
         name: 'Air Balloon'
     },
     {
@@ -4136,6 +4139,9 @@ const ITEMS = [
     },
     {
         name: 'Big Root'
+    },
+    {
+        name: 'Big Nugget'
     },
     {
         name: 'Binding Band'

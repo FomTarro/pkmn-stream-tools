@@ -19,7 +19,23 @@
         </datalist>
     </head>
   <body>
-    <h1>Tournament Dashboard - v0.1.1</h1>
+    <div class="rounded-corner">
+        <h1 class="heading">Tournament Dashboard - v0.1.2</h1>
+    </div>
+    <div id="readme">
+        <ol>
+            <li>Make sure that your OBS Websocket Server is Enabled (accessed via Tools → WebSocket Server Settings)</li>
+            <ul>
+                <li>For OBS Versions > 28.0.0, OBS Websocket Server is built-in</li>
+                <li>For older OBS Versions, you can <a href="https://github.com/obsproject/obs-websocket/releases">download a plugin</a></li>
+            </ul>
+            <li><a href="#obs_settings">Connect to OBS</a>
+            <li>Choose which OBS Scene your Tournament Overlay is in</li>
+            <li>Pick <a href="#dashboard">sources in that scene to output to</a> (Pokémon icons are Browser sources, everything else is a Text source)</li>
+            <li>Enter player data in the <a href="#players">table at the bottom of the page</a></li>
+            <li>You're all set! <a href='#dashboard'>Pick your players from the dropdown</a> and easily display information about their team!</li>
+        </ol>
+    </div>
     <div id="obs_settings" class="flex flex-col rounded-corner">
         <div>
             <label for="connect">OBS Status: <span id="obs_status" class="disconnected">Disconnected</span></label>
@@ -34,18 +50,18 @@
             <div>
                 <label for="sceneSelect">OBS Scene Selection</label>
             </div>
-            <input id="sceneSelect" autoComplete="on" list="sceneOptions"/> 
+            <input id="sceneSelect" autoComplete="on" list="sceneOptions" type="text"/> 
         </div>
     </div>
 
-    <div class="dashboard">
+    <div class="dashboard" id="dashboard">
         <div class="flex-row">
             <div id="player_1_dashboard" class="playerModule flex flex-col rounded-corner">
-                <h2>Player 1</h2>
+                <h2 class="heading">Player 1</h2>
                 <div class="scoreModule">
                     <div class="scoreDisplay">0</div>
-                    <button class="scoreButton plus" type='button'>+</button>
-                    <button class="scoreButton minus" type='button'>-</button>
+                    <button class="scoreButton plus square" type='button'>➕</button>
+                    <button class="scoreButton minus square" type='button'>➖</button>
                     → <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="textSourceOptions"/>
                 </div>
                 <div>
@@ -213,11 +229,11 @@
             </div>
 
             <div id="player_2_dashboard" class="playerModule flex flex-col rounded-corner">
-                <h2>Player 2</h2>
+                <h2 class="heading">Player 2</h2>
                 <div class="scoreModule">
                     <div class="scoreDisplay">0</div>
-                    <button class="scoreButton plus" type='button'>+</button>
-                    <button class="scoreButton minus" type='button'>-</button>
+                    <button class="scoreButton plus square" type='button'>➕</button>
+                    <button class="scoreButton minus square" type='button'>➖</button>
                     → <input class="sourceSelect" placeholder="Select OBS source..." autoComplete="on" list="textSourceOptions"/>
                 </div>
                 <div>
@@ -389,7 +405,9 @@
         </div>
     </div>
 <!-- Table -->
-    <h1>Players</h1>
+    <div class="rounded-corner">
+        <h1 class="heading">Players</h1>
+    </div>
     <div id="players">
         <div class="flex rounded-corner">
             <input id='playerFilter' class="playerFilter" placeholder="Filter by Player Name..." type="text">
@@ -397,7 +415,7 @@
         <table>
             <tbody id="players_table">
                 <tr id="players_table_header" class="table-header">
-                    <th class="center scoreButton"><button id="player_add" type='button'>+</button></th>
+                    <th class="center square"><button id="player_add" class="square" type='button'>➕</button></th>
                     <th>Player Name</th>
                     <th>Mon #1</th>
                     <th>Mon #2</th>
@@ -411,7 +429,7 @@
                     <tr id="player_x_row" class="playerRow">
                         <td>
                             <div class="flex center">
-                                <button id="player_x_delete" type='button'>X</button>
+                                <button id="player_x_delete" class="square" type='button'>❌</button>
                             </div>
                         </td>
                         <td>

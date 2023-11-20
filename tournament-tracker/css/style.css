@@ -6,7 +6,12 @@
 }
 
 #players_table_header {
-    background: red;
+    background: #EB5D59;
+}
+
+body {
+    /* color: #222224; */
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 table { 
@@ -35,7 +40,7 @@ tr{
     gap: 0.2em
 }
 
-select, input[type="text"] {
+select, input[type="text"], .sourceSelect {
     width: 12em;
     max-width: 100%;
 }
@@ -104,6 +109,19 @@ select, input[type="text"] {
 .scoreButton {
     width: 2em;
     height: 2em;
+}
+
+.square {
+    width: 2em;
+    height: 2em;
+    padding: 0;
+}
+
+.heading {
+    text-align: center;
+    background-color: antiquewhite;
+    padding: 0.2em;
+    /* margin: 0.5rem; */
 }
 
 input, select {
