@@ -30,12 +30,14 @@
     <footer>
         <script>
             const urlParams = new URLSearchParams(window.location.search);
-            const image = urlParams.get('img');
-            const mon = document.getElementById("mon");
-            mon.src = `./img/pkmn/${image}.png`
-            const fainted = urlParams.get('fainted');
-            if(fainted === 'true'){
-                document.getElementById('body').classList.add('fainted')
+            const mon = urlParams.get('img');
+            if(mon){
+                const monIcon = document.getElementById("mon");
+                monIcon.src = `./img/pkmn/${mon}.png`
+                const fainted = urlParams.get('fainted');
+                if(fainted === 'true'){
+                    document.getElementById('body').classList.add('fainted')
+                }
             }
             const item = urlParams.get('item');
             if(item){

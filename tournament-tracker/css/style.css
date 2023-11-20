@@ -5,20 +5,23 @@
     z-index: 10;
 }
 
-#players_table_header{
+#players_table_header {
     background: red;
 }
 
 table { 
     width: 100%;
     border-spacing: 0.5em;
+    table-layout: fixed;
+    width: 100%;
+    margin-bottom: 4em;
 }
 
-tbody {
+/* tbody {
     display: block;
     overflow: scroll;
     resize: vertical;
-}
+} */
 
 tr:nth-child(even) {
     background-color: rgba(0,0,0, .1);
@@ -34,6 +37,12 @@ tr{
 
 select, input[type="text"] {
     width: 12em;
+    max-width: 100%;
+}
+
+.center {
+    align-items: center;
+    justify-content: center;
 }
 
 .flex {

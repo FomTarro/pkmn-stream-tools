@@ -134,6 +134,29 @@ function attachEventListeners(){
         })
     }
 
+    // Hook up Player Filter
+    const playerFilter = document.getElementById('playerFilter');
+    const filterPlayerTable = () => {
+        const rows = document.getElementsByClassName('playerRow');
+        for(let row of rows){
+            const name = row.querySelector('.playerName');
+            if(playerFilter.value && !name.value.toLowerCase().includes(playerFilter.value.toLowerCase())){
+                row.hidden = true;
+            }else{
+                row.hidden = false;
+            }
+        }
+    }
+    playerFilter.addEventListener('input', e => {
+        filterPlayerTable()
+    });
+    playerFilter.addEventListener('change', e => {
+        if(playerFilter.value){
+            playerFilter.value = playerFilter.value.trim();
+        }
+        filterPlayerTable();
+    });
+
     document.getElementById('connect').addEventListener('click', connectToOBS);
     document.getElementById('sceneSelect').addEventListener('change', e => {
         populateSourceOptionsFromScene(e.target.value);
