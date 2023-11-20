@@ -4,7 +4,7 @@
             body {
                 margin: 0;
             }
-            #content {
+            #mon {
                 margin: auto;
                 width: auto;
                 height: 100%;
@@ -23,19 +23,19 @@
             }
         </style>
     </head>
-    <body>
-        <img id="content">
+    <body id="body">
+        <img id="mon">
         <img id="item">
     </body>
     <footer>
         <script>
             const urlParams = new URLSearchParams(window.location.search);
             const image = urlParams.get('img');
-            const element = document.getElementById("content");
-            element.src = `./img/pkmn/${image}.png`
+            const mon = document.getElementById("mon");
+            mon.src = `./img/pkmn/${image}.png`
             const fainted = urlParams.get('fainted');
             if(fainted === 'true'){
-                element.classList.add('fainted')
+                document.getElementById('body').classList.add('fainted')
             }
             const item = urlParams.get('item');
             if(item){

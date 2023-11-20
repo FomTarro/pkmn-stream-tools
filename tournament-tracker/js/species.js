@@ -4288,6 +4288,9 @@ const ITEMS = [
         name: 'Leftovers'
     },
     {
+        name: 'Life Orb'
+    },
+    {
         name: 'Light Ball'
     },
     {
@@ -4505,6 +4508,9 @@ const ITEMS = [
     },
     {
         name: 'Weakness Policy'
+    },
+    {
+        name: 'Wellspring Mask'
     },
     {
         name: 'White Herb'

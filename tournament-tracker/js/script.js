@@ -9,33 +9,6 @@ function connectToOBS() {
     obs.connect(ws, password.length > 0 ? password : undefined);
 }
 
-/**
- * Populates the auto-complete suggestions on the DOM with the sources pulled from the given scene.
- * @param {string} sceneName - The name of the scene to pull sources from
- */
-function populateSourceOptionsFromScene(sceneName){
-    const browserSourceOptions = document.getElementById("browserSourceOptions");
-    browserSourceOptions.innerHTML = '';
-    getBrowserSourcesInScene(sceneName).then(list => {
-        list.forEach(source => {
-            const option = document.createElement('option');
-            option.textContent = source;
-            browserSourceOptions.appendChild(option);
-        })
-    });
-
-    const textSourceOptions = document.getElementById("textSourceOptions");
-    textSourceOptions.innerHTML = '';
-    getTextSourcesInScene(sceneName).then(list => {
-        list.forEach(source => {
-            const option = document.createElement('option');
-            option.textContent = source;
-            textSourceOptions.appendChild(option);
-        })
-    });
-    saveSourceSettings();
-}
-
 function attachEventListeners(){
     // Hook up mon selection dropdowns
     const monModules = document.querySelectorAll('.monModule');
@@ -130,6 +103,8 @@ function attachEventListeners(){
                 monSelector.value = "None"
                 const faintedToggle = monModule.querySelector('.faintedToggle');
                 faintedToggle.checked = false;
+                const itemUsedToggle = monModule.querySelector('.itemToggle');
+                itemUsedToggle.checked = false;
                 const event = new Event('change');
                 monSelector.dispatchEvent(event);
             }

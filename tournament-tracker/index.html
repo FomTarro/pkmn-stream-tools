@@ -19,8 +19,8 @@
         </datalist>
     </head>
   <body>
-    <h1>Tournament Dashboard - v0.1.0</h1>
-    <div id="obs_settings" class="flex flex-col">
+    <h1>Tournament Dashboard - v0.1.1</h1>
+    <div id="obs_settings" class="flex flex-col rounded-corner">
         <div>
             <label for="connect">OBS Status: <span id="obs_status" class="disconnected">Disconnected</span></label>
             <form>
@@ -37,15 +37,6 @@
             <input id="sceneSelect" autoComplete="on" list="sceneOptions"/> 
         </div>
     </div>
-
-    <!-- <div>
-        <div>
-            <div>
-                <label for="sceneSelect">OBS Scene Selection</label>
-            </div>
-            <input id="sceneSelect" autoComplete="on" list="sceneOptions"/> 
-        </div>
-    </div> -->
 
     <div class="dashboard">
         <div class="flex-row">
@@ -393,7 +384,9 @@
                 <button class="resetButton" type='button'>Reset All Mons</button>
             </div>
         </div>
-        <button class="resetAllButton" type='button'>Reset All Mons, Players and Scores</button>
+        <div class="flex flex-col rounded-corner">
+            <button class="resetAllButton" type='button'>Reset All Mons, Players and Scores</button>
+        </div>
     </div>
 <!-- Table -->
     <h1>Players</h1>
@@ -417,42 +410,42 @@
                             <button id="player_x_delete" type='button'>X</button>
                         </td>
                         <td>
-                            <div class='flex flex-col'>
+                            <div class='flex-col'>
                                 <input id="player_x_name" placeholder="Player Name" type="text">
                             </div>
                         </td>
                         <td>
-                            <div class='flex flex-col'>
+                            <div class='flex-col'>
                                 <input id="player_x_mon_1" placeholder="Mon #1" type="text" list="pokemonOptions">
                                 <input id="player_x_mon_1_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
                             </div>
                         </td>
                         <td>
-                            <div class='flex flex-col'>
+                            <div class='flex-col'>
                                 <input id="player_x_mon_2" placeholder="Mon #2" type="text" list="pokemonOptions">
                                 <input id="player_x_mon_2_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
                             </div>
                         </td>
                         <td>
-                            <div class='flex flex-col'>
+                            <div class='flex-col'>
                                 <input id="player_x_mon_3" placeholder="Mon #3" type="text" list="pokemonOptions">
                                 <input id="player_x_mon_3_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
                             </div>
                         </td>
                         <td>
-                            <div class='flex flex-col'>
+                            <div class='flex-col'>
                                 <input id="player_x_mon_4" placeholder="Mon #4" type="text" list="pokemonOptions">
                                 <input id="player_x_mon_4_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
                             </div>
                         </td>
                         <td>
-                            <div class='flex flex-col'>
+                            <div class='flex-col'>
                                 <input id="player_x_mon_5" placeholder="Mon #5" type="text" list="pokemonOptions">
                                 <input id="player_x_mon_5_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
                             </div>
                         </td>
                         <td>
-                            <div class='flex flex-col'>
+                            <div class='flex-col'>
                                 <input id="player_x_mon_6" placeholder="Mon #6" type="text" list="pokemonOptions">
                                 <input id="player_x_mon_6_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
                             </div>

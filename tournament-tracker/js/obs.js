@@ -27,8 +27,49 @@ function populateScenesOptionsFromOBS(){
     })
 }
 
+/**
+ * Populates the auto-complete suggestions on the DOM with the sources pulled from the given scene.
+ * @param {string} sceneName - The name of the scene to pull sources from
+ */
+function populateSourceOptionsFromScene(sceneName){
+    const browserSourceOptions = document.getElementById("browserSourceOptions");
+    browserSourceOptions.innerHTML = '';
+    getBrowserSourcesInScene(sceneName).then(list => {
+        list.forEach(source => {
+            const option = document.createElement('option');
+            option.textContent = source;
+            browserSourceOptions.appendChild(option);
+        })
+    });
+
+    const textSourceOptions = document.getElementById("textSourceOptions");
+    textSourceOptions.innerHTML = '';
+    getTextSourcesInScene(sceneName).then(list => {
+        list.forEach(source => {
+            const option = document.createElement('option');
+            option.textContent = source;
+            textSourceOptions.appendChild(option);
+        })
+    });
+    saveSourceSettings();
+}
+
 obs.on('Identified', () => {
     populateScenesOptionsFromOBS();
+    const sceneSelector = document.getElementById('sceneSelect');
+    if(sceneSelector.value){
+        populateSourceOptionsFromScene(sceneSelector.value);
+    }
+});
+
+obs.on('SceneItemRemoved', () => {
+    const sceneSelector = document.getElementById('sceneSelect');
+    if(sceneSelector.value){
+        populateSourceOptionsFromScene(sceneSelector.value);
+    }
+});
+
+obs.on('SceneItemAdded', () => {
     const sceneSelector = document.getElementById('sceneSelect');
     if(sceneSelector.value){
         populateSourceOptionsFromScene(sceneSelector.value);
@@ -54,6 +95,19 @@ async function getAllScenes() {
 }
 
 /**
+ * Gets all sources from a given Group.
+ * @param {string} groupName The name of thr groip to query. 
+ * @returns List of source objects (not just names!)
+ */
+async function getSourcesInGroup(groupName) {
+    const results = await obs.call('GetGroupSceneItemList', {
+        sceneName: groupName
+    });
+    const mapped = results.sceneItems;
+    return mapped;
+}
+
+/**
  * Gets the names of all sources of a given type in the specified scene.
  * @param {string} sourceType The type of source to select.
  * @param {string} sceneName The name of the scene to query.
@@ -64,8 +118,15 @@ async function getSourcesOfTypeInScene(sourceType, sceneName) {
         const results = await obs.call('GetSceneItemList', {
             sceneName: sceneName
         });
-        const filtered = results.sceneItems.filter(
-            (item) => item.inputKind.includes(sourceType)).map(
+        // Get any sources that are groups
+        const groups = results.sceneItems.filter(item => item.isGroup);
+        const allItems = [...results.sceneItems];
+        for(let group of groups){
+            allItems.push(...await getSourcesInGroup(group.sourceName));
+        }
+        // Filter the pool of all sources
+        const filtered = allItems.filter(
+            (item) => item.inputKind && item.inputKind.includes(sourceType)).map(
                 (item) => item.sourceName);
         return filtered;
     }catch(e){

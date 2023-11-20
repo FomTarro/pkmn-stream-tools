@@ -5,8 +5,13 @@
     z-index: 10;
 }
 
+#players_table_header{
+    background: red;
+}
+
 table { 
     width: 100%;
+    border-spacing: 0.5em;
 }
 
 tbody {
@@ -17,6 +22,14 @@ tbody {
 
 tr:nth-child(even) {
     background-color: rgba(0,0,0, .1);
+}
+
+tr:nth-child(odd) {
+    background-color: rgba(0,0,0, .2);
+}
+
+tr{
+    gap: 0.2em
 }
 
 select, input[type="text"] {
@@ -43,11 +56,6 @@ select, input[type="text"] {
     padding: 0.5em;
 }
 
-.icon {
-    height: 56/2px;
-    width: 68/2px;
-}
-
 #obs_status {
     font-weight: bold;
 }
@@ -68,8 +76,8 @@ select, input[type="text"] {
 }
 
 .monIcon {
-    height: 5em;
-    width: 5em;
+    height: 5.5em;
+    width: 5.5em;
     background-color: gainsboro;
 }
 
@@ -87,4 +95,10 @@ select, input[type="text"] {
 .scoreButton {
     width: 2em;
     height: 2em;
+}
+
+input, select {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
 }
