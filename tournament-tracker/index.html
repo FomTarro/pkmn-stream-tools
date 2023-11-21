@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Tournament Dashboard - v0.1.2</title>
+        <meta name="description" content="Enhance your Pokémon Tournament's stream overlays with this online OBS plugin!">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta property="og:title" content="Tournament Dashboard - v0.1.2!">
+        <meta property="og:image" content="https://www.skeletom.net/pkmn/tournament-overlay/img/pkmn/poke_icon_0.png">
+        <meta property="og:type" content="website">
+        <meta property="og:description" content="Enhance your Pokémon Tournament's stream overlays with this online OBS plugin!">
         <link rel="stylesheet" href="./css/style.css">
         <datalist id="sceneOptions">
             <!-- Scenes in OBS -->
@@ -20,25 +27,25 @@
     </head>
   <body>
     <div class="rounded-corner">
-        <h1 class="heading">Tournament Dashboard - v0.1.2</h1>
+        <h1 class="heading rounded-corner-small">Tournament Dashboard - v0.1.2</h1>
     </div>
     <div id="readme">
         <ol>
-            <li>Make sure that your OBS Websocket Server is Enabled (accessed via Tools → WebSocket Server Settings)</li>
+            <li>Make sure that your OBS WebSocket Server is Enabled (accessed via Tools → WebSocket Server Settings).</li>
             <ul>
-                <li>For OBS Versions > 28.0.0, OBS Websocket Server is built-in</li>
-                <li>For older OBS Versions, you can <a href="https://github.com/obsproject/obs-websocket/releases">download a plugin</a></li>
+                <li>For OBS Versions >28.0.0, OBS Websocket Server is built-in.</li>
+                <li>For older OBS Versions, you can <a href="https://github.com/obsproject/obs-websocket/releases">download a plugin.</a></li>
             </ul>
-            <li><a href="#obs_settings">Connect to OBS</a>
-            <li>Choose which OBS Scene your Tournament Overlay is in</li>
-            <li>Pick <a href="#dashboard">sources in that scene to output to</a> (Pokémon icons are Browser sources, everything else is a Text source)</li>
-            <li>Enter player data in the <a href="#players">table at the bottom of the page</a></li>
+            <li><a href="#obs_settings">Connect to OBS</a>.
+            <li>Choose which <a href=#obs_scene_selection>OBS Scene</a> your Tournament Overlay is in.</li>
+            <li>Pick <a href="#dashboard">sources in that scene to output to</a> (Pokémon icons are Browser sources, everything else is a Text source).</li>
+            <li>Enter player data in the <a href="#players">table at the bottom of the page</a>.</li>
             <li>You're all set! <a href='#dashboard'>Pick your players from the dropdown</a> and easily display information about their team!</li>
         </ol>
     </div>
     <div id="obs_settings" class="flex flex-col rounded-corner">
         <div>
-            <label for="connect">OBS Status: <span id="obs_status" class="disconnected">Disconnected</span></label>
+            <label for="connect" class="bold">OBS Status: <span id="obs_status" class="disconnected">Disconnected</span></label>
             <form>
                 <input id="address" placeholder="Address" type="text" minlength="7" maxlength="15" value="localhost" pattern="^(localhost|((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5]))$" required>
                 <input id="port" placeholder="Port" type="number" min="1" max="65535" size=5 value="4455">
@@ -46,9 +53,9 @@
                 <button id="connect" type='button'>Connect to OBS</button>
             </form>
         </div>
-        <div>
+        <div id="obs_scene_selection">
             <div>
-                <label for="sceneSelect">OBS Scene Selection</label>
+                <label for="sceneSelect" class="bold">OBS Scene Selection</label>
             </div>
             <input id="sceneSelect" autoComplete="on" list="sceneOptions" type="text"/> 
         </div>
@@ -57,7 +64,7 @@
     <div class="dashboard" id="dashboard">
         <div class="flex-row">
             <div id="player_1_dashboard" class="playerModule flex flex-col rounded-corner">
-                <h2 class="heading">Player 1</h2>
+                <h2 class="heading rounded-corner-small">Player #1</h2>
                 <div class="scoreModule">
                     <div class="scoreDisplay">0</div>
                     <button class="scoreButton plus square" type='button'>➕</button>
@@ -66,7 +73,7 @@
                 </div>
                 <div>
                     <div>
-                        <label for="player_1_select">Player #1</label>
+                        <label for="player_1_select" class="bold">Player #1</label>
                     </div>
                     <div class="nameModule">
                         <select class="playerSelect" id="player_1_select">
@@ -86,7 +93,7 @@
                         <iframe class="monIcon" scrolling="no"></iframe>
                         <div class="monInputs">
                             <div>
-                                <label>Mon #1</label>
+                                <label class="bold">Mon #1</label>
                             </div>
                             <div>
                                 <select class="monSelect">
@@ -122,7 +129,7 @@
                         <iframe class="monIcon" scrolling="no"></iframe>
                         <div class="monInputs">
                             <div>
-                                <label>Mon #2</label>
+                                <label class="bold">Mon #2</label>
                             </div>
                             <div>
                                 <select class="monSelect">
@@ -158,7 +165,7 @@
                         <iframe class="monIcon" scrolling="no"></iframe>
                         <div class="monInputs">
                             <div>
-                                <label>Mon #3</label>
+                                <label class="bold">Mon #3</label>
                             </div>
                             <div>
                                 <select class="monSelect">
@@ -194,7 +201,7 @@
                         <iframe class="monIcon" scrolling="no"></iframe>
                         <div class="monInputs">
                             <div>
-                                <label>Mon #4</label>
+                                <label class="bold">Mon #4</label>
                             </div>
                             <div>
                                 <select class="monSelect">
@@ -229,7 +236,7 @@
             </div>
 
             <div id="player_2_dashboard" class="playerModule flex flex-col rounded-corner">
-                <h2 class="heading">Player 2</h2>
+                <h2 class="heading rounded-corner-small">Player #2</h2>
                 <div class="scoreModule">
                     <div class="scoreDisplay">0</div>
                     <button class="scoreButton plus square" type='button'>➕</button>
@@ -238,7 +245,7 @@
                 </div>
                 <div>
                     <div>
-                        <label for="player_2_select">Player #2</label>
+                        <label for="player_2_select" class="bold">Player #2</label>
                     </div>
                     <div class="nameModule">
                         <select class="playerSelect" id="player_2_select">
@@ -258,7 +265,7 @@
                         <iframe class="monIcon" scrolling="no"></iframe>
                         <div class="monInputs">
                             <div>
-                                <label>Mon #1</label>
+                                <label class="bold">Mon #1</label>
                             </div>
                             <div>
                                 <select class="monSelect">
@@ -294,7 +301,7 @@
                         <iframe class="monIcon" scrolling="no"></iframe>
                         <div class="monInputs">
                             <div>
-                                <label>Mon #2</label>
+                                <label class="bold">Mon #2</label>
                             </div>
                             <div>
                                 <select class="monSelect">
@@ -330,7 +337,7 @@
                         <iframe class="monIcon" scrolling="no"></iframe>
                         <div class="monInputs">
                             <div>
-                                <label>Mon #3</label>
+                                <label class="bold">Mon #3</label>
                             </div>
                             <div>
                                 <select class="monSelect">
@@ -366,7 +373,7 @@
                         <iframe class="monIcon" scrolling="no"></iframe>
                         <div class="monInputs">
                             <div>
-                                <label>Mon #4</label>
+                                <label class="bold">Mon #4</label>
                             </div>
                             <div>
                                 <select class="monSelect">
@@ -406,7 +413,7 @@
     </div>
 <!-- Table -->
     <div class="rounded-corner">
-        <h1 class="heading">Players</h1>
+        <h1 class="heading rounded-corner-small">Players</h1>
     </div>
     <div id="players">
         <div class="flex rounded-corner">
@@ -415,60 +422,92 @@
         <table>
             <tbody id="players_table">
                 <tr id="players_table_header" class="table-header">
-                    <th class="center square"><button id="player_add" class="square" type='button'>➕</button></th>
-                    <th>Player Name</th>
-                    <th>Mon #1</th>
-                    <th>Mon #2</th>
-                    <th>Mon #3</th>
-                    <th>Mon #4</th>
-                    <th>Mon #5</th>
-                    <th>Mon #6</th>
+                    <th class="center square">
+                        <div class="rounded-corner-small">
+                            <button id="player_add" class="square" type='button'>➕</button>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="rounded-corner-small">
+                            <div>Player Name</div>
+                        </div>
+                    </th>
+                    <th>                       
+                        <div class="rounded-corner-small">
+                            <div>Mon #1</div>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="rounded-corner-small">
+                            <div>Mon #2</div>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="rounded-corner-small">
+                            <div>Mon #3</div>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="rounded-corner-small">
+                            <div>Mon #4</div>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="rounded-corner-small">
+                            <div>Mon #5</div>
+                        </div>
+                    </th>
+                    <th>
+                        <div class="rounded-corner-small">
+                            <div>Mon #6</div>
+                        </div>
+                    </th>
                 </tr>
             <!-- Want to add new rows starting here -->
                 <template id="player_template_row">
                     <tr id="player_x_row" class="playerRow">
                         <td>
-                            <div class="flex center">
+                            <div class="flex center rounded-corner-small">
                                 <button id="player_x_delete" class="square" type='button'>❌</button>
                             </div>
                         </td>
                         <td>
-                            <div class='flex-col center'>
+                            <div class='flex-col center rounded-corner-small'>
                                 <input id="player_x_name" class="playerName" placeholder="Player Name" type="text">
                             </div>
                         </td>
                         <td>
-                            <div class='flex-col center'>
+                            <div class='flex-col center rounded-corner-small'>
                                 <input id="player_x_mon_1" placeholder="Mon #1" type="text" list="pokemonOptions">
                                 <input id="player_x_mon_1_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
                             </div>
                         </td>
                         <td>
-                            <div class='flex-col center'>
+                            <div class='flex-col center rounded-corner-small'>
                                 <input id="player_x_mon_2" placeholder="Mon #2" type="text" list="pokemonOptions">
                                 <input id="player_x_mon_2_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
                             </div>
                         </td>
                         <td>
-                            <div class='flex-col center'>
+                            <div class='flex-col center rounded-corner-small'>
                                 <input id="player_x_mon_3" placeholder="Mon #3" type="text" list="pokemonOptions">
                                 <input id="player_x_mon_3_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
                             </div>
                         </td>
                         <td>
-                            <div class='flex-col center'>
+                            <div class='flex-col center rounded-corner-small'>
                                 <input id="player_x_mon_4" placeholder="Mon #4" type="text" list="pokemonOptions">
                                 <input id="player_x_mon_4_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
                             </div>
                         </td>
                         <td>
-                            <div class='flex-col center'>
+                            <div class='flex-col center rounded-corner-small'>
                                 <input id="player_x_mon_5" placeholder="Mon #5" type="text" list="pokemonOptions">
                                 <input id="player_x_mon_5_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
                             </div>
                         </td>
                         <td>
-                            <div class='flex-col center'>
+                            <div class='flex-col center rounded-corner-small'>
                                 <input id="player_x_mon_6" placeholder="Mon #6" type="text" list="pokemonOptions">
                                 <input id="player_x_mon_6_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
                             </div>

@@ -1,12 +1,18 @@
 .table-header {
-    background: red;
+    /* background: red; */
     position: sticky;
     top: 2px;
     z-index: 10;
 }
 
-#players_table_header {
+#players_table_header .rounded-corner-small{
+    height: 100%;
     background: #EB5D59;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 1px 1px 10px #AAA;
 }
 
 body {
@@ -15,6 +21,7 @@ body {
 }
 
 table { 
+    height: 100%;
     width: 100%;
     border-spacing: 0.5em;
     table-layout: fixed;
@@ -28,21 +35,32 @@ table {
     resize: vertical;
 } */
 
-tr:nth-child(even) {
+tr:nth-child(even) td .rounded-corner-small{
     background-color: rgba(0,0,0, .1);
+    height: 100%;
 }
 
-tr:nth-child(odd) {
+tr:nth-child(odd) td .rounded-corner-small{
     background-color: rgba(0,0,0, .2);
+    height: 100%;
 }
 
 tr{
-    gap: 0.2em
+    gap: 0.2em;
+    height: 100%
+}
+
+th{
+    height: 100%;
 }
 
 select, input[type="text"], .sourceSelect {
     width: 12em;
     max-width: 100%;
+}
+
+.bold {
+    font-weight: bold;
 }
 
 .center {
@@ -70,6 +88,10 @@ select, input[type="text"], .sourceSelect {
     padding: 0.5em;
 }
 
+.rounded-corner-small{
+    border-radius: 3px;
+}
+
 #obs_status {
     font-weight: bold;
 }
@@ -93,6 +115,7 @@ select, input[type="text"], .sourceSelect {
     height: 5.5em;
     width: 5.5em;
     background-color: gainsboro;
+    border-radius: 5px;
 }
 
 .monInputs {
@@ -103,7 +126,7 @@ select, input[type="text"], .sourceSelect {
 
 .scoreDisplay {
     font-size: 5em;
-    margin: 0;
+    margin: 0 0 0 0.25rem;
 }
 
 .scoreButton {
@@ -121,7 +144,7 @@ select, input[type="text"], .sourceSelect {
     text-align: center;
     background-color: antiquewhite;
     padding: 0.2em;
-    /* margin: 0.5rem; */
+    box-shadow: 1px 1px 10px #AAA;
 }
 
 input, select {
