@@ -1,3 +1,8 @@
+/* 
+    red: #FFD4D4
+    blue: #E9DEFF
+ */
+
 .table-header {
     /* background: red; */
     position: sticky;
@@ -7,7 +12,7 @@
 
 #players_table_header .rounded-corner-small{
     height: 100%;
-    background: #EB5D59;
+    background: #ED533A;
     display: flex;
     align-content: center;
     justify-content: center;
@@ -16,7 +21,7 @@
 }
 
 body {
-    /* color: #222224; */
+    /* color: #333333; */
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
@@ -41,7 +46,7 @@ tr:nth-child(even) td .rounded-corner-small{
 }
 
 tr:nth-child(odd) td .rounded-corner-small{
-    background-color: rgba(0,0,0, .2);
+    background-color: rgba(0,0,0, .05);
     height: 100%;
 }
 
@@ -61,6 +66,10 @@ select, input[type="text"], .sourceSelect {
 
 .bold {
     font-weight: bold;
+}
+
+.font-small{
+    font-size: 0.75em;
 }
 
 .center {
@@ -89,7 +98,7 @@ select, input[type="text"], .sourceSelect {
 }
 
 .rounded-corner-small{
-    border-radius: 3px;
+    border-radius: 4px;
 }
 
 #obs_status {
@@ -109,6 +118,11 @@ select, input[type="text"], .sourceSelect {
     flex-direction: column;
     justify-content: space-between;
     gap: 1em
+}
+
+.monModule {
+    background: linear-gradient(to left ,transparent, antiquewhite);
+    border-radius: 5px;
 }
 
 .monIcon {

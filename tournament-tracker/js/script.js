@@ -6,7 +6,11 @@ function connectToOBS() {
     const port = document.getElementById('port').value;
     const password = document.getElementById('password').value;
     const ws = `ws://${address.length > 0 ? address : 'localhost'}:${port}`;
-    obs.connect(ws, password.length > 0 ? password : undefined);
+    obs.connect(ws, password.length > 0 ? password : undefined).then(o => {
+        console.log('Connection to OBS successful!');
+    }).catch(e => {
+        console.error('Unable to connect to OBS...');
+    });
 }
 
 function attachEventListeners(){
@@ -34,13 +38,14 @@ function attachEventListeners(){
                 }else{
                     url.searchParams.set('item', `item_icon_${itemOpt.key}`);
                 }
+                url.searchParams.set('used', itemToggle.checked);
             }
-            url.searchParams.set('used', itemToggle.checked);
-            // const url = relativeToAbsolutePath(`./frame.html?img=poke_icon_${opt ? opt.number : 0}&fainted=${faintedToggle.checked}&item=item_icon_${itemOpt ? itemOpt.key: 'air_balloon'}&used=${itemToggle.checked}`);
             setBrowserSourceURL(source, url.toString())
             const icon = monModule.querySelector('.monIcon');
             if(icon){
                 icon.src = url;
+                const description = `An icon of ${monSelector.value && monSelector.value.length > 0 && monSelector.value !== SPECIES_NONE_VALUE ? 'the Pokemon '+ monSelector.value : 'a PokeBall'} holding ${itemSelector.value && itemSelector.value.length > 0 ?  'the ' + itemSelector.value : 'no'} item.`;
+                icon.title = description;
             } 
         }
         monSelector.addEventListener('change', setItem);
@@ -55,11 +60,11 @@ function attachEventListeners(){
     for(let scoreModule of scoreModules){
         const score = scoreModule.querySelector('.scoreDisplay');
         const sourceSelector = scoreModule.querySelector('.sourceSelect');
-        const plus = scoreModule.querySelector('.plus');
         const incrementScore = (num) => {
-            score.innerText = `${Math.max(0, Number(score.innerText) + num)}`;
+            score.innerText = `${Math.round(Math.max(0, Number(score.innerText) + num))}`;
             setTextSourceText(sourceSelector.value, score.innerText);
         }
+        const plus = scoreModule.querySelector('.plus');
         plus.addEventListener('click', e => {
             incrementScore(1);
         });
@@ -76,17 +81,17 @@ function attachEventListeners(){
         const sourceSelector = nameModule.querySelector('.sourceSelect');
         const updatePlayer = (e) => {
             populatePlayerModule(nameModule.closest('.playerModule'), e.target.value);
-            const playerName = e.target.value === "None" ? "" : e.target.options[e.target.options.selectedIndex].innerText;
+            const playerName = e.target.value === PLAYER_NONE_VALUE ? "" : e.target.options[e.target.options.selectedIndex].innerText;
             setTextSourceText(sourceSelector.value, playerName);
         }
         // changed via dropdown
         playerSelector.addEventListener('change', e => {
             for(monSelect of nameModule.querySelectorAll('.monSelect')){
-                monSelect.value = "None";
+                monSelect.value = SPECIES_NONE_VALUE;
             }
             updatePlayer(e);
         });
-        // refreshed current player via save data
+        // refreshed current player via save data changing
         playerSelector.addEventListener('refresh', e => {
             updatePlayer(e)
         });
@@ -100,7 +105,7 @@ function attachEventListeners(){
             const childModules = parent.querySelectorAll('.monModule');
             for(let monModule of childModules){
                 const monSelector = monModule.querySelector(".monSelect");
-                monSelector.value = "None"
+                monSelector.value = SPECIES_NONE_VALUE;
                 const faintedToggle = monModule.querySelector('.faintedToggle');
                 faintedToggle.checked = false;
                 const itemUsedToggle = monModule.querySelector('.itemToggle');
@@ -112,27 +117,22 @@ function attachEventListeners(){
     }
 
     const resetAllButton = document.querySelector('.resetAllButton');
-    const playerSelectors = document.querySelectorAll('.playerSelect');
     resetAllButton.addEventListener('click', e => {
-    
-        for(let playerSelector of playerSelectors){
-            playerSelector.value = 'None';
-            const event = new Event('change');
-            playerSelector.dispatchEvent(event);
+        if(window.confirm("Do you really want to reset the round?\nThis will reset both players to 'None' and set both scores to 0.")){
+            const playerSelectors = document.querySelectorAll('.playerSelect');
+            // Set both players to 'None'
+            for(let playerSelector of playerSelectors){
+                playerSelector.value = PLAYER_NONE_VALUE;
+                const event = new Event('change');
+                playerSelector.dispatchEvent(event);
+            }
+            // Effectively 'click' both reset buttons
+            for(let resetButton of resetButtons){
+                const event = new Event('click');
+                resetButton.dispatchEvent(event);
+            }
         }
-        for(let resetButton of resetButtons){
-            const event = new Event('click');
-            resetButton.dispatchEvent(event);
-        }
-    })
-
-    // save settings every time we change a source setting
-    const sourceSelectors = document.getElementsByClassName('sourceSelect');
-    for(let sourceSelector of sourceSelectors){
-        sourceSelector.addEventListener('change', e => {
-            saveSourceSettings();
-        })
-    }
+    });
 
     // Hook up Player Filter
     const playerFilter = document.getElementById('playerFilter');
@@ -157,6 +157,13 @@ function attachEventListeners(){
         filterPlayerTable();
     });
 
+    // Save settings every time we change a source setting
+    const sourceSelectors = document.getElementsByClassName('sourceSelect');
+    for(let sourceSelector of sourceSelectors){
+        sourceSelector.addEventListener('change', e => {
+            saveSourceSettings();
+        })
+    }
     document.getElementById('connect').addEventListener('click', connectToOBS);
     document.getElementById('sceneSelect').addEventListener('change', e => {
         populateSourceOptionsFromScene(e.target.value);

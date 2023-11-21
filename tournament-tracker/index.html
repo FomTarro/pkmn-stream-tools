@@ -8,6 +8,7 @@
         <meta property="og:image" content="https://www.skeletom.net/pkmn/tournament-overlay/img/pkmn/poke_icon_0.png">
         <meta property="og:type" content="website">
         <meta property="og:description" content="Enhance your Pokémon Tournament's stream overlays with this online OBS plugin!">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
         <link rel="stylesheet" href="./css/style.css">
         <datalist id="sceneOptions">
             <!-- Scenes in OBS -->
@@ -114,7 +115,7 @@
                             <div>
                                 <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
                             </div>
-                            <div>
+                            <div class="font-small">
                                 <label>Fainted?</label>
                                 <input class="faintedToggle" type="checkbox">
                                 <label>Item Used?</label>
@@ -150,7 +151,7 @@
                             <div>
                                 <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
                             </div>
-                            <div>
+                            <div class="font-small">
                                 <label>Fainted?</label>
                                 <input class="faintedToggle" type="checkbox">
                                 <label>Item Used?</label>
@@ -186,7 +187,7 @@
                             <div>
                                 <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
                             </div>
-                            <div>
+                            <div class="font-small">
                                 <label>Fainted?</label>
                                 <input class="faintedToggle" type="checkbox">
                                 <label>Item Used?</label>
@@ -222,7 +223,7 @@
                             <div>
                                 <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
                             </div>
-                            <div>
+                            <div class="font-small">
                                 <label>Fainted?</label>
                                 <input class="faintedToggle" type="checkbox">
                                 <label>Item Used?</label>
@@ -286,7 +287,7 @@
                             <div>
                                 <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
                             </div>
-                            <div>
+                            <div class="font-small">
                                 <label>Fainted?</label>
                                 <input class="faintedToggle" type="checkbox">
                                 <label>Item Used?</label>
@@ -322,7 +323,7 @@
                             <div>
                                 <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
                             </div>
-                            <div>
+                            <div class="font-small">
                                 <label>Fainted?</label>
                                 <input class="faintedToggle" type="checkbox">
                                 <label>Item Used?</label>
@@ -358,7 +359,7 @@
                             <div>
                                 <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
                             </div>
-                            <div>
+                            <div class="font-small">
                                 <label>Fainted?</label>
                                 <input class="faintedToggle" type="checkbox">
                                 <label>Item Used?</label>
@@ -394,7 +395,7 @@
                             <div>
                                 <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
                             </div>
-                            <div>
+                            <div class="font-small">
                                 <label>Fainted?</label>
                                 <input class="faintedToggle" type="checkbox">
                                 <label>Item Used?</label>
@@ -413,7 +414,7 @@
     </div>
 <!-- Table -->
     <div class="rounded-corner">
-        <h1 class="heading rounded-corner-small">Players</h1>
+        <h1 class="heading rounded-corner-small">Players and Teams</h1>
     </div>
     <div id="players">
         <div class="flex rounded-corner">
@@ -519,11 +520,12 @@
     </div>
   </body>
   <footer>
-    <script type="text/javascript" src="./js/species.js"></script>
-    <script type="text/javascript" src="./js/utils.js"></script>
-    <script type="text/javascript" src="./js/players.js"></script>
-    <script type="text/javascript" src="./js/obs-ws.min.js"></script>
-    <script type="text/javascript" src="./js/obs.js"></script>
-    <script type="text/javascript" src="./js/script.js"></script>
+    <span class="flex center font-small">Developed by Professor <a href="https://www.skeletom.net" target="_blank">Tom "Skeletom" Farro</a> - Open Source: <a href="https://github.com/FomTarro/pkmn-stream-tools/tree/main/tournament-tracker" target="_blank">GitHub</a> - Contact: <a href="mailto:pokemon@skeletom.net?subject=About the Tournament Tracker">pokemon@skeletom.net</a></span>
   </footer>
+  <script type="text/javascript" src="./js/species.js"></script>
+  <script type="text/javascript" src="./js/utils.js"></script>
+  <script type="text/javascript" src="./js/players.js"></script>
+  <script type="text/javascript" src="./js/obs-ws.min.js"></script>
+  <script type="text/javascript" src="./js/obs.js"></script>
+  <script type="text/javascript" src="./js/script.js"></script>
 </html>

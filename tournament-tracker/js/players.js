@@ -23,6 +23,7 @@
 */
 var PLAYER_LIST = [];
 const PLAYER_LIST_KEY = "tournament_overlay_players";
+const PLAYER_NONE_VALUE = 'None';
 
 document.getElementById("player_add").addEventListener('click', e => {
     addPlayer();
@@ -49,7 +50,7 @@ function loadPlayerList() {
     }
     const selectors = document.querySelectorAll('.playerSelect');
     for (let selector of selectors) {
-        selector.value = 'None'
+        selector.value = PLAYER_NONE_VALUE;
         const event = new Event('refresh');
         selector.dispatchEvent(event);
     }

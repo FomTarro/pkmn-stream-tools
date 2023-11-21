@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
         <style>
@@ -9,6 +10,7 @@
                 width: auto;
                 height: 100%;
                 position: absolute;
+                z-index: 1;
             }
             #item {
                 bottom: 0;
@@ -17,15 +19,28 @@
                 width: auto;
                 height: 50%;
                 position: absolute;
+                z-index: 2;
+            }
+            #status {
+                top: 0;
+                left: 0;
+                margin: auto;
+                width: auto;
+                height: 35%;
+                position: absolute;
+                z-index: 3;
             }
             .fainted {
                 opacity: 50%;
             }
         </style>
     </head>
-    <body id="body">
-        <img id="mon">
-        <img id="item">
+    <body>
+        <div id="body">
+            <img id="mon">
+            <img id="item">
+        </div>
+        <img id="status">
     </body>
     <footer>
         <script>
@@ -37,6 +52,8 @@
                 const fainted = urlParams.get('fainted');
                 if(fainted === 'true'){
                     document.getElementById('body').classList.add('fainted')
+                    // const statusIcon = document.getElementById("status");
+                    // statusIcon.src = `./img/misc/fainted_icon.png`
                 }
             }
             const item = urlParams.get('item');

@@ -11,6 +11,8 @@
  * @property {string} name - Forme name
  */
 
+const SPECIES_NONE_VALUE = 'None';
+
 /** 
 * @constant - List of all Pokemon.
 * @type {Pokemon[]}
