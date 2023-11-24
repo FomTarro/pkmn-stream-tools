@@ -1,16 +1,17 @@
 /* 
     red: #FFD4D4
     blue: #E9DEFF
+    torkoal-orange: #E89244
+    torkoal-grey: #5E5E5E
  */
 
 .table-header {
-    /* background: red; */
     position: sticky;
     top: 2px;
     z-index: 10;
 }
 
-#players_table_header .rounded-corner-small{
+#players_table_header .rounded-corner-small {
     height: 100%;
     background: #ED533A;
     display: flex;
@@ -27,11 +28,10 @@ body {
 
 table { 
     height: 100%;
-    width: 100%;
     border-spacing: 0.5em;
     table-layout: fixed;
     width: 100%;
-    margin-bottom: 4em;
+    min-width: 720px;
 }
 
 /* tbody {
@@ -59,9 +59,25 @@ th{
     height: 100%;
 }
 
+ol {
+    padding-left: 1.3em;
+}
+
+li::marker {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin: 0;
+}
+
 select, input[type="text"], .sourceSelect {
     width: 12em;
     max-width: 100%;
+}
+
+input, select {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
 }
 
 .bold {
@@ -113,6 +129,13 @@ select, input[type="text"], .sourceSelect {
     color: green;
 }
 
+@media only screen and (max-width: 800px) {
+    #view {
+      flex-direction: column;
+      align-items: center;
+    }
+}
+
 .dashboard {
     display: flex;
     flex-direction: column;
@@ -161,8 +184,11 @@ select, input[type="text"], .sourceSelect {
     box-shadow: 1px 1px 10px #AAA;
 }
 
-input, select {
-    -webkit-box-sizing: border-box;
-       -moz-box-sizing: border-box;
-            box-sizing: border-box;
+#players{
+    overflow-x: scroll;
+    margin-bottom: 4em;
+}
+
+#playerImport {
+    margin-right: 1em;
 }

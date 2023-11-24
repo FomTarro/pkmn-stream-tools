@@ -157,37 +157,54 @@ function attachEventListeners(){
         filterPlayerTable();
     });
 
+    const playerImport = document.getElementById('playerImport');
+    const playerImportStatus = document.getElementById('playerImportStatus');
+    playerImport.addEventListener('input', e => {
+        importPlayersFromTOM(e.target.files[0], 
+            {
+                abbreviateJuniors: document.getElementById('abbreviateJuniorsToggle').checked,
+                abbreviateSeniors: document.getElementById('abbreviateSeniorsToggle').checked,
+                abbreviateMasters: document.getElementById('abbreviateMastersToggle').checked,
+            },
+            (message) => {
+                playerImportStatus.classList.add('connected');
+                playerImportStatus.classList.remove('disconnected');
+                playerImportStatus.innerText = message;
+            },
+            (error) => {
+                playerImportStatus.classList.remove('connected');
+                playerImportStatus.classList.add('disconnected');
+                playerImportStatus.innerText = error;
+            }
+        );
+    })
+
     // Save settings every time we change a source setting
     const sourceSelectors = document.getElementsByClassName('sourceSelect');
     for(let sourceSelector of sourceSelectors){
         sourceSelector.addEventListener('change', e => {
             saveSourceSettings();
-        })
+        });
     }
+
+    const generalSettings = document.getElementsByClassName('generalSetting');
+    for(let setting of generalSettings){
+        setting.addEventListener('change', e => {
+            saveGeneralSettings();
+        });
+    }
+
+    // document.getElementById("fileWatcher").addEventListener('click', async e => {
+    //     const [fileHandle] = await window.showOpenFilePicker();
+    //     const file = await fileHandle.getFile();
+    //     console.log(file);
+    // })
+
     document.getElementById('connect').addEventListener('click', connectToOBS);
     document.getElementById('sceneSelect').addEventListener('change', e => {
         populateSourceOptionsFromScene(e.target.value);
     });
 }
-
-/**
- * A player data structure
- * @typedef {Object} SourceMap
- * @property {string} scene - Name of the scene.
- * @property {PlayerSourceMap} p1 - Player 1 settings.
- * @property {PlayerSourceMap} p2 - Player 2 settings.
- */
-
-/**
- * A player data structure
- * @typedef {Object} PlayerSourceMap
- * @property {string} uuid
- * @property {number} score
- * @property {string} mon1
- * @property {string} mon2
- * @property {string} mon3
- * @property {string} mon4
- */
 
 const SOURCE_SETTINGS_KEY = "tournament_overlay_settings";
 
@@ -230,10 +247,34 @@ function saveSourceSettings(){
     localStorage.setItem(SOURCE_SETTINGS_KEY, JSON.stringify(settings));
 }
 
+const GENERAL_SETTINGS_KEY = "tournament_overlay_general_settings";
+
+function loadGeneralSettings(){
+    var settings = JSON.parse(localStorage.getItem(GENERAL_SETTINGS_KEY));
+    settings = settings ? settings : {
+        abbreviateJuniors: false,
+        abbreviateSeniors: false,
+        abbreviateSeniors: false,
+    };
+    document.getElementById('abbreviateJuniorsToggle').checked = settings.abbreviateJuniors;
+    document.getElementById('abbreviateSeniorsToggle').checked = settings.abbreviateSeniors;
+    document.getElementById('abbreviateMastersToggle').checked = settings.abbreviateMasters;
+}
+
+function saveGeneralSettings(){
+    const settings = {
+        abbreviateJuniors: document.getElementById('abbreviateJuniorsToggle').checked,
+        abbreviateSeniors: document.getElementById('abbreviateSeniorsToggle').checked,
+        abbreviateMasters: document.getElementById('abbreviateMastersToggle').checked
+    };
+    localStorage.setItem(GENERAL_SETTINGS_KEY, JSON.stringify(settings));
+}
+
 window.onload = () =>{
     attachEventListeners();
     checkConnectionStatus();
     connectToOBS();
+    loadGeneralSettings();
     loadSourceSettings();
     loadPlayerList();
 }

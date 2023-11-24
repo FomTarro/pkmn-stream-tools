@@ -196,3 +196,53 @@ function populatePlayerModule(element, uuid) {
         monSelector.dispatchEvent(event);
     }
 }
+
+/**
+ * 
+ * @param {File} file 
+ * @param {*} args 
+ * @param {*} onComplete 
+ * @param {*} onError 
+ */
+function importPlayersFromTOM(file, args, onComplete, onError){
+    // setting up the reader
+    var reader = new FileReader();
+    reader.readAsText(file,'UTF-8');
+    const promise = loadFileWrapper(file, parseStandingsFile).then(r => console.log(r)).catch(e => console.error(e));
+    // here we tell the reader what to do when it's done reading...
+    reader.onload = readerEvent => {
+        const players = [];
+        const content = readerEvent.target.result;
+        var el = document.createElement('html');
+        el.innerHTML = content;
+        if(!content.includes('Player Roster')){
+            console.warn('Uploaded file is not the roster file...');
+            onError('Selected file is either malformed or not the ...roster.html file!');
+        }else{
+            for(const table of el.getElementsByClassName('players_table')){
+                for(const row of table.querySelectorAll('tr')){
+                    const cells = row.querySelectorAll('td');
+                    if(cells.length >= 2){
+                        const name = 
+                        ((args.abbreviateJuniors && cells[2].innerText === 'JR')
+                        || (args.abbreviateSeniors && cells[2].innerText === 'SR')
+                        || (args.abbreviateMasters && cells[2].innerText === 'MA')) ?
+                        cells[1].innerText.substring(0, cells[1].innerText.indexOf(' ')+2) + '.' : 
+                        cells[1].innerText;
+                        players.push({
+                            uuid: uuidv4(),
+                            name: name
+                        });
+                    }
+                }
+            }
+            const currentPlayerNames = PLAYER_LIST.map(player => player.name);
+            const filtered = players.filter(player => !currentPlayerNames.includes(player.name));
+            for(const player of filtered){
+                addPlayer(player);
+            }
+            onComplete(`Successfully imported ${filtered.length} new players!`);
+        }
+        el.remove();
+   }
+}

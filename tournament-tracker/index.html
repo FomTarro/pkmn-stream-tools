@@ -28,13 +28,27 @@
     </head>
   <body>
     <div class="rounded-corner">
-        <h1 class="heading rounded-corner-small">Tournament Dashboard - v0.1.2</h1>
+        <h1 class="heading rounded-corner-small">TourKOAL - v0.1.2</h1>
     </div>
-    <div id="readme">
+    <div id="readme" class="rounded-corner">
+        <div>
+            <p>
+                Welcome to <b>TourKOAL</b> (<b>Tour</b>nament <b>K</b>nowledge and <b>O</b>verlay <b>A</b>ssistant for <b>L</b>ivestreams)!
+            </p>
+            <p>
+                The goal of this tool is to easily compile player and team information such that it can be quickly displayed on the fly during tournament matches, 
+                helping you build a professional-quality overlay for your broadcast with as little manual work as possible. 
+            </p>
+            <p>
+                No longer will you need to scramble through hundreds of image files by hand as players reveal which of their Pokemon they brought to the game, 
+                nor will you need to manually adjust OBS sources when items are consumed or Pokemon faint! 
+            </p>
+                <h3>Getting Started</h3>
+        </div>
         <ol>
             <li>Make sure that your OBS WebSocket Server is Enabled (accessed via Tools → WebSocket Server Settings).</li>
             <ul>
-                <li>For OBS Versions >28.0.0, OBS Websocket Server is built-in.</li>
+                <li>For OBS Versions >28.0.0, OBS WebSocket Server is built-in.</li>
                 <li>For older OBS Versions, you can <a href="https://github.com/obsproject/obs-websocket/releases">download a plugin.</a></li>
             </ul>
             <li><a href="#obs_settings">Connect to OBS</a>.
@@ -63,7 +77,7 @@
     </div>
 
     <div class="dashboard" id="dashboard">
-        <div class="flex-row">
+        <div id="view" class="flex-row">
             <div id="player_1_dashboard" class="playerModule flex flex-col rounded-corner">
                 <h2 class="heading rounded-corner-small">Player #1</h2>
                 <div class="scoreModule">
@@ -416,10 +430,26 @@
     <div class="rounded-corner">
         <h1 class="heading rounded-corner-small">Players and Teams</h1>
     </div>
-    <div id="players">
-        <div class="flex rounded-corner">
-            <input id='playerFilter' class="playerFilter" placeholder="Filter by Player Name..." type="text">
+    <div class="flex flex-col rounded-corner">
+        <label for="playerImport" class="bold">Import Player List from TOM roster file</label>
+        <span class="font-small">(These will be in your 'TOM/data/reports' directory!)</span>
+        <div class="font-small">
+            <label>Abbreviate names (ex. 'Tom Farro' → 'Tom F.') for... </label>
+            <label for="abbreviateJuniorsToggle">Juniors?</label>
+            <input id="abbreviateJuniorsToggle" class="generalSetting" type="checkbox">
+            <label for="abbreviateSeniorsToggle">Seniors?</label>
+            <input id="abbreviateSeniorsToggle" class="generalSetting" type="checkbox">
+            <label for="abbreviateMastersToggle">Masters?</label>
+            <input id="abbreviateMastersToggle" class="generalSetting" type="checkbox">
         </div>
+        <div>
+            <input id='playerImport' class="playerImport" placeholder="Import Player Roster from TOM..." type="file" accept=".html" pattern=".*(roster\.html)"><span id="playerImportStatus" class="font-small bold"></span>
+        </div>
+    </div>
+    <div class="flex rounded-corner">
+        <input id='playerFilter' class="playerFilter" placeholder="Filter by Player Name..." type="text">
+    </div>
+    <div id="players">
         <table>
             <tbody id="players_table">
                 <tr id="players_table_header" class="table-header">
@@ -519,11 +549,12 @@
         </table>
     </div>
   </body>
-  <footer>
-    <span class="flex center font-small">Developed by Professor <a href="https://www.skeletom.net" target="_blank">Tom "Skeletom" Farro</a> - Open Source: <a href="https://github.com/FomTarro/pkmn-stream-tools/tree/main/tournament-tracker" target="_blank">GitHub</a> - Contact: <a href="mailto:pokemon@skeletom.net?subject=About the Tournament Tracker">pokemon@skeletom.net</a></span>
+  <footer class="flex center">
+    <span class="font-small">Developed by Professor <a href="https://www.skeletom.net" target="_blank">Tom "Skeletom" Farro</a> - Open Source: <a href="https://github.com/FomTarro/pkmn-stream-tools/tree/main/tournament-tracker" target="_blank">GitHub</a> - Contact: <a href="mailto:pokemon@skeletom.net?subject=About the Tournament Tracker">pokemon@skeletom.net</a></span>
   </footer>
   <script type="text/javascript" src="./js/species.js"></script>
   <script type="text/javascript" src="./js/utils.js"></script>
+  <script type="text/javascript" src="./js/tom.js"></script>
   <script type="text/javascript" src="./js/players.js"></script>
   <script type="text/javascript" src="./js/obs-ws.min.js"></script>
   <script type="text/javascript" src="./js/obs.js"></script>
