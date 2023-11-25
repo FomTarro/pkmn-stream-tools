@@ -7,8 +7,9 @@
 
 .table-header {
     position: sticky;
-    top: 2px;
+    top: 0px;
     z-index: 10;
+    background: white;
 }
 
 #players_table_header .rounded-corner-small {
@@ -184,8 +185,11 @@ input, select {
     box-shadow: 1px 1px 10px #AAA;
 }
 
-#players{
+#players {
     overflow-x: scroll;
+    /* min-height: 11em;
+    max-height: min-content;
+    resize: vertical; */
     margin-bottom: 4em;
 }
 

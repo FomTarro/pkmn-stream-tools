@@ -54,7 +54,7 @@
             <li><a href="#obs_settings">Connect to OBS</a>.
             <li>Choose which <a href=#obs_scene_selection>OBS Scene</a> your Tournament Overlay is in.</li>
             <li>Pick <a href="#dashboard">sources in that scene to output to</a> (Pokémon icons are Browser sources, everything else is a Text source).</li>
-            <li>Enter player data in the <a href="#players">table at the bottom of the page</a>.</li>
+            <li>Enter player data in the <a href="#players">table at the bottom of the page</a>, or import your tournament roster from a TOM file.</li>
             <li>You're all set! <a href='#dashboard'>Pick your players from the dropdown</a> and easily display information about their team!</li>
         </ol>
     </div>
@@ -431,10 +431,13 @@
         <h1 class="heading rounded-corner-small">Players and Teams</h1>
     </div>
     <div class="flex flex-col rounded-corner">
-        <label for="playerImport" class="bold">Import Player List from TOM roster file</label>
+        <p>
+            You can either import a complete player list from a TOM ...roster.html file, or you can add player records by hand in the table below.
+        </p>
+        <label for="playerImport" class="bold">Import from TOM</label>
         <span class="font-small">(These will be in your 'TOM/data/reports' directory!)</span>
         <div class="font-small">
-            <label>Abbreviate names (ex. 'Tom Farro' → 'Tom F.') for... </label>
+            <span>Abbreviate names (ex. 'Ash Ketchum' → 'Ash K.') for... </span> 
             <label for="abbreviateJuniorsToggle">Juniors?</label>
             <input id="abbreviateJuniorsToggle" class="generalSetting" type="checkbox">
             <label for="abbreviateSeniorsToggle">Seniors?</label>
@@ -446,8 +449,12 @@
             <input id='playerImport' class="playerImport" placeholder="Import Player Roster from TOM..." type="file" accept=".html" pattern=".*(roster\.html)"><span id="playerImportStatus" class="font-small bold"></span>
         </div>
     </div>
-    <div class="flex rounded-corner">
-        <input id='playerFilter' class="playerFilter" placeholder="Filter by Player Name..." type="text">
+    <div class="flex flex-col rounded-corner">
+        <label class="bold" for="playerFilter">Filter Player List</label>
+        <div>
+            <input id='playerFilter' class="playerFilter" placeholder="Filter by Player Name..." type="text">
+            <span class="font-small">Total players: <span id="playerTotal">0</span> (Filter matches: <span id="playerFilterTotal">0</span>)</span>
+        </div>
     </div>
     <div id="players">
         <table>
@@ -551,6 +558,7 @@
   </body>
   <footer class="flex center">
     <span class="font-small">Developed by Professor <a href="https://www.skeletom.net" target="_blank">Tom "Skeletom" Farro</a> - Open Source: <a href="https://github.com/FomTarro/pkmn-stream-tools/tree/main/tournament-tracker" target="_blank">GitHub</a> - Contact: <a href="mailto:pokemon@skeletom.net?subject=About the Tournament Tracker">pokemon@skeletom.net</a></span>
+    <button id="temp">CLICK</button>
   </footer>
   <script type="text/javascript" src="./js/species.js"></script>
   <script type="text/javascript" src="./js/utils.js"></script>

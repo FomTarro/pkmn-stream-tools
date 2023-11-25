@@ -137,15 +137,18 @@ function attachEventListeners(){
     // Hook up Player Filter
     const playerFilter = document.getElementById('playerFilter');
     const filterPlayerTable = () => {
+        let i = 0;
         const rows = document.getElementsByClassName('playerRow');
         for(let row of rows){
             const name = row.querySelector('.playerName');
             if(playerFilter.value && !name.value.toLowerCase().includes(playerFilter.value.toLowerCase())){
                 row.hidden = true;
             }else{
+                i++;
                 row.hidden = false;
             }
         }
+        document.getElementById('playerFilterTotal').innerText = i;
     }
     playerFilter.addEventListener('input', e => {
         filterPlayerTable()
@@ -270,7 +273,7 @@ function saveGeneralSettings(){
     localStorage.setItem(GENERAL_SETTINGS_KEY, JSON.stringify(settings));
 }
 
-window.onload = () =>{
+window.onload = async() =>{
     attachEventListeners();
     checkConnectionStatus();
     connectToOBS();
@@ -278,3 +281,8 @@ window.onload = () =>{
     loadSourceSettings();
     loadPlayerList();
 }
+
+document.getElementById('temp').addEventListener('click', async e => {
+    [fileHandle] = await window.showOpenFilePicker();
+    const interval = watchFile(fileHandle, (content) => {console.log(content)});
+})

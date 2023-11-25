@@ -3,7 +3,7 @@
  * @param {File} file - The file to load.
  * @returns {Promise<string>}
  */
-function loadFileWrapper(file){
+function loadFile(file){
     var reader = new FileReader();
     reader.readAsText(file,'UTF-8');
     // here we tell the reader what to do when it's done reading...
@@ -17,6 +17,24 @@ function loadFileWrapper(file){
         }
     });
     return promise;
+}
+
+/**
+ * 
+ * @param {FileSystemFileHandle} fileHandle 
+ * @param {function(string)} onChange - The function to execute on the 
+ * @param {number} [interval=2000] - The frequency to chekc for updates, in milliseconds. 
+ */
+function watchFile(fileHandle, onChange, interval = 2000){
+    let oldContent = undefined;
+    const timer = window.setInterval(async () => {
+        const content = await loadFile(await fileHandle.getFile());
+        if(oldContent !== content){
+            onChange(content);
+        }
+        oldContent = content;
+    }, interval);
+    return timer;
 }
 
 /**

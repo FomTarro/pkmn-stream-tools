@@ -54,6 +54,7 @@ function loadPlayerList() {
         const event = new Event('refresh');
         selector.dispatchEvent(event);
     }
+    document.getElementById('playerTotal').innerText = PLAYER_LIST.length;
 }
 
 function savePlayerList() {
@@ -67,6 +68,7 @@ function savePlayerList() {
             }
         }
     }
+    document.getElementById('playerTotal').innerText = PLAYER_LIST.length;
 }
 
 /**
@@ -208,7 +210,7 @@ function importPlayersFromTOM(file, args, onComplete, onError){
     // setting up the reader
     var reader = new FileReader();
     reader.readAsText(file,'UTF-8');
-    const promise = loadFileWrapper(file, parseStandingsFile).then(r => console.log(r)).catch(e => console.error(e));
+    const promise = loadFile(file, parseStandingsFile).then(r => console.log(r)).catch(e => console.error(e));
     // here we tell the reader what to do when it's done reading...
     reader.onload = readerEvent => {
         const players = [];
