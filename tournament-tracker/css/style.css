@@ -27,7 +27,7 @@ body {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-table { 
+table {
     height: 100%;
     border-spacing: 0.5em;
     table-layout: fixed;
@@ -41,22 +41,22 @@ table {
     resize: vertical;
 } */
 
-tr:nth-child(even) td .rounded-corner-small{
-    background-color: rgba(0,0,0, .1);
+tr:nth-child(even) td .rounded-corner-small {
+    background-color: rgba(0, 0, 0, .1);
     height: 100%;
 }
 
-tr:nth-child(odd) td .rounded-corner-small{
-    background-color: rgba(0,0,0, .05);
+tr:nth-child(odd) td .rounded-corner-small {
+    background-color: rgba(0, 0, 0, .05);
     height: 100%;
 }
 
-tr{
+tr {
     gap: 0.2em;
     height: 100%
 }
 
-th{
+th {
     height: 100%;
 }
 
@@ -70,22 +70,25 @@ li::marker {
     margin: 0;
 }
 
-select, input[type="text"], .sourceSelect {
+select,
+input[type="text"],
+.sourceSelect {
     width: 12em;
     max-width: 100%;
 }
 
-input, select {
+input,
+select {
     -webkit-box-sizing: border-box;
-       -moz-box-sizing: border-box;
-            box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .bold {
     font-weight: bold;
 }
 
-.font-small{
+.font-small {
     font-size: 0.75em;
 }
 
@@ -99,12 +102,12 @@ input, select {
     gap: 0.5em;
 }
 
-.flex-col{
+.flex-col {
     display: flex;
     flex-direction: column
 }
 
-.flex-row{
+.flex-row {
     display: flex;
     justify-content: space-between;
 }
@@ -114,7 +117,7 @@ input, select {
     padding: 0.5em;
 }
 
-.rounded-corner-small{
+.rounded-corner-small {
     border-radius: 4px;
 }
 
@@ -132,9 +135,15 @@ input, select {
 
 @media only screen and (max-width: 800px) {
     #view {
-      flex-direction: column;
-      align-items: center;
+        flex-direction: column;
+        align-items: center;
     }
+}
+
+.basic-ui {
+    font-family: Arial;
+    font-size: 10pt;
+    appearance: none;
 }
 
 .dashboard {
@@ -145,7 +154,7 @@ input, select {
 }
 
 .monModule {
-    background: linear-gradient(to left ,transparent, antiquewhite);
+    background: linear-gradient(to left, transparent, antiquewhite);
     border-radius: 5px;
 }
 
@@ -185,7 +194,13 @@ input, select {
     box-shadow: 1px 1px 10px #AAA;
 }
 
-#players {
+.code {
+    font-family: Consolas;
+    background-color: rgba(0, 0, 0, .05);
+    border-radius: 5px;
+}
+
+#players_dashboard {
     overflow-x: scroll;
     /* min-height: 11em;
     max-height: min-content;
@@ -197,8 +212,26 @@ input, select {
     margin-right: 1em;
 }
 
-.minimizeButton{
+.minimizeButton {
     height: 100%;
     /* background: transparent; */
     border: 0px;
+}
+
+.red {
+    background: #ED533A
+}
+
+.blue {
+    background: #3A53ED;
+}
+
+#standingsList li:nth-child(1)::marker{
+    content: '🥇'
+}
+#standingsList li:nth-child(2)::marker{
+    content: '🥈'
+}
+#standingsList li:nth-child(3)::marker{
+    content: '🥉'
 }

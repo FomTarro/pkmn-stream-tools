@@ -2,11 +2,12 @@
  * Connects to OBS using the settings input on the DOM
  */
 function connectToOBS() {
+    OBS.checkConnectionStatus();
     const address = document.getElementById('address').value;
     const port = document.getElementById('port').value;
     const password = document.getElementById('password').value;
     const ws = `ws://${address.length > 0 ? address : 'localhost'}:${port}`;
-    obs.connect(ws, password.length > 0 ? password : undefined).then(o => {
+    OBS.connect(ws, password).then(o => {
         console.log('Connection to OBS successful!');
     }).catch(e => {
         console.error('Unable to connect to OBS...');
@@ -39,7 +40,7 @@ function attachEventListeners(){
             const opt = document.getElementById(monSelector.value);
             const itemOpt = document.getElementById(itemSelector.value);
             const url = new URL(relativeToAbsolutePath('./frame.html?'));
-            url.searchParams.set('img', `poke_icon_${opt ? opt.number : 0}`)
+            url.searchParams.set('img', `poke_icon_${opt ? opt.getAttribute('number') : 0}`)
             url.searchParams.set('fainted', faintedToggle.checked);
             if(itemOpt){
                 if(itemOpt.type === 'Berry'){
@@ -49,7 +50,7 @@ function attachEventListeners(){
                 }
                 url.searchParams.set('used', itemToggle.checked);
             }
-            setBrowserSourceURL(source, url.toString())
+            OBS.setBrowserSourceURL(source, url.toString())
             const icon = monModule.querySelector('.monIcon');
             if(icon){
                 icon.src = url;
@@ -71,7 +72,7 @@ function attachEventListeners(){
         const sourceSelector = scoreModule.querySelector('.sourceSelect');
         const incrementScore = (num) => {
             score.innerText = `${Math.round(Math.max(0, Number(score.innerText) + num))}`;
-            setTextSourceText(sourceSelector.value, score.innerText);
+            OBS.setTextSourceText(sourceSelector.value, score.innerText);
         }
         const plus = scoreModule.querySelector('.plus');
         plus.addEventListener('click', e => {
@@ -94,7 +95,7 @@ function attachEventListeners(){
                 populatePlayerModule(playerModule, e.target.value);
             }
             const playerName = e.target.value === PLAYER_NONE_VALUE ? "" : e.target.options[e.target.options.selectedIndex].innerText;
-            setTextSourceText(sourceSelector.value, playerName);
+            OBS.setTextSourceText(sourceSelector.value, playerName);
         }
         // changed via dropdown
         playerSelector.addEventListener('change', e => {
@@ -172,6 +173,7 @@ function attachEventListeners(){
         filterPlayerTable();
     });
 
+    // Hook up Player Import
     const playerImport = document.getElementById('playerImport');
     const playerImportStatus = document.getElementById('playerImportStatus');
     playerImport.addEventListener('input', async e => {
@@ -193,6 +195,53 @@ function attachEventListeners(){
         }
     });
 
+    // Hook up Standings Import
+    document.getElementById('standingsImport').addEventListener('click', async e => {
+        try{
+            [fileHandle] = await window.showOpenFilePicker({
+                id: 'tomStandings',
+                types: [
+                    {
+                        accept: {
+                            'text/plain': ".html"
+                        }
+                    }
+                ],
+                excludeAcceptAllOption: true,
+            });
+            window.clearInterval(standingsInterval);
+            const file = await fileHandle.getFile();
+            document.getElementById('standingsImportFile').innerText = abridgeWord(file.name);
+            const standingsImportStatus = document.getElementById('standingsImportStatus');
+            try{
+                await importStandingsFromTOM(file);
+                standingsImportStatus.classList.add('connected');
+                standingsImportStatus.classList.remove('disconnected');
+                standingsImportStatus.innerText = 'Successfully tracking live standings!';
+
+            }catch(e){
+                standingsImportStatus.classList.remove('connected');
+                standingsImportStatus.classList.add('disconnected');
+                standingsImportStatus.innerText = 'Selected file is either malformed or not the ...standings.html file!';
+            }
+            standingsInterval = watchFile(fileHandle, async (content) => {
+                await importStandingsFromTOM(content)
+            });
+        }catch(e){
+            console.warn(e);
+        }
+    });
+
+    // Hook up Minimize Buttons
+    const minimize = document.getElementsByClassName('minimizeButton');
+    for(let button of minimize){
+        button.addEventListener('click', e => {
+            const target = button.getAttribute('target');
+            const element = document.getElementById(target);
+            element.hidden = !element.hidden;
+        })
+    }
+
     // Save settings every time we change a source setting
     const sourceSettings = document.getElementsByClassName('sourceSetting');
     for(let setting of sourceSettings){
@@ -213,7 +262,7 @@ function attachEventListeners(){
     const sceneSelectors = document.getElementsByClassName('sceneSelect');
     for(let sceneSelector of sceneSelectors){
         sceneSelector.addEventListener('change', e => {
-            populateSourceOptionsFromScene(sceneSelector.value, sceneSelector.getAttribute('target'));
+            OBS.populateSourceOptionsFromScene(sceneSelector.value, sceneSelector.getAttribute('target'));
         });
     };
 }
@@ -312,31 +361,13 @@ function saveGeneralSettings(){
     localStorage.setItem(GENERAL_SETTINGS_KEY, JSON.stringify(settings));
 }
 
+let standingsInterval = undefined;
+let connectionInterval = window.setInterval(OBS.checkConnectionStatus, 1000);
 window.onload = async() => {
     createFromTemplates();
     attachEventListeners();
-    checkConnectionStatus();
     loadGeneralSettings();
     loadSourceSettings();
     loadPlayerList();
     connectToOBS();
 }
-
-let standingsInterval = undefined;
-document.getElementById('standingsImport').addEventListener('click', async e => {
-    [fileHandle] = await window.showOpenFilePicker({
-        id: 'tomStandings',
-        types: [
-            {
-                accept: {
-                    'text/plain': ".html"
-                }
-            }
-        ]
-    });
-    window.clearInterval(standingsInterval);
-    importStandingsFromTOM(await fileHandle.getFile())
-    standingsInterval = watchFile(fileHandle, (content) => {
-        importStandingsFromTOM(content)
-    });
-})

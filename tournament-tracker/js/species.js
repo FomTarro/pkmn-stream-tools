@@ -4090,7 +4090,7 @@ for(let i = 0; i < SPECIES.length; i++){
         const opt = document.createElement("option");
         opt.id = species.name;
         opt.innerHTML = species.name;
-        opt.number = species.number;
+        opt.setAttribute('number', species.number);
         document.getElementById("pokemonOptions").appendChild(opt);
     }
     const species = SPECIES[i];

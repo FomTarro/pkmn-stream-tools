@@ -3,7 +3,6 @@
  * @typedef {Object} Player
  * @property {string} uuid - UUID for the player row
  * @property {string} name - Name of the player.
- * @property {string[]} aliases - Alternate names of the player.
  * @property {string} mon1
  * @property {string} item1
  * @property {string} mon2
@@ -79,7 +78,6 @@ function savePlayerList() {
 function addPlayer(existingData) {
     const playerData = existingData ? existingData : {
         uuid: uuidv4(),
-        aliases: []
     };
     PLAYER_LIST.push(playerData);
 
@@ -202,11 +200,9 @@ function populatePlayerModule(element, uuid) {
 }
 
 /**
- * 
+ * Imports new players from a TOM ...roster.html file.
  * @param {File} file 
  * @param {*} args 
- * @param {*} onComplete 
- * @param {*} onError 
  */
 async function importPlayersFromTOM(file, args){
     const players = [];
@@ -221,12 +217,11 @@ async function importPlayersFromTOM(file, args){
             ((args.abbreviateJuniors && player.division === 'JR')
             || (args.abbreviateSeniors && player.division === 'SR')
             || (args.abbreviateMasters && player.division === 'MA')) ?
-            player.name.substring(0, player.name.indexOf(' ')+2)+'.' : 
+            abbreviateName(player.name) : 
             player.name;
             players.push({
                 uuid: uuidv4(),
                 name: name,
-                aliases: [player.name]
             });
         }
     }
@@ -239,12 +234,14 @@ async function importPlayersFromTOM(file, args){
 }
 
 /**
- * 
+ * Imports player standings from a TOM ...standings.html file.
  * @param {File} file 
- * @param {*} args 
  */
-async function importStandingsFromTOM(file, args){
+async function importStandingsFromTOM(file){
     const content = await loadFile(file);
+    if(!content.includes('Standings - ')){
+        throw 'Not a Standings File!'
+    }
     const standings = TOM.parseStandingsFile(content);
     const standingsList = document.getElementById('standingsList')
     const standingModules = standingsList.querySelectorAll('.playerSelect');
@@ -252,8 +249,9 @@ async function importStandingsFromTOM(file, args){
         if(standings.allStandings.length > i){
             // TODO: this is kind of a kludge; necessary because we can abbreviate names even when TOM doesn't...
             standingModules[i].value = PLAYER_LIST.find(player => {
-                return player.aliases?.includes(standings.allStandings[i].name) 
-                || player.name.includes(standings.allStandings[i].name)
+                return player.name &&
+                (player.name.includes(standings.allStandings[i].name) 
+                || abbreviateName(player.name).includes(abbreviateName(standings.allStandings[i].name)))
             })?.uuid;
             const event = new Event('change');
             standingModules[i].dispatchEvent(event);

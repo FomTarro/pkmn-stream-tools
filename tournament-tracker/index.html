@@ -58,13 +58,13 @@
                 </ul>
                 <li><a href="#obs_settings">Connect to OBS</a>.
                 <li>Choose which <a href=#obs_scene_selection>OBS Scene</a> your Tournament Overlay is in.</li>
-                <li>Pick <a href="#dashboard">sources in that scene to output to</a> (Pokémon icons are Browser sources, everything else is a Text source).</li>
+                <li>Pick <a href="#battle">sources in that scene to output to</a> (Pokémon icons are Browser sources, everything else is a Text source).</li>
                 <li>Enter player data in the <a href="#players">table at the bottom of the page</a>, or import your tournament roster from a TOM file.</li>
-                <li>You're all set! <a href='#dashboard'>Pick your players from the dropdown</a> and easily display information about their team!</li>
+                <li>You're all set! <a href='#battle'>Pick your players from the dropdown</a> and easily display information about their team!</li>
             </ol>
         </div>
         <div id="obs_settings" class="flex flex-col rounded-corner">
-            <div>
+            <div class="flex flex-col">
                 <label for="connect" class="bold">OBS Status: <span id="obs_status" class="disconnected">Disconnected</span></label>
                 <form>
                     <input id="address" placeholder="Address" type="text" minlength="7" maxlength="15" value="localhost" pattern="^(localhost|((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5]))$" required>
@@ -81,7 +81,7 @@
     </div>
     <div id="battle">
         <div class="flex flex-col rounded-corner">
-            <div id="obs_scene_selection">
+            <div id="obs_scene_selection" class="flex flex-col">
                 <div>
                     <label for="battleSceneSelect" class="bold">Battle Overlay OBS Scene Selection</label>
                 </div>
@@ -91,7 +91,7 @@
         <div class="dashboard" id="dashboard">
             <div id="view" class="flex-row">
                 <div id="player_1_dashboard" class="playerModule flex flex-col rounded-corner">
-                    <h2 class="heading rounded-corner-small">Player #1</h2>
+                    <h2 class="heading rounded-corner-small red">Player #1</h2>
                     <div class="scoreModule">
                         <div class="scoreDisplay">0</div>
                         <button class="scoreButton plus square" type='button'>➕</button>
@@ -263,7 +263,7 @@
                 </div>
 
                 <div id="player_2_dashboard" class="playerModule flex flex-col rounded-corner">
-                    <h2 class="heading rounded-corner-small">Player #2</h2>
+                    <h2 class="heading rounded-corner-small blue">Player #2</h2>
                     <div class="scoreModule">
                         <div class="scoreDisplay">0</div>
                         <button class="scoreButton plus square" type='button'>➕</button>
@@ -441,12 +441,13 @@
     </div>
 <!-- Standings -->
     <div class="rounded-corner">
+        <!-- <button class="minimizeButton square" target="standings">Minimize</button> -->
         <h1 class="heading rounded-corner-small">Standings</h1>
     </div>
     <div id="standings">
         <div class="flex flex-col rounded-corner">
             <p>
-                You can either select a TOM ...standings.html file to display a live set of tournament standings, or you can update them by hand here.
+                You can either select a TOM <span class="code">...standings.html</span> file to display a live set of tournament standings, or you can update them by hand here.
             </p>
             <div>
                 <label for="standingsSceneSelect" class="bold">Standings Overlay OBS Scene Selection</label>
@@ -455,16 +456,17 @@
         </div>
         <div class="flex flex-col rounded-corner">
             <label for="standingsImport" class="bold">Import from TOM</label>
-            <span class="font-small">(These will be in your 'TOM/data/reports' directory!)</span>
+            <span class="font-small">(These will be in your <span class="code">TOM/data/reports</span> directory!)</span>
             <div>
                 <button id="standingsImport">Choose File</button>
-                <span class="font-small">No file chosen</span>
+                <span id="standingsImportFile" class="font-small basic-ui">No file chosen</span>
+                <span id="standingsImportStatus" class="font-small bold"></span>
             </div>
         </div>
         <div class="flex flex-col rounded-corner">
             <!-- <div class="bold">Show top: <input type="number" min="1" max="32" size="2"></div> -->
             <template id="standings_template_item">
-                <li>
+                <li class="standingsModule">
                     <div class="nameModule">
                         <select class="playerSelect">
                             <optgroup label="Default">
@@ -486,13 +488,13 @@
     <div class="rounded-corner">
         <h1 class="heading rounded-corner-small">Players and Teams</h1>
     </div>
-    <div id="players2">
+    <div id="players">
         <div class="flex flex-col rounded-corner">
             <p>
-                You can either import a complete player list from a TOM ...roster.html file, or you can add player records by hand in the table below.
+                You can either import a complete player list from a TOM <span class="code">...roster.html</span> file, or you can add player records by hand in the table below.
             </p>
             <label for="playerImport" class="bold">Import from TOM</label>
-            <span class="font-small">(These will be in your 'TOM/data/reports' directory!)</span>
+            <span class="font-small">(These will be in your <span class="code">TOM/data/reports</span> directory!)</span>
             <div class="font-small">
                 <span>Abbreviate names (ex. 'Ash Ketchum' → 'Ash K.') for... </span> 
                 <label for="abbreviateJuniorsToggle">Juniors?</label>
@@ -503,7 +505,8 @@
                 <input id="abbreviateMastersToggle" class="generalSetting" type="checkbox">
             </div>
             <div>
-                <input id='playerImport' class="playerImport" placeholder="Import Player Roster from TOM..." type="file" accept=".html" pattern=".*(roster\.html)"><span id="playerImportStatus" class="font-small bold"></span>
+                <input id='playerImport' class="playerImport" placeholder="Import Player Roster from TOM..." type="file" accept=".html" pattern=".*(roster\.html)">
+                <span id="playerImportStatus" class="font-small bold"></span>
             </div>
         </div>
         <div class="flex flex-col rounded-corner">
@@ -513,7 +516,7 @@
                 <span class="font-small">Total players: <span id="playerTotal">0</span> (Filter matches: <span id="playerFilterTotal">0</span>)</span>
             </div>
         </div>
-        <div id="players">
+        <div id="players_dashboard">
             <table>
                 <tbody id="players_table">
                     <tr id="players_table_header" class="table-header">
