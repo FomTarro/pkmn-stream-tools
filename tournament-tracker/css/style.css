@@ -5,26 +5,14 @@
     torkoal-grey: #5E5E5E
  */
 
-.table-header {
-    position: sticky;
-    top: 0px;
-    z-index: 10;
-    background: white;
-}
-
-#players_table_header .rounded-corner-small {
-    height: 100%;
-    background: #ED533A;
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 1px 1px 10px #AAA;
-}
-
 body {
+    overflow-y: scroll;
     /* color: #333333; */
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+footer {
+    margin-top: 4em;
 }
 
 table {
@@ -192,6 +180,7 @@ select {
     background-color: antiquewhite;
     padding: 0.2em;
     box-shadow: 1px 1px 10px #AAA;
+    position: relative;
 }
 
 .code {
@@ -205,7 +194,22 @@ select {
     /* min-height: 11em;
     max-height: min-content;
     resize: vertical; */
-    margin-bottom: 4em;
+}
+
+.table-header {
+    position: sticky;
+    top: 0px;
+    z-index: 10;
+}
+
+#players_table_header .rounded-corner-small {
+    height: 100%;
+    background: #ED533A;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 1px 1px 10px #AAA;
 }
 
 #playerImport {
@@ -213,10 +217,24 @@ select {
 }
 
 .minimizeButton {
+    position: absolute;
+    top: 0;
+    left: 0;
     height: 100%;
     /* background: transparent; */
     border: 0px;
+    width: 2rem;
+    border-radius: 4px 0 0 4px;
+    border-right: 1px solid gainsboro;
 }
+.minimizeButton[status="on"]::before{
+    content: "▼";
+}
+
+.minimizeButton[status="off"]::before{
+    content: "▶";
+}
+
 
 .red {
     background: #ED533A

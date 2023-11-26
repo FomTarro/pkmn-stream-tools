@@ -239,6 +239,7 @@ function attachEventListeners(){
             const target = button.getAttribute('target');
             const element = document.getElementById(target);
             element.hidden = !element.hidden;
+            button.setAttribute('status', element.hidden ? 'off' : 'on');
         })
     }
 
@@ -294,7 +295,7 @@ function loadSourceSettings(){
     }
 
     const standingScene = document.getElementById('standingsSceneSelect');
-    standingScene.value = settings.standingScene ? settings.standingScene : '';
+    standingScene.value = settings.standingsScene ? settings.standingsScene : '';
     if(settings.standingsSources){
         const standingsSourceSelectors = document.getElementById('standingsList').querySelectorAll('.sourceSelect');
         for(let i = 0; i < standingsSourceSelectors.length; i++){
