@@ -196,3 +196,9 @@ input, select {
 #playerImport {
     margin-right: 1em;
 }
+
+.minimizeButton{
+    height: 100%;
+    /* background: transparent; */
+    border: 0px;
+}

@@ -13,6 +13,15 @@ function connectToOBS() {
     });
 }
 
+function createFromTemplates(){
+    const template = document.getElementById("standings_template_item");
+    for(let i = 0; i < 8; i++){
+        const item = template.content.cloneNode(true).querySelector("li");
+        const standingsList = document.getElementById("standingsList");
+        standingsList.appendChild(item);
+    }
+}
+
 function attachEventListeners(){
     // Hook up mon selection dropdowns
     const monModules = document.querySelectorAll('.monModule');
@@ -80,7 +89,10 @@ function attachEventListeners(){
         const playerSelector = nameModule.querySelector('.playerSelect');
         const sourceSelector = nameModule.querySelector('.sourceSelect');
         const updatePlayer = (e) => {
-            populatePlayerModule(nameModule.closest('.playerModule'), e.target.value);
+            const playerModule = nameModule.closest('.playerModule');
+            if(playerModule){
+                populatePlayerModule(playerModule, e.target.value);
+            }
             const playerName = e.target.value === PLAYER_NONE_VALUE ? "" : e.target.options[e.target.options.selectedIndex].innerText;
             setTextSourceText(sourceSelector.value, playerName);
         }
@@ -162,34 +174,34 @@ function attachEventListeners(){
 
     const playerImport = document.getElementById('playerImport');
     const playerImportStatus = document.getElementById('playerImportStatus');
-    playerImport.addEventListener('input', e => {
-        importPlayersFromTOM(e.target.files[0], 
-            {
-                abbreviateJuniors: document.getElementById('abbreviateJuniorsToggle').checked,
-                abbreviateSeniors: document.getElementById('abbreviateSeniorsToggle').checked,
-                abbreviateMasters: document.getElementById('abbreviateMastersToggle').checked,
-            },
-            (message) => {
-                playerImportStatus.classList.add('connected');
-                playerImportStatus.classList.remove('disconnected');
-                playerImportStatus.innerText = message;
-            },
-            (error) => {
-                playerImportStatus.classList.remove('connected');
-                playerImportStatus.classList.add('disconnected');
-                playerImportStatus.innerText = error;
-            }
-        );
-    })
+    playerImport.addEventListener('input', async e => {
+        try{
+            const newPlayers = await importPlayersFromTOM(e.target.files[0], 
+                {
+                    abbreviateJuniors: document.getElementById('abbreviateJuniorsToggle').checked,
+                    abbreviateSeniors: document.getElementById('abbreviateSeniorsToggle').checked,
+                    abbreviateMasters: document.getElementById('abbreviateMastersToggle').checked,
+                }
+            );
+            playerImportStatus.classList.add('connected');
+            playerImportStatus.classList.remove('disconnected');
+            playerImportStatus.innerText = `Successfully imported ${newPlayers.length} new players!`;
+        }catch(e){
+            playerImportStatus.classList.remove('connected');
+            playerImportStatus.classList.add('disconnected');
+            playerImportStatus.innerText = 'Selected file is either malformed or not the ...roster.html file!';
+        }
+    });
 
     // Save settings every time we change a source setting
-    const sourceSelectors = document.getElementsByClassName('sourceSelect');
-    for(let sourceSelector of sourceSelectors){
-        sourceSelector.addEventListener('change', e => {
+    const sourceSettings = document.getElementsByClassName('sourceSetting');
+    for(let setting of sourceSettings){
+        setting.addEventListener('change', e => {
             saveSourceSettings();
         });
     }
 
+    // Save every time we change a general setting
     const generalSettings = document.getElementsByClassName('generalSetting');
     for(let setting of generalSettings){
         setting.addEventListener('change', e => {
@@ -197,16 +209,13 @@ function attachEventListeners(){
         });
     }
 
-    // document.getElementById("fileWatcher").addEventListener('click', async e => {
-    //     const [fileHandle] = await window.showOpenFilePicker();
-    //     const file = await fileHandle.getFile();
-    //     console.log(file);
-    // })
-
     document.getElementById('connect').addEventListener('click', connectToOBS);
-    document.getElementById('sceneSelect').addEventListener('change', e => {
-        populateSourceOptionsFromScene(e.target.value);
-    });
+    const sceneSelectors = document.getElementsByClassName('sceneSelect');
+    for(let sceneSelector of sceneSelectors){
+        sceneSelector.addEventListener('change', e => {
+            populateSourceOptionsFromScene(sceneSelector.value, sceneSelector.getAttribute('target'));
+        });
+    };
 }
 
 const SOURCE_SETTINGS_KEY = "tournament_overlay_settings";
@@ -214,39 +223,69 @@ const SOURCE_SETTINGS_KEY = "tournament_overlay_settings";
 function loadSourceSettings(){
     var settings = JSON.parse(localStorage.getItem(SOURCE_SETTINGS_KEY));
     settings = settings ? settings : {
-        scene: '',
-        sources: []
+        battleScene: '',
+        battleSources: [],
+        standingsScene: '',
+        standingsSources: [],
     };
-    const scene = document.getElementById('sceneSelect');
-    scene.value = settings.scene;
-    const playerModules = document.getElementsByClassName('playerModule');
-    for(let i = 0; i < playerModules.length; i++){
-        const playerModule = playerModules[i];
-        const sources = settings.sources[i] ?  settings.sources[i] : [];
-        const sourceSelectors = [...playerModule.querySelectorAll('.sourceSelect')];
-        for(let j = 0; j < sourceSelectors.length; j++){
-            sourceSelectors[j].value = sources[j] ? sources[j] : '';
-            const event = new Event('change');
-            sourceSelectors[j].dispatchEvent(event);
+    const battleScene = document.getElementById('battleSceneSelect');
+    battleScene.value = settings.battleScene ? settings.battleScene : '';
+    if(settings.battleSources){
+        const playerModules = document.getElementsByClassName('playerModule');
+        for(let i = 0; i < playerModules.length; i++){
+            const playerModule = playerModules[i];
+            const sources = settings.battleSources[i] ?  settings.battleSources[i] : [];
+            const sourceSelectors = [...playerModule.querySelectorAll('.sourceSelect')];
+            for(let j = 0; j < sourceSelectors.length; j++){
+                sourceSelectors[j].value = sources[j] ? sources[j] : '';
+                const event = new Event('change');
+                sourceSelectors[j].dispatchEvent(event);
+            }
         }
     }
-    const event = new Event('change');
-    scene.dispatchEvent(event);
+
+    const standingScene = document.getElementById('standingsSceneSelect');
+    standingScene.value = settings.standingScene ? settings.standingScene : '';
+    if(settings.standingsSources){
+        const standingsSourceSelectors = document.getElementById('standingsList').querySelectorAll('.sourceSelect');
+        for(let i = 0; i < standingsSourceSelectors.length; i++){
+            const source = settings.standingsSources[i] ? settings.standingsSources[i] : '';
+            standingsSourceSelectors[i].value = source;
+            const event = new Event('change');
+            standingsSourceSelectors[i].dispatchEvent(event);
+        }
+    }
+
+    const sceneSelectors = document.getElementsByClassName('sceneSelect');
+    for(let sceneSelector of sceneSelectors){
+        const event = new Event('change');
+        sceneSelector.dispatchEvent(event);
+    }
 }
 
 function saveSourceSettings(){
     const settings = {
-        scene: undefined,
-        sources: []
+        battleScene: undefined,
+        battleSources: [],
+        standingsScene: undefined,
+        standingsSources: []
     };
-    const scene = document.getElementById('sceneSelect').value;
-    settings.scene = scene;
+    const scene = document.getElementById('battleSceneSelect').value;
+    settings.battleScene = scene;
     const playerModules = document.getElementsByClassName('playerModule');
     for(let playerModule of playerModules){
         const sourceSelectors = [...playerModule.querySelectorAll('.sourceSelect')];
         const sources = sourceSelectors.map(node => node.value);
-        settings.sources.push(sources);
+        settings.battleSources.push(sources);
     }
+
+    const standingsScene = document.getElementById('standingsSceneSelect').value;
+    settings.standingsScene = standingsScene;
+    const standingsSources = document.getElementById('standingsList').querySelectorAll('.sourceSelect');
+    for(let source of standingsSources){
+        settings.standingsSources.push(source.value)
+    }
+
     localStorage.setItem(SOURCE_SETTINGS_KEY, JSON.stringify(settings));
 }
 
@@ -273,16 +312,31 @@ function saveGeneralSettings(){
     localStorage.setItem(GENERAL_SETTINGS_KEY, JSON.stringify(settings));
 }
 
-window.onload = async() =>{
+window.onload = async() => {
+    createFromTemplates();
     attachEventListeners();
     checkConnectionStatus();
-    connectToOBS();
     loadGeneralSettings();
     loadSourceSettings();
     loadPlayerList();
+    connectToOBS();
 }
 
-document.getElementById('temp').addEventListener('click', async e => {
-    [fileHandle] = await window.showOpenFilePicker();
-    const interval = watchFile(fileHandle, (content) => {console.log(content)});
+let standingsInterval = undefined;
+document.getElementById('standingsImport').addEventListener('click', async e => {
+    [fileHandle] = await window.showOpenFilePicker({
+        id: 'tomStandings',
+        types: [
+            {
+                accept: {
+                    'text/plain': ".html"
+                }
+            }
+        ]
+    });
+    window.clearInterval(standingsInterval);
+    importStandingsFromTOM(await fileHandle.getFile())
+    standingsInterval = watchFile(fileHandle, (content) => {
+        importStandingsFromTOM(content)
+    });
 })

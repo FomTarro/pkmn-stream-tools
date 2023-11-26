@@ -3,6 +3,7 @@
  * @typedef {Object} Player
  * @property {string} uuid - UUID for the player row
  * @property {string} name - Name of the player.
+ * @property {string[]} aliases - Alternate names of the player.
  * @property {string} mon1
  * @property {string} item1
  * @property {string} mon2
@@ -78,6 +79,7 @@ function savePlayerList() {
 function addPlayer(existingData) {
     const playerData = existingData ? existingData : {
         uuid: uuidv4(),
+        aliases: []
     };
     PLAYER_LIST.push(playerData);
 
@@ -206,45 +208,56 @@ function populatePlayerModule(element, uuid) {
  * @param {*} onComplete 
  * @param {*} onError 
  */
-function importPlayersFromTOM(file, args, onComplete, onError){
-    // setting up the reader
-    var reader = new FileReader();
-    reader.readAsText(file,'UTF-8');
-    const promise = loadFile(file, parseStandingsFile).then(r => console.log(r)).catch(e => console.error(e));
-    // here we tell the reader what to do when it's done reading...
-    reader.onload = readerEvent => {
-        const players = [];
-        const content = readerEvent.target.result;
-        var el = document.createElement('html');
-        el.innerHTML = content;
-        if(!content.includes('Player Roster')){
-            console.warn('Uploaded file is not the roster file...');
-            onError('Selected file is either malformed or not the ...roster.html file!');
-        }else{
-            for(const table of el.getElementsByClassName('players_table')){
-                for(const row of table.querySelectorAll('tr')){
-                    const cells = row.querySelectorAll('td');
-                    if(cells.length >= 2){
-                        const name = 
-                        ((args.abbreviateJuniors && cells[2].innerText === 'JR')
-                        || (args.abbreviateSeniors && cells[2].innerText === 'SR')
-                        || (args.abbreviateMasters && cells[2].innerText === 'MA')) ?
-                        cells[1].innerText.substring(0, cells[1].innerText.indexOf(' ')+2) + '.' : 
-                        cells[1].innerText;
-                        players.push({
-                            uuid: uuidv4(),
-                            name: name
-                        });
-                    }
-                }
-            }
-            const currentPlayerNames = PLAYER_LIST.map(player => player.name);
-            const filtered = players.filter(player => !currentPlayerNames.includes(player.name));
-            for(const player of filtered){
-                addPlayer(player);
-            }
-            onComplete(`Successfully imported ${filtered.length} new players!`);
+async function importPlayersFromTOM(file, args){
+    const players = [];
+    const content = await loadFile(file)
+    if(!content.includes('Player Roster')){
+        console.warn('Uploaded file is not the roster file...');
+        throw 'Selected file is either malformed or not the ...roster.html file!'
+    }else{
+        const roster = TOM.parseRosterFile(content);
+        for(let player of roster.players){
+            const name = 
+            ((args.abbreviateJuniors && player.division === 'JR')
+            || (args.abbreviateSeniors && player.division === 'SR')
+            || (args.abbreviateMasters && player.division === 'MA')) ?
+            player.name.substring(0, player.name.indexOf(' ')+2)+'.' : 
+            player.name;
+            players.push({
+                uuid: uuidv4(),
+                name: name,
+                aliases: [player.name]
+            });
         }
-        el.remove();
-   }
+    }
+    const currentPlayerNames = PLAYER_LIST.map(player => player.name);
+    const filtered = players.filter(player => !currentPlayerNames.includes(player.name));
+    for(const player of filtered){
+        addPlayer(player);
+    }
+    return filtered;
+}
+
+/**
+ * 
+ * @param {File} file 
+ * @param {*} args 
+ */
+async function importStandingsFromTOM(file, args){
+    const content = await loadFile(file);
+    const standings = TOM.parseStandingsFile(content);
+    const standingsList = document.getElementById('standingsList')
+    const standingModules = standingsList.querySelectorAll('.playerSelect');
+    for(let i = 0; i < standingModules.length; i++){
+        if(standings.allStandings.length > i){
+            // TODO: this is kind of a kludge; necessary because we can abbreviate names even when TOM doesn't...
+            standingModules[i].value = PLAYER_LIST.find(player => {
+                return player.aliases?.includes(standings.allStandings[i].name) 
+                || player.name.includes(standings.allStandings[i].name)
+            })?.uuid;
+            const event = new Event('change');
+            standingModules[i].dispatchEvent(event);
+        }
+    }
+
 }

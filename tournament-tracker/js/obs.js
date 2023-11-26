@@ -31,48 +31,58 @@ function populateScenesOptionsFromOBS(){
  * Populates the auto-complete suggestions on the DOM with the sources pulled from the given scene.
  * @param {string} sceneName - The name of the scene to pull sources from
  */
-function populateSourceOptionsFromScene(sceneName){
-    const browserSourceOptions = document.getElementById("browserSourceOptions");
-    browserSourceOptions.innerHTML = '';
-    getBrowserSourcesInScene(sceneName).then(list => {
-        list.forEach(source => {
-            const option = document.createElement('option');
-            option.textContent = source;
-            browserSourceOptions.appendChild(option);
-        })
-    });
+function populateSourceOptionsFromScene(sceneName, target){
+    const browserSourceOptions = document.getElementById(`browserSourceOptions_${target}`);
+    if(browserSourceOptions){
+        browserSourceOptions.innerHTML = '';
+        getBrowserSourcesInScene(sceneName).then(list => {
+            list.forEach(source => {
+                const option = document.createElement('option');
+                option.textContent = source;
+                browserSourceOptions.appendChild(option);
+            })
+        });
+    }
 
-    const textSourceOptions = document.getElementById("textSourceOptions");
-    textSourceOptions.innerHTML = '';
-    getTextSourcesInScene(sceneName).then(list => {
-        list.forEach(source => {
-            const option = document.createElement('option');
-            option.textContent = source;
-            textSourceOptions.appendChild(option);
-        })
-    });
+    const textSourceOptions = document.getElementById(`textSourceOptions_${target}`);
+    if(textSourceOptions){
+        textSourceOptions.innerHTML = '';
+        getTextSourcesInScene(sceneName).then(list => {
+            list.forEach(source => {
+                const option = document.createElement('option');
+                option.textContent = source;
+                textSourceOptions.appendChild(option);
+            })
+        });
+    }
     saveSourceSettings();
 }
 
 obs.on('Identified', () => {
     populateScenesOptionsFromOBS();
-    const sceneSelector = document.getElementById('sceneSelect');
-    if(sceneSelector.value){
-        populateSourceOptionsFromScene(sceneSelector.value);
+    const sceneSelectors = document.getElementsByClassName('sceneSelect');
+    for(let sceneSelector of sceneSelectors){
+        if(sceneSelector.value){
+            populateSourceOptionsFromScene(sceneSelector.value, sceneSelector.getAttribute('target'));
+        }
     }
 });
 
 obs.on('SceneItemRemoved', () => {
-    const sceneSelector = document.getElementById('sceneSelect');
-    if(sceneSelector.value){
-        populateSourceOptionsFromScene(sceneSelector.value);
+    const sceneSelectors = document.getElementsByClassName('sceneSelect');
+    for(let sceneSelector of sceneSelectors){
+        if(sceneSelector.value){
+            populateSourceOptionsFromScene(sceneSelector.value, sceneSelector.getAttribute('target'));
+        }
     }
 });
 
 obs.on('SceneItemAdded', () => {
-    const sceneSelector = document.getElementById('sceneSelect');
-    if(sceneSelector.value){
-        populateSourceOptionsFromScene(sceneSelector.value);
+    const sceneSelectors = document.getElementsByClassName('sceneSelect');
+    for(let sceneSelector of sceneSelectors){
+        if(sceneSelector.value){
+            populateSourceOptionsFromScene(sceneSelector.value, sceneSelector.getAttribute('target'));
+        }
     }
 });
 
