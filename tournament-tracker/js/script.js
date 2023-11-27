@@ -167,7 +167,7 @@ function attachEventListeners(){
     const resetAllButton = document.querySelector('.resetAllButton');
     resetAllButton.addEventListener('click', e => {
         if(window.confirm("Do you really want to reset the round?\nThis will reset both players to 'None' and set both scores to 0.")){
-            const playerSelectors = document.querySelectorAll('.playerSelect');
+            const playerSelectors = document.getElementById('battle').querySelectorAll('.playerSelect');
             // Set both players to 'None'
             for(let playerSelector of playerSelectors){
                 playerSelector.value = PLAYER_NONE_VALUE;
