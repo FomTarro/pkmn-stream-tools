@@ -10,624 +10,385 @@
         <meta property="og:description" content="Enhance your Pokémon Tournament's stream overlays with team displays and real-time standings using this online OBS plugin!">
         <link rel="icon" type="image/x-icon" href="favicon.ico">
         <link rel="stylesheet" href="./css/style.css">
-        <datalist id="sceneOptions">
-            <!-- Scenes in OBS -->
-        </datalist>
-        <datalist id="browserSourceOptions_battle">
-            <!-- Browser Sources in OBS -->
-        </datalist>
-        <datalist id="textSourceOptions_battle">
-            <!-- Text Sources in OBS -->
-        </datalist>
-        <datalist id="textSourceOptions_standings">
-            <!-- Text Sources in OBS for the Standings Scene -->
-        </datalist>
-        <datalist id="pokemonOptions">
-            <!-- Every single Pokemon -->
-        </datalist>
-        <datalist id="itemOptions">
-            <!-- Every single Hold Item -->
-        </datalist>
     </head>
     <body>
-    <!-- README and OBS Settings -->
-        <div id="general">
-            <div class="rounded-corner">
-                <h1 class="heading rounded-corner-small">TourKOAL - v0.1.3<button class="minimizeButton" title="Expand/Collapse the About Section" target="generalContent" status="on"></button></h1>
-            </div>
-            <div id="generalContent">
-                <div id="readme" class="rounded-corner">
-                    <div>
-                        <p>
-                            Welcome to <b>TourKOAL</b> (<b>Tour</b>nament <b>K</b>nowledge and <b>O</b>verlay <b>A</b>ssistant for <b>L</b>ivestreams)!
-                        </p>
-                        <p>
-                            The goal of this tool is to easily compile player and team information such that it can be quickly displayed on the fly during tournament matches, 
-                            helping you build a professional-quality overlay for your broadcast with as little manual work as possible. 
-                        </p>
-                        <p>
-                            No longer will you need to scramble through hundreds of image files by hand as players reveal which of their Pokemon they brought to the game, 
-                            nor will you need to manually adjust OBS sources when items are consumed or Pokemon faint! 
-                        </p>
-                            <h3>Getting Started</h3>
+        <div class="flex-col container">
+            <div>
+            <!-- README and OBS Settings -->
+                <div id="general">
+                    <div class="rounded-corner">
+                        <h1 class="heading rounded-corner-small">TourKOAL - v0.1.3<button class="minimizeButton" title="Expand/Collapse the About Section" target="generalContent" status="on"></button></h1>
                     </div>
-                    <ol>
-                        <li>Make sure that your OBS WebSocket Server is Enabled (accessed via Tools → WebSocket Server Settings).</li>
-                        <ul>
-                            <li>For OBS Versions >28.0.0, OBS WebSocket Server is built-in.</li>
-                            <li>For older OBS Versions, you can <a href="https://github.com/obsproject/obs-websocket/releases">download a plugin.</a></li>
-                        </ul>
-                        <li><a href="#obs_settings">Connect to OBS</a>.
-                        <li>Choose which <a href="#battle">OBS Scene</a> your Tournament Overlay is in.</li>
-                        <li>Pick <a href="#battle">sources in that scene to output to</a> (Pokémon icons are Browser sources, everything else is a Text source).</li>
-                        <li>Enter player data in the <a href="#players">table at the bottom of the page</a>, or import your tournament roster from a TOM file.</li>
-                        <li>You're all set! <a href="#battle">Pick your players from the dropdown</a> and easily display information about their team!</li>
-                    </ol>
-                </div>
-                <div id="obs_settings" class="flex flex-col rounded-corner">
-                    <div class="flex flex-col">
-                        <label for="connect" class="bold">OBS Status: <span id="obs_status" class="disconnected">Disconnected</span></label>
-                        <form>
-                            <input id="address" placeholder="Address" type="text" minlength="7" maxlength="15" value="localhost" pattern="^(localhost|((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5]))$" required>
-                            <input id="port" placeholder="Port" type="number" min="1" max="65535" size=5 value="4455">
-                            <input id="password" placeholder="Password (optional)" type="password">
-                            <button id="connect" type='button'>Connect to OBS</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <!-- Battle -->
-        <div id="battle">
-            <div class="rounded-corner">
-                <h1 class="heading rounded-corner-small">Battle<button class="minimizeButton" title="Expand/Collapse the Battle Dashboard" target="battleContent" status="on"></button></h1>
-            </div>
-            <div id="battleContent">
-                <div class="flex flex-col rounded-corner">
-                    <div id="obs_scene_selection" class="flex flex-col">
-                        <div>
-                            <label for="battleSceneSelect" class="bold">Battle Overlay OBS Scene Selection</label>
+                    <div id="generalContent">
+                        <div id="readme" class="rounded-corner">
+                            <div>
+                                <p>
+                                    Welcome to <b>TourKOAL</b> (<b>Tour</b>nament <b>K</b>nowledge and <b>O</b>verlay <b>A</b>ssistant for <b>L</b>ivestreams)!
+                                </p>
+                                <p>
+                                    The goal of this tool is to easily compile player and team information such that it can be quickly displayed on the fly during tournament matches, 
+                                    helping you build a professional-quality overlay for your broadcast with as little manual work as possible. 
+                                </p>
+                                <p>
+                                    No longer will you need to scramble through hundreds of image files by hand as players reveal which of their Pokémon they brought to the game, 
+                                    nor will you need to manually adjust OBS sources when items are consumed or Pokémon faint! 
+                                </p>
+                                    <h3>Getting Started</h3>
+                            </div>
+                            <ol>
+                                <li>Make sure that your OBS WebSocket Server is Enabled (accessed via Tools → WebSocket Server Settings).</li>
+                                <ul>
+                                    <li>For OBS Versions <span class="code">28.0.0</span> and above, OBS WebSocket Server is built-in.</li>
+                                    <li>For older OBS Versions, you can <a href="https://github.com/obsproject/obs-websocket/releases">download a plugin</a>.</li>
+                                </ul>
+                                <li><a href="#obs_settings">Connect to OBS</a>.
+                                <li>Choose which <a href="#battle">OBS Scene</a> your Tournament Overlay is in.</li>
+                                <li>Pick <a href="#battle">sources in that scene to output to</a> (Pokémon icons are Browser sources, everything else is a Text source).</li>
+                                <li>Enter player data in the <a href="#players">table at the bottom of the page</a>, or import your tournament roster from a TOM file.</li>
+                                <li>You're all set! <a href="#battle">Pick your players from the dropdown</a> and easily display information about their team!</li>
+                            </ol>
                         </div>
-                        <input id="battleSceneSelect" class="sceneSelect sourceSetting" target="battle" placeholder="Select OBS source..." autoComplete="on" list="sceneOptions" type="text"/> 
+                        <div id="obs_settings" class="flex flex-col rounded-corner">
+                            <div class="flex flex-col">
+                                <label for="connect" class="bold">OBS Status: <span id="obs_status" class=" bold disconnected">Disconnected</span></label>
+                                <form>
+                                    <input id="address" placeholder="Address" type="text" minlength="7" maxlength="15" value="localhost" pattern="^(localhost|((\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.){3}(\d{1,2}|1\d\d|2[0-4]\d|25[0-5]))$" required autocomplete="off">
+                                    <input id="port" placeholder="Port" type="number" min="1" max="65535" size=5 value="4455">
+                                    <input id="password" placeholder="Password (optional)" type="password" autocomplete="current-password">
+                                    <button id="connect" type='button'>Connect to OBS</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="dashboard" id="dashboard">
-                    <div id="view" class="flex-row">
-                        <div id="player_1_dashboard" class="playerModule flex flex-col rounded-corner">
-                            <h2 class="heading rounded-corner-small red">Player #1</h2>
-                            <div class="scoreModule">
-                                <div class="scoreDisplay">0</div>
-                                <button class="scoreButton plus square" type='button'>➕</button>
-                                <button class="scoreButton minus square" type='button'>➖</button>
-                                → <input class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="textSourceOptions_battle"/>
+            <!-- Battle -->
+                <div id="battle">
+                    <div class="rounded-corner">
+                        <h1 class="heading rounded-corner-small">Battle<button class="minimizeButton" title="Expand/Collapse the Battle Dashboard" target="battleContent" status="on"></button></h1>
+                    </div>
+                    <div id="battleContent">
+                        <div class="flex flex-col rounded-corner">
+                            <div id="obs_scene_selection" class="flex flex-col">
+                                <div>
+                                    <label for="battleSceneSelect" class="bold">Battle Overlay OBS Scene Selection</label>
+                                </div>
+                                <input id="battleSceneSelect" class="sceneSelect sourceSetting" target="battle" placeholder="Select OBS source..." autoComplete="on" list="sceneOptions" type="text"/> 
+                            </div>
+                        </div>
+                        <div class="dashboard" id="dashboard">
+                            <div id="view" class="flex-row">
+                                <div id="player_1_dashboard" class="playerModule flex flex-col rounded-corner">
+                                    <h2 class="heading rounded-corner-small red">Player #1</h2>
+                                    <div class="scoreModule">
+                                        <div class="scoreDisplay">0</div>
+                                        <button class="scoreButton plus square" type='button'>➕</button>
+                                        <button class="scoreButton minus square" type='button'>➖</button>
+                                        → <input id="p1_score_obs_output" class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="textSourceOptions_battle"/>
+                                    </div>
+                                    <div id="player_1_name">
+                                        <div>
+                                            <label for="player_1_select" class="bold">Player #1</label>
+                                        </div>
+                                        <div class="nameModule">
+                                            <select class="playerSelect" id="player_1_select">
+                                                <optgroup label="Default">
+                                                    <option>None</option>
+                                                </optgroup>
+                                                <optgroup label="Players" class="optionContent">
+
+                                                </optgroup>
+                                            </select> → 
+                                            <input id="p1_name_obs_output" class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="textSourceOptions_battle"/>
+                                        </div>
+                                    </div>
+                                    <!-- Mon Modules Go Here  -->
+                                    <button class="resetButton" type='button'>Reset All Mons</button>
+                                </div>
+
+                                <div id="player_2_dashboard" class="playerModule flex flex-col rounded-corner">
+                                    <h2 class="heading rounded-corner-small blue">Player #2</h2>
+                                    <div class="scoreModule">
+                                        <div class="scoreDisplay">0</div>
+                                        <button class="scoreButton plus square" type='button'>➕</button>
+                                        <button class="scoreButton minus square" type='button'>➖</button>
+                                        → <input id="p2_score_obs_output" class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="textSourceOptions_battle"/>
+                                    </div>
+                                    <div id="player_2_name">
+                                        <div>
+                                            <label for="player_2_select" class="bold">Player #2</label>
+                                        </div>
+                                        <div class="nameModule">
+                                            <select class="playerSelect" id="player_2_select">
+                                                <optgroup label="Default">
+                                                    <option>None</option>
+                                                </optgroup>
+                                                <optgroup label="Players" class="optionContent">
+
+                                                </optgroup>
+                                            </select> → 
+                                            <input id="p2_name_obs_output" class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="textSourceOptions_battle"/>
+                                        </div>
+                                    </div>
+                                    <!-- Mon Modules Go Here -->
+                                    <button class="resetButton" type='button'>Reset All Mons</button>
+                                </div>
+                            </div>
+                            <div class="flex flex-col rounded-corner">
+                                <button class="resetAllButton" type='button'>Reset All Mons, Players and Scores</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!-- Standings -->
+                <div id="standings">
+                    <div class="rounded-corner">
+                        <h1 class="heading rounded-corner-small">Standings<button class="minimizeButton" title="Expand/Collapse the Standings Dashboard" target="standingsContent" status="on"></button></h1>
+                    </div>
+                    <div id="standingsContent">
+                        <div class="flex flex-col rounded-corner">
+                            <p>
+                                You can either select a TOM <span class="code">...standings.html</span> file to display a live set of tournament standings, or you can update them by hand here.
+                            </p>
+                            <div>
+                                <label for="standingsSceneSelect" class="bold">Standings Overlay OBS Scene Selection</label>
+                            </div>
+                            <input id="standingsSceneSelect" class="sceneSelect sourceSetting" target="standings" placeholder="Select OBS scene..." autoComplete="on" list="sceneOptions" type="text"/>
+                        </div>
+                        <div class="flex flex-col rounded-corner">
+                            <label for="standingsImport" class="bold">Import from TOM</label>
+                            <span class="font-small">(These will be in your <span class="code">TOM/data/reports</span> directory!)</span>
+                            <div>
+                                <button id="standingsImport">Choose File</button>
+                                <span id="standingsImportFile" class="font-small basic-ui">No file chosen</span>
+                                <span id="standingsImportStatus" class="font-small bold"></span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col rounded-corner">
+                            <!-- <div class="bold">Show top: <input type="number" min="1" max="32" size="2"></div> -->
+                            <ol id="standingsList">
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            <!-- Table -->
+                <div id="players">
+                    <div class="rounded-corner">
+                        <h1 class="heading rounded-corner-small">Players and Teams<button class="minimizeButton" title="Expand/Collapse the Players Dashboard" target="playersContent" status="on"></button></h1>
+                    </div>
+                    <div id="playersContent">
+                        <div class="flex flex-col rounded-corner">
+                            <p>
+                                You can either import a complete player list from a TOM <span class="code">...roster.html</span> file, or you can add player records by hand in the table below.
+                            </p>
+                            <label for="playerImport" class="bold">Import from TOM</label>
+                            <span class="font-small">(These will be in your <span class="code">TOM/data/reports</span> directory!)</span>
+                            <div class="font-small">
+                                <span>Abbreviate names (ex. 'Ash Ketchum' → 'Ash K.') for... </span> 
+                                <label for="abbreviateJuniorsToggle">Juniors?</label>
+                                <input id="abbreviateJuniorsToggle" class="generalSetting" type="checkbox">
+                                <label for="abbreviateSeniorsToggle">Seniors?</label>
+                                <input id="abbreviateSeniorsToggle" class="generalSetting" type="checkbox">
+                                <label for="abbreviateMastersToggle">Masters?</label>
+                                <input id="abbreviateMastersToggle" class="generalSetting" type="checkbox">
                             </div>
                             <div>
-                                <div>
-                                    <label for="player_1_select" class="bold">Player #1</label>
-                                </div>
-                                <div class="nameModule">
-                                    <select class="playerSelect" id="player_1_select">
-                                        <optgroup label="Default">
-                                            <option>None</option>
-                                        </optgroup>
-                                        <optgroup label="Players" class="optionContent">
-
-                                        </optgroup>
-                                    </select> → 
-                                    <input class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="textSourceOptions_battle"/>
-                                </div>
+                                <input id='playerImport' class="playerImport" placeholder="Import Player Roster from TOM..." type="file" accept=".html" pattern=".*(roster\.html)">
+                                <span id="playerImportStatus" class="font-small bold"></span>
                             </div>
-
-                            <div class="monModule">
-                                <div class="flex">
-                                    <iframe class="monIcon" scrolling="no"></iframe>
-                                    <div class="monInputs">
-                                        <div>
-                                            <label class="bold">Mon #1</label>
-                                        </div>
-                                        <div>
-                                            <select class="monSelect">
-                                                <optgroup label="Default">
-                                                    <option class="monOption">None</option>
-                                                </optgroup>
-                                                <optgroup label="Mons" class="optionContent">
-                                                    <option class="monOption">Mon1</option>
-                                                    <option class="monOption">Mon2</option>
-                                                    <option class="monOption">Mon3</option>
-                                                    <option class="monOption">Mon4</option>
-                                                    <option class="monOption">Mon5</option>
-                                                    <option class="monOption">Mon6</option>
-                                                </optgroup>
-                                            </select> → 
-                                            <input class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions_battle"/>
-                                        </div>
-                                        <div>
-                                            <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
-                                        </div>
-                                        <div class="font-small">
-                                            <label>Fainted?</label>
-                                            <input class="faintedToggle" type="checkbox">
-                                            <label>Item Used?</label>
-                                            <input class="itemToggle" type="checkbox">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="monModule">
-                                <div class="flex">
-                                    <iframe class="monIcon" scrolling="no"></iframe>
-                                    <div class="monInputs">
-                                        <div>
-                                            <label class="bold">Mon #2</label>
-                                        </div>
-                                        <div>
-                                            <select class="monSelect">
-                                                <optgroup label="Default">
-                                                    <option class="monOption">None</option>
-                                                </optgroup>
-                                                <optgroup label="Mons" class="optionContent">
-                                                    <option class="monOption">Mon1</option>
-                                                    <option class="monOption">Mon2</option>
-                                                    <option class="monOption">Mon3</option>
-                                                    <option class="monOption">Mon4</option>
-                                                    <option class="monOption">Mon5</option>
-                                                    <option class="monOption">Mon6</option>
-                                                </optgroup>
-                                            </select> → 
-                                            <input class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions_battle"/>
-                                        </div>
-                                        <div>
-                                            <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
-                                        </div>
-                                        <div class="font-small">
-                                            <label>Fainted?</label>
-                                            <input class="faintedToggle" type="checkbox">
-                                            <label>Item Used?</label>
-                                            <input class="itemToggle" type="checkbox">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="monModule">
-                                <div class="flex">
-                                    <iframe class="monIcon" scrolling="no"></iframe>
-                                    <div class="monInputs">
-                                        <div>
-                                            <label class="bold">Mon #3</label>
-                                        </div>
-                                        <div>
-                                            <select class="monSelect">
-                                                <optgroup label="Default">
-                                                    <option class="monOption">None</option>
-                                                </optgroup>
-                                                <optgroup label="Mons" class="optionContent">
-                                                    <option class="monOption">Mon1</option>
-                                                    <option class="monOption">Mon2</option>
-                                                    <option class="monOption">Mon3</option>
-                                                    <option class="monOption">Mon4</option>
-                                                    <option class="monOption">Mon5</option>
-                                                    <option class="monOption">Mon6</option>
-                                                </optgroup>
-                                            </select> → 
-                                            <input class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions_battle"/>
-                                        </div>
-                                        <div>
-                                            <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
-                                        </div>
-                                        <div class="font-small">
-                                            <label>Fainted?</label>
-                                            <input class="faintedToggle" type="checkbox">
-                                            <label>Item Used?</label>
-                                            <input class="itemToggle" type="checkbox">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="monModule">
-                                <div class="flex">
-                                    <iframe class="monIcon" scrolling="no"></iframe>
-                                    <div class="monInputs">
-                                        <div>
-                                            <label class="bold">Mon #4</label>
-                                        </div>
-                                        <div>
-                                            <select class="monSelect">
-                                                <optgroup label="Default">
-                                                    <option class="monOption">None</option>
-                                                </optgroup>
-                                                <optgroup label="Mons" class="optionContent">
-                                                    <option class="monOption">Mon1</option>
-                                                    <option class="monOption">Mon2</option>
-                                                    <option class="monOption">Mon3</option>
-                                                    <option class="monOption">Mon4</option>
-                                                    <option class="monOption">Mon5</option>
-                                                    <option class="monOption">Mon6</option>
-                                                </optgroup>
-                                            </select> → 
-                                            <input class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions_battle"/>
-                                        </div>
-                                        <div>
-                                            <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
-                                        </div>
-                                        <div class="font-small">
-                                            <label>Fainted?</label>
-                                            <input class="faintedToggle" type="checkbox">
-                                            <label>Item Used?</label>
-                                            <input class="itemToggle" type="checkbox">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button class="resetButton" type='button'>Reset All Mons</button>
                         </div>
-
-                        <div id="player_2_dashboard" class="playerModule flex flex-col rounded-corner">
-                            <h2 class="heading rounded-corner-small blue">Player #2</h2>
-                            <div class="scoreModule">
-                                <div class="scoreDisplay">0</div>
-                                <button class="scoreButton plus square" type='button'>➕</button>
-                                <button class="scoreButton minus square" type='button'>➖</button>
-                                → <input class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="textSourceOptions_battle"/>
-                            </div>
+                        <div class="flex flex-col rounded-corner">
+                            <label class="bold" for="playerFilter">Filter Player List</label>
                             <div>
-                                <div>
-                                    <label for="player_2_select" class="bold">Player #2</label>
-                                </div>
-                                <div class="nameModule">
-                                    <select class="playerSelect" id="player_2_select">
-                                        <optgroup label="Default">
-                                            <option>None</option>
-                                        </optgroup>
-                                        <optgroup label="Players" class="optionContent">
-
-                                        </optgroup>
-                                    </select> → 
-                                    <input class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="textSourceOptions_battle"/>
-                                </div>
+                                <input id='playerFilter' class="playerFilter" placeholder="Filter by Player Name..." type="text">
+                                <span class="font-small">Total players: <span id="playerTotal">0</span> (Filter matches: <span id="playerFilterTotal">0</span>)</span>
                             </div>
-
-                            <div class="monModule">
-                                <div class="flex">
-                                    <iframe class="monIcon" scrolling="no"></iframe>
-                                    <div class="monInputs">
-                                        <div>
-                                            <label class="bold">Mon #1</label>
-                                        </div>
-                                        <div>
-                                            <select class="monSelect">
-                                                <optgroup label="Default">
-                                                    <option class="monOption">None</option>
-                                                </optgroup>
-                                                <optgroup label="Mons" class="optionContent">
-                                                    <option class="monOption">Mon1</option>
-                                                    <option class="monOption">Mon2</option>
-                                                    <option class="monOption">Mon3</option>
-                                                    <option class="monOption">Mon4</option>
-                                                    <option class="monOption">Mon5</option>
-                                                    <option class="monOption">Mon6</option>
-                                                </optgroup>
-                                            </select> → 
-                                            <input class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions_battle"/>
-                                        </div>
-                                        <div>
-                                            <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
-                                        </div>
-                                        <div class="font-small">
-                                            <label>Fainted?</label>
-                                            <input class="faintedToggle" type="checkbox">
-                                            <label>Item Used?</label>
-                                            <input class="itemToggle" type="checkbox">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="monModule">
-                                <div class="flex">
-                                    <iframe class="monIcon" scrolling="no"></iframe>
-                                    <div class="monInputs">
-                                        <div>
-                                            <label class="bold">Mon #2</label>
-                                        </div>
-                                        <div>
-                                            <select class="monSelect">
-                                                <optgroup label="Default">
-                                                    <option class="monOption">None</option>
-                                                </optgroup>
-                                                <optgroup label="Mons" class="optionContent">
-                                                    <option class="monOption">Mon1</option>
-                                                    <option class="monOption">Mon2</option>
-                                                    <option class="monOption">Mon3</option>
-                                                    <option class="monOption">Mon4</option>
-                                                    <option class="monOption">Mon5</option>
-                                                    <option class="monOption">Mon6</option>
-                                                </optgroup>
-                                            </select> → 
-                                            <input class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions_battle"/>
-                                        </div>
-                                        <div>
-                                            <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
-                                        </div>
-                                        <div class="font-small">
-                                            <label>Fainted?</label>
-                                            <input class="faintedToggle" type="checkbox">
-                                            <label>Item Used?</label>
-                                            <input class="itemToggle" type="checkbox">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="monModule">
-                                <div class="flex">
-                                    <iframe class="monIcon" scrolling="no"></iframe>
-                                    <div class="monInputs">
-                                        <div>
-                                            <label class="bold">Mon #3</label>
-                                        </div>
-                                        <div>
-                                            <select class="monSelect">
-                                                <optgroup label="Default">
-                                                    <option class="monOption">None</option>
-                                                </optgroup>
-                                                <optgroup label="Mons" class="optionContent">
-                                                    <option class="monOption">Mon1</option>
-                                                    <option class="monOption">Mon2</option>
-                                                    <option class="monOption">Mon3</option>
-                                                    <option class="monOption">Mon4</option>
-                                                    <option class="monOption">Mon5</option>
-                                                    <option class="monOption">Mon6</option>
-                                                </optgroup>
-                                            </select> → 
-                                            <input class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions_battle"/>
-                                        </div>
-                                        <div>
-                                            <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
-                                        </div>
-                                        <div class="font-small">
-                                            <label>Fainted?</label>
-                                            <input class="faintedToggle" type="checkbox">
-                                            <label>Item Used?</label>
-                                            <input class="itemToggle" type="checkbox">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="monModule">
-                                <div class="flex">
-                                    <iframe class="monIcon" scrolling="no"></iframe>
-                                    <div class="monInputs">
-                                        <div>
-                                            <label class="bold">Mon #4</label>
-                                        </div>
-                                        <div>
-                                            <select class="monSelect">
-                                                <optgroup label="Default">
-                                                    <option class="monOption">None</option>
-                                                </optgroup>
-                                                <optgroup label="Mons" class="optionContent">
-                                                    <option class="monOption">Mon1</option>
-                                                    <option class="monOption">Mon2</option>
-                                                    <option class="monOption">Mon3</option>
-                                                    <option class="monOption">Mon4</option>
-                                                    <option class="monOption">Mon5</option>
-                                                    <option class="monOption">Mon6</option>
-                                                </optgroup>
-                                            </select> → 
-                                            <input class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions_battle"/>
-                                        </div>
-                                        <div>
-                                            <input class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
-                                        </div>
-                                        <div class="font-small">
-                                            <label>Fainted?</label>
-                                            <input class="faintedToggle" type="checkbox">
-                                            <label>Item Used?</label>
-                                            <input class="itemToggle" type="checkbox">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button class="resetButton" type='button'>Reset All Mons</button>
+                        </div>
+                        <div id="players_dashboard">
+                            <table>
+                                <tbody id="players_table">
+                                    <tr id="players_table_header" class="table-header">
+                                        <th class="center square">
+                                            <div class="rounded-corner-small">
+                                                <button id="player_add" class="square" type='button'>➕</button>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="rounded-corner-small">
+                                                <div>Player Name</div>
+                                            </div>
+                                        </th>
+                                        <th>                       
+                                            <div class="rounded-corner-small">
+                                                <div>Mon #1</div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="rounded-corner-small">
+                                                <div>Mon #2</div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="rounded-corner-small">
+                                                <div>Mon #3</div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="rounded-corner-small">
+                                                <div>Mon #4</div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="rounded-corner-small">
+                                                <div>Mon #5</div>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div class="rounded-corner-small">
+                                                <div>Mon #6</div>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                <!-- Want to add new rows starting here -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="flex flex-col rounded-corner">
-                        <button class="resetAllButton" type='button'>Reset All Mons, Players and Scores</button>
-                    </div>
                 </div>
             </div>
-        </div>
-    <!-- Standings -->
-        <div id="standings">
-            <div class="rounded-corner">
-                <h1 class="heading rounded-corner-small">Standings<button class="minimizeButton" title="Expand/Collapse the Standings Dashboard" target="standingsContent" status="on"></button></h1>
-            </div>
-            <div id="standingsContent">
-                <div class="flex flex-col rounded-corner">
-                    <p>
-                        You can either select a TOM <span class="code">...standings.html</span> file to display a live set of tournament standings, or you can update them by hand here.
-                    </p>
-                    <div>
-                        <label for="standingsSceneSelect" class="bold">Standings Overlay OBS Scene Selection</label>
-                    </div>
-                    <input id="standingsSceneSelect" class="sceneSelect sourceSetting" target="standings" placeholder="Select OBS scene..." autoComplete="on" list="sceneOptions" type="text"/>
-                </div>
-                <div class="flex flex-col rounded-corner">
-                    <label for="standingsImport" class="bold">Import from TOM</label>
-                    <span class="font-small">(These will be in your <span class="code">TOM/data/reports</span> directory!)</span>
-                    <div>
-                        <button id="standingsImport">Choose File</button>
-                        <span id="standingsImportFile" class="font-small basic-ui">No file chosen</span>
-                        <span id="standingsImportStatus" class="font-small bold"></span>
-                    </div>
-                </div>
-                <div class="flex flex-col rounded-corner">
-                    <!-- <div class="bold">Show top: <input type="number" min="1" max="32" size="2"></div> -->
-                    <template id="standings_template_item">
-                        <li class="standingsModule">
-                            <div class="nameModule">
-                                <select class="playerSelect">
-                                    <optgroup label="Default">
-                                        <option>None</option>
-                                    </optgroup>
-                                    <optgroup label="Players" class="optionContent">
-
-                                    </optgroup>
-                                </select> → 
-                                <input class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="textSourceOptions_standings"/>
+        <!-- Footer -->
+            <footer class="flex center">
+                <span class="font-small">Developed by Professor <a href="https://www.skeletom.net" target="_blank">Tom "Skeletom" Farro</a> - Open Source: <a href="https://github.com/FomTarro/pkmn-stream-tools/tree/main/tournament-tracker" target="_blank">GitHub</a> - Contact: <a href="mailto:pokemon@skeletom.net?subject=About the Tournament Tracker">pokemon@skeletom.net</a></span>
+            </footer>
+        <!-- Templates  -->
+            <div hidden id="templates">
+                <template id="mon_template_item">
+                    <div class="monModule">
+                        <div class="flex">
+                            <iframe class="monIcon" scrolling="no"></iframe>
+                            <div class="monInputs">
+                                <div>
+                                    <label for="mon_select_x" class="bold">Mon #x</label>
+                                </div>
+                                <div>
+                                    <select id="mon_select_x" class="monSelect">
+                                        <optgroup label="Default">
+                                            <option class="monOption">None</option>
+                                        </optgroup>
+                                        <optgroup label="Mons" class="optionContent">
+                                            <option class="monOption">Mon1</option>
+                                            <option class="monOption">Mon2</option>
+                                            <option class="monOption">Mon3</option>
+                                            <option class="monOption">Mon4</option>
+                                            <option class="monOption">Mon5</option>
+                                            <option class="monOption">Mon6</option>
+                                        </optgroup>
+                                    </select> → 
+                                    <input id="mon_obs_output_x" class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="browserSourceOptions_battle"/>
+                                </div>
+                                <div>
+                                    <input id="mon_held_item_x" class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
+                                </div>
+                                <div class="font-small">
+                                    <label for="fainted_toggle_x">Fainted?</label>
+                                    <input id="fainted_toggle_x" class="faintedToggle" type="checkbox">
+                                    <label for="item_toggle_x">Item Used?</label>
+                                    <input id="item_toggle_x" class="itemToggle" type="checkbox">
+                                </div>
                             </div>
-                        </li>
-                    </template>
-                    <ol id="standingsList">
-                    </ol>
-                </div>
+                        </div>
+                    </div>
+                </template>
+
+                <template id="standings_template_item">
+                    <li class="standingsModule">
+                        <div class="nameModule">
+                            <select id="pos_x_player_name" class="playerSelect">
+                                <optgroup label="Default">
+                                    <option>None</option>
+                                </optgroup>
+                                <optgroup label="Players" class="optionContent">
+
+                                </optgroup>
+                            </select> → 
+                            <input id="pos_x_player_name_obs_output" class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="textSourceOptions_standings"/>
+                        </div>
+                    </li>
+                </template>
+
+                <template id="player_template_row">
+                    <tr id="player_x_row" class="playerRow">
+                        <td>
+                            <div class="flex center rounded-corner-small">
+                                <button id="player_x_delete" class="square" type='button'>❌</button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class='flex-col center rounded-corner-small'>
+                                <input id="player_x_name" class="playerName" placeholder="Player Name" type="text">
+                            </div>
+                        </td>
+                        <td>
+                            <div class='flex-col center rounded-corner-small'>
+                                <input id="player_x_mon_1" placeholder="Mon #1" type="text" list="pokemonOptions">
+                                <input id="player_x_mon_1_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
+                            </div>
+                        </td>
+                        <td>
+                            <div class='flex-col center rounded-corner-small'>
+                                <input id="player_x_mon_2" placeholder="Mon #2" type="text" list="pokemonOptions">
+                                <input id="player_x_mon_2_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
+                            </div>
+                        </td>
+                        <td>
+                            <div class='flex-col center rounded-corner-small'>
+                                <input id="player_x_mon_3" placeholder="Mon #3" type="text" list="pokemonOptions">
+                                <input id="player_x_mon_3_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
+                            </div>
+                        </td>
+                        <td>
+                            <div class='flex-col center rounded-corner-small'>
+                                <input id="player_x_mon_4" placeholder="Mon #4" type="text" list="pokemonOptions">
+                                <input id="player_x_mon_4_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
+                            </div>
+                        </td>
+                        <td>
+                            <div class='flex-col center rounded-corner-small'>
+                                <input id="player_x_mon_5" placeholder="Mon #5" type="text" list="pokemonOptions">
+                                <input id="player_x_mon_5_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
+                            </div>
+                        </td>
+                        <td>
+                            <div class='flex-col center rounded-corner-small'>
+                                <input id="player_x_mon_6" placeholder="Mon #6" type="text" list="pokemonOptions">
+                                <input id="player_x_mon_6_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
+                            </div>
+                        </td>
+                    </tr>
+                </template>
             </div>
-        </div>
-    <!-- Table -->
-        <div id="players">
-            <div class="rounded-corner">
-                <h1 class="heading rounded-corner-small">Players and Teams<button class="minimizeButton" title="Expand/Collapse the Players Dashboard" target="playersContent" status="on"></button></h1>
-            </div>
-            <div id="playersContent">
-                <div class="flex flex-col rounded-corner">
-                    <p>
-                        You can either import a complete player list from a TOM <span class="code">...roster.html</span> file, or you can add player records by hand in the table below.
-                    </p>
-                    <label for="playerImport" class="bold">Import from TOM</label>
-                    <span class="font-small">(These will be in your <span class="code">TOM/data/reports</span> directory!)</span>
-                    <div class="font-small">
-                        <span>Abbreviate names (ex. 'Ash Ketchum' → 'Ash K.') for... </span> 
-                        <label for="abbreviateJuniorsToggle">Juniors?</label>
-                        <input id="abbreviateJuniorsToggle" class="generalSetting" type="checkbox">
-                        <label for="abbreviateSeniorsToggle">Seniors?</label>
-                        <input id="abbreviateSeniorsToggle" class="generalSetting" type="checkbox">
-                        <label for="abbreviateMastersToggle">Masters?</label>
-                        <input id="abbreviateMastersToggle" class="generalSetting" type="checkbox">
-                    </div>
-                    <div>
-                        <input id='playerImport' class="playerImport" placeholder="Import Player Roster from TOM..." type="file" accept=".html" pattern=".*(roster\.html)">
-                        <span id="playerImportStatus" class="font-small bold"></span>
-                    </div>
-                </div>
-                <div class="flex flex-col rounded-corner">
-                    <label class="bold" for="playerFilter">Filter Player List</label>
-                    <div>
-                        <input id='playerFilter' class="playerFilter" placeholder="Filter by Player Name..." type="text">
-                        <span class="font-small">Total players: <span id="playerTotal">0</span> (Filter matches: <span id="playerFilterTotal">0</span>)</span>
-                    </div>
-                </div>
-                <div id="players_dashboard">
-                    <table>
-                        <tbody id="players_table">
-                            <tr id="players_table_header" class="table-header">
-                                <th class="center square">
-                                    <div class="rounded-corner-small">
-                                        <button id="player_add" class="square" type='button'>➕</button>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="rounded-corner-small">
-                                        <div>Player Name</div>
-                                    </div>
-                                </th>
-                                <th>                       
-                                    <div class="rounded-corner-small">
-                                        <div>Mon #1</div>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="rounded-corner-small">
-                                        <div>Mon #2</div>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="rounded-corner-small">
-                                        <div>Mon #3</div>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="rounded-corner-small">
-                                        <div>Mon #4</div>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="rounded-corner-small">
-                                        <div>Mon #5</div>
-                                    </div>
-                                </th>
-                                <th>
-                                    <div class="rounded-corner-small">
-                                        <div>Mon #6</div>
-                                    </div>
-                                </th>
-                            </tr>
-                        <!-- Want to add new rows starting here -->
-                            <template id="player_template_row">
-                                <tr id="player_x_row" class="playerRow">
-                                    <td>
-                                        <div class="flex center rounded-corner-small">
-                                            <button id="player_x_delete" class="square" type='button'>❌</button>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class='flex-col center rounded-corner-small'>
-                                            <input id="player_x_name" class="playerName" placeholder="Player Name" type="text">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class='flex-col center rounded-corner-small'>
-                                            <input id="player_x_mon_1" placeholder="Mon #1" type="text" list="pokemonOptions">
-                                            <input id="player_x_mon_1_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class='flex-col center rounded-corner-small'>
-                                            <input id="player_x_mon_2" placeholder="Mon #2" type="text" list="pokemonOptions">
-                                            <input id="player_x_mon_2_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class='flex-col center rounded-corner-small'>
-                                            <input id="player_x_mon_3" placeholder="Mon #3" type="text" list="pokemonOptions">
-                                            <input id="player_x_mon_3_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class='flex-col center rounded-corner-small'>
-                                            <input id="player_x_mon_4" placeholder="Mon #4" type="text" list="pokemonOptions">
-                                            <input id="player_x_mon_4_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class='flex-col center rounded-corner-small'>
-                                            <input id="player_x_mon_5" placeholder="Mon #5" type="text" list="pokemonOptions">
-                                            <input id="player_x_mon_5_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class='flex-col center rounded-corner-small'>
-                                            <input id="player_x_mon_6" placeholder="Mon #6" type="text" list="pokemonOptions">
-                                            <input id="player_x_mon_6_item" placeholder="Held Item (optional)" type="text" list="itemOptions">
-                                        </div>
-                                    </td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
-                </div>
+        <!-- Data Lists -->
+            <div hidden id="datalists">
+                <datalist id="sceneOptions">
+                    <!-- Scenes in OBS -->
+                </datalist>
+                <datalist id="browserSourceOptions_battle">
+                    <!-- Browser Sources in OBS -->
+                </datalist>
+                <datalist id="textSourceOptions_battle">
+                    <!-- Text Sources in OBS -->
+                </datalist>
+                <datalist id="textSourceOptions_standings">
+                    <!-- Text Sources in OBS for the Standings Scene -->
+                </datalist>
+                <datalist id="pokemonOptions">
+                    <!-- Every single Pokemon -->
+                </datalist>
+                <datalist id="itemOptions">
+                    <!-- Every single Hold Item -->
+                </datalist>
             </div>
         </div>
     </body>
-<!-- Footer -->
-    <footer class="flex center">
-        <span class="font-small">Developed by Professor <a href="https://www.skeletom.net" target="_blank">Tom "Skeletom" Farro</a> - Open Source: <a href="https://github.com/FomTarro/pkmn-stream-tools/tree/main/tournament-tracker" target="_blank">GitHub</a> - Contact: <a href="mailto:pokemon@skeletom.net?subject=About the Tournament Tracker">pokemon@skeletom.net</a></span>
-    </footer>
     <script type="text/javascript" src="./js/species.js"></script>
     <script type="text/javascript" src="./js/utils.js"></script>
     <script type="text/javascript" src="./js/tom.js"></script>

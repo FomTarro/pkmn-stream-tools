@@ -88,9 +88,7 @@ function addPlayer(existingData) {
     header.after(row);
 
     // Update ID tokens in new row
-    const inputs = row.querySelectorAll("input");
-    const buttons = row.querySelectorAll("button");
-    const elements = [...inputs, ...buttons]
+    const elements = [row, ...row.querySelectorAll('*')];
     for(let element of elements) {
         if (element.id) {
             element.id = element.id.replace('_x_', `_${playerData.uuid}_`);

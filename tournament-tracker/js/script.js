@@ -1,5 +1,5 @@
 /**
- * Connects to OBS using the settings input on the DOM
+ * Connects to OBS using the settings input on the DOM.
  */
 function connectToOBS() {
     OBS.checkConnectionStatus();
@@ -14,15 +14,50 @@ function connectToOBS() {
     });
 }
 
+/**
+ * Creates DOM elements from template tags.
+ */
 function createFromTemplates(){
-    const template = document.getElementById("standings_template_item");
+    const standingsTemplate = document.getElementById("standings_template_item");
     for(let i = 0; i < 8; i++){
-        const item = template.content.cloneNode(true).querySelector("li");
+        const item = standingsTemplate.content.cloneNode(true).querySelector("li");
         const standingsList = document.getElementById("standingsList");
+        const elements = item.querySelectorAll('*');
+        for(let element of elements) {
+            if (element.id) {
+                element.id = element.id.replace('_x', `_${i}`);
+            }
+        }
         standingsList.appendChild(item);
+    }
+
+    const monModuleTemplate = document.getElementById("mon_template_item");
+    for(let j = 1; j <= 2; j++){
+        for(let i = 4; i > 0; i--){
+            const item = monModuleTemplate.content.cloneNode(true).querySelector(".monModule");
+            console.log(item);
+            const node = document.getElementById(`player_${j}_name`);
+            const elements = item.querySelectorAll('*');
+            const uuid = `p${j}_mon${i}`;
+            for(let element of elements) {
+                if(element.innerText && element.innerText === 'Mon #x'){
+                    element.innerText = `Mon #${i}`
+                }
+                if (element.id) {
+                    element.id = element.id.replace('_x', `_${uuid}`);
+                }
+                if(element.getAttribute('for')){
+                    element.setAttribute('for', element.getAttribute('for').replace('_x', `_${uuid}`))
+                }
+            }
+            node.after(item);
+        }
     }
 }
 
+/**
+ * Attaches event listeners to just about every releavnt DOM element.
+ */
 function attachEventListeners(){
     // Hook up mon selection dropdowns
     const monModules = document.querySelectorAll('.monModule');

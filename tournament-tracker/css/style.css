@@ -5,7 +5,12 @@
     torkoal-grey: #5E5E5E
  */
 
+html {
+    height: 100%;
+}
+
 body {
+    height: calc(100% - 16px);
     overflow-y: scroll;
     /* color: #333333; */
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -13,6 +18,11 @@ body {
 
 footer {
     margin-top: 4em;
+}
+
+footer span {
+    text-align: center;
+    margin-bottom: 1em;
 }
 
 table {
@@ -29,14 +39,16 @@ table {
     resize: vertical;
 } */
 
-tr:nth-child(even) td .rounded-corner-small {
-    background-color: rgba(0, 0, 0, .1);
+tr td .rounded-corner-small {
     height: 100%;
 }
 
-tr:nth-child(odd) td .rounded-corner-small {
+tr:nth-child(even of tr:not([hidden])) td .rounded-corner-small {
+    background-color: rgba(0, 0, 0, .1);
+}
+
+tr:nth-child(odd of tr:not([hidden])) td .rounded-corner-small {
     background-color: rgba(0, 0, 0, .05);
-    height: 100%;
 }
 
 tr {
@@ -100,6 +112,13 @@ select {
     justify-content: space-between;
 }
 
+.container {
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: content-box;
+}
+
 .rounded-corner {
     border-radius: 1em;
     padding: 0.5em;
@@ -107,10 +126,6 @@ select {
 
 .rounded-corner-small {
     border-radius: 4px;
-}
-
-#obs_status {
-    font-weight: bold;
 }
 
 .disconnected {
@@ -121,17 +136,23 @@ select {
     color: green;
 }
 
+.basic-ui {
+    font-family: Arial;
+    font-size: 10pt;
+    appearance: none;
+}
+
+.code {
+    font-family: 'Consolas';
+    background-color: rgba(0, 0, 0, .05);
+    border-radius: 5px;
+}
+
 @media only screen and (max-width: 800px) {
     #view {
         flex-direction: column;
         align-items: center;
     }
-}
-
-.basic-ui {
-    font-family: Arial;
-    font-size: 10pt;
-    appearance: none;
 }
 
 .dashboard {
@@ -183,17 +204,8 @@ select {
     position: relative;
 }
 
-.code {
-    font-family: Consolas;
-    background-color: rgba(0, 0, 0, .05);
-    border-radius: 5px;
-}
-
 #players_dashboard {
     overflow-x: scroll;
-    /* min-height: 11em;
-    max-height: min-content;
-    resize: vertical; */
 }
 
 .table-header {
@@ -221,20 +233,19 @@ select {
     top: 0;
     left: 0;
     height: 100%;
-    /* background: transparent; */
     border: 0px;
     width: 2rem;
     border-radius: 4px 0 0 4px;
     border-right: 1px solid gainsboro;
 }
-.minimizeButton[status="on"]::before{
+
+.minimizeButton[status="on"]::before {
     content: "▼";
 }
 
-.minimizeButton[status="off"]::before{
+.minimizeButton[status="off"]::before {
     content: "▶";
 }
-
 
 .red {
     background: #ED533A
@@ -244,12 +255,22 @@ select {
     background: #3A53ED;
 }
 
-#standingsList li:nth-child(1)::marker{
+#player_1_dashboard .monModule {
+    background: linear-gradient(to left, transparent, #FFD4D4);
+}
+
+#player_2_dashboard .monModule {
+    background: linear-gradient(to left, transparent, #E9DEFF);
+}
+
+#standingsList li:nth-child(1)::marker {
     content: '🥇'
 }
-#standingsList li:nth-child(2)::marker{
+
+#standingsList li:nth-child(2)::marker {
     content: '🥈'
 }
-#standingsList li:nth-child(3)::marker{
+
+#standingsList li:nth-child(3)::marker {
     content: '🥉'
 }
