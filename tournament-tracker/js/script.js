@@ -129,7 +129,7 @@ function attachEventListeners(){
             if(playerModule){
                 populatePlayerModule(playerModule, e.target.value);
             }
-            const playerName = e.target.value === PLAYER_NONE_VALUE ? "" : e.target.options[e.target.options.selectedIndex].innerText;
+            const playerName = e.target.value === PLAYER_NONE_VALUE ? "" : e.target.options[e.target.options.selectedIndex]?.innerText;
             OBS.setTextSourceText(sourceSelector.value, playerName);
         }
         // changed via dropdown
@@ -253,6 +253,7 @@ function attachEventListeners(){
                 standingsImportStatus.classList.add('connected');
                 standingsImportStatus.classList.remove('disconnected');
                 standingsImportStatus.innerText = 'Successfully tracking live standings!';
+                document.getElementById('standingsTrackingStop').disabled = false
 
             }catch(e){
                 standingsImportStatus.classList.remove('connected');
@@ -266,6 +267,19 @@ function attachEventListeners(){
             console.warn(e);
         }
     });
+
+    document.getElementById('standingsTrackingStop').addEventListener('click', e => {
+        if(standingsInterval){
+            window.clearInterval(standingsInterval);
+            standingsInterval = undefined;
+            const standingsImportStatus = document.getElementById('standingsImportStatus');
+            standingsImportStatus.classList.remove('connected');
+            standingsImportStatus.classList.add('disconnected');
+            standingsImportStatus.innerText = 'Stopped tracking standings.';
+            document.getElementById('standingsImportFile').innerText = '';
+            document.getElementById('standingsTrackingStop').disabled = true;
+        }
+    })
 
     // Hook up Minimize Buttons
     const minimize = document.getElementsByClassName('minimizeButton');

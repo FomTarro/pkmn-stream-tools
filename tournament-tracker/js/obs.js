@@ -167,12 +167,14 @@ const OBS = {
      */
     async setBrowserSourceURL(sourceName, url) {
         try{
-            await OBS.obs.call('SetInputSettings', {
-                inputName: sourceName,
-                inputSettings: {
-                    url: url
-                }
-            });
+            if(sourceName && url){
+                await OBS.obs.call('SetInputSettings', {
+                    inputName: sourceName,
+                    inputSettings: {
+                        url: url
+                    }
+                });
+            }
         }
         catch(e){
             console.warn(`Error trying to set browser source: ${e}`);
@@ -195,12 +197,14 @@ const OBS = {
      */
     async setTextSourceText(sourceName, text) {
         try{
-            await OBS.obs.call('SetInputSettings', {
-                inputName: sourceName,
-                inputSettings: {
-                    text: text
-                }
-            });
+            if(sourceName && text){
+                await OBS.obs.call('SetInputSettings', {
+                    inputName: sourceName,
+                    inputSettings: {
+                        text: text
+                    }
+                });
+            }
         }catch(e){
             console.warn(`Error trying to set text source: ${e}`);
         }

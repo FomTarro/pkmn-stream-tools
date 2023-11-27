@@ -5,6 +5,15 @@
     torkoal-grey: #5E5E5E
  */
 
+ @font-face {
+    font-family: 'unownregular';
+    src: url('../fonts/unown-webfont.woff2') format('woff2'),
+         url('../fonts/unown-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 html {
     height: 100%;
 }
@@ -22,7 +31,6 @@ footer {
 
 footer span {
     text-align: center;
-    margin-bottom: 1em;
 }
 
 table {
@@ -77,19 +85,17 @@ input[type="text"],
     max-width: 100%;
 }
 
+td input[required]:placeholder-shown{
+    background-color: #FFD4D4;
+    border-radius: 3px;
+    border: 1px solid #767676;
+}
+
 input,
 select {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-}
-
-.bold {
-    font-weight: bold;
-}
-
-.font-small {
-    font-size: 0.75em;
 }
 
 .center {
@@ -136,6 +142,18 @@ select {
     color: green;
 }
 
+.bold {
+    font-weight: bold;
+}
+
+.font-small {
+    font-size: 0.75em;
+}
+
+.font-medium {
+    font-size: 2em;
+}
+
 .basic-ui {
     font-family: Arial;
     font-size: 10pt;
@@ -143,9 +161,13 @@ select {
 }
 
 .code {
-    font-family: 'Consolas';
+    font-family: 'Consolas' monospace;
     background-color: rgba(0, 0, 0, .05);
     border-radius: 5px;
+}
+
+.unown {
+    font-family: 'unownregular';
 }
 
 @media only screen and (max-width: 800px) {

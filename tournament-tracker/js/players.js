@@ -246,11 +246,12 @@ async function importStandingsFromTOM(file){
     for(let i = 0; i < standingModules.length; i++){
         if(standings.allStandings.length > i){
             // TODO: this is kind of a kludge; necessary because we can abbreviate names even when TOM doesn't...
-            standingModules[i].value = PLAYER_LIST.find(player => {
+            const uuid = PLAYER_LIST.find(player => {
                 return player.name &&
                 (player.name.includes(standings.allStandings[i].name) 
                 || abbreviateName(player.name).includes(abbreviateName(standings.allStandings[i].name)))
             })?.uuid;
+            standingModules[i].value = uuid ? uuid : PLAYER_NONE_VALUE;
             const event = new Event('change');
             standingModules[i].dispatchEvent(event);
         }
