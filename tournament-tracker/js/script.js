@@ -128,7 +128,8 @@ function attachEventListeners(){
             if(playerModule){
                 populatePlayerModule(playerModule, e.target.value);
             }
-            const playerName = e.target.value === PLAYER_NONE_VALUE ? "" : e.target.options[e.target.options.selectedIndex]?.innerText;
+            // TODO: this might break if the browser is translated (fragile string matching)
+            const playerName = e.target.value === PLAYER_NONE_VALUE ? "???" : e.target.options[e.target.options.selectedIndex]?.innerText;
             OBS.setTextSourceText(sourceSelector.value, playerName);
         }
         // changed via dropdown
