@@ -21,7 +21,7 @@ const TOM = {
         const result = {
             players: []
         };
-        var el = document.createElement('html');
+        const el = document.createElement('html');
         el.innerHTML = fileContent;
         for(const table of el.getElementsByClassName('players_table')){
             for(const row of table.querySelectorAll('tr')){
@@ -45,10 +45,17 @@ const TOM = {
      * @property {string} name - Name of the player.
      * @property {number} flight - ???
      * @property {number} dropRound - The round the player dropped in, if any. Will be 0 if they haven't dropped.
-     * @property {string} record - The player's overall record, like 2/1/0 (6).
+     * @property {StandingsRecord} record - The player's overall record.
      * @property {number} points - The player's overall score.
      * @property {string} opponentsWinPercentage - The win percentage of this player's opponents.
      * @property {string} opponentsOpponentsWinPercentage - The win percentage of this player's opponents' opponents.
+     */
+
+    /**
+     * @typedef {Object} StandingsRecord
+     * @property {number} wins
+     * @property {number} losses
+     * @property {number} ties
      */
 
     /**
@@ -76,22 +83,27 @@ const TOM = {
             mastersStandings: [],
             allStandings: []
         }
-        var el = document.createElement('html');
+        const el = document.createElement('html');
         el.innerHTML = fileContent;
         for(const table of el.getElementsByClassName('report')){
             const standings = [];
             for(const row of table.querySelectorAll('tr')){
                 const cells = row.querySelectorAll('td');
                 if(cells.length >= 8){
+                    const recordNumbers = cells[4].innerText.match(/\d+/g);
                     const player = {
-                        standing: Number(cells[0].innerText),
-                        name: cells[1].innerText,
-                        flight: Number(cells[2].innerText),
-                        dropRound: Number(cells[3].innerText),
-                        record: cells[4].innerText,
-                        points: Number(cells[5].innerText),
-                        opponentsWinPercentage: cells[6].innerText,
-                        opponentsOpponentsWinPercentage: cells[7].innerText
+                        standing: Number(cells[0].innerText ?? 0),
+                        name: cells[1].innerText?.replace('*', ''),
+                        flight: Number(cells[2].innerText ?? 0),
+                        dropRound: Number(cells[3].innerText ?? 0),
+                        record: {
+                            wins: Number(recordNumbers[0] ?? 0),
+                            losses: Number(recordNumbers[1] ?? 0),
+                            ties: Number(recordNumbers[2] ?? 0)
+                        },
+                        points: Number(cells[5].innerText ?? 0),
+                        opponentsWinPercentage: Number(cells[6].innerText?.replace('%', '') ?? 0.00),
+                        opponentsOpponentsWinPercentage: Number(cells[7].innerText.replace('%', '') ?? 0.00)
                     }
                     standings.push(player);
                 }
@@ -100,10 +112,13 @@ const TOM = {
             if(division){
                 if(division.includes('Master')){
                     result.mastersStandings = standings;
+                    result.allStandings = standings;
                 }else if(division.includes('Senior')){
                     result.seniorsStandings = standings;
+                    result.allStandings = standings;
                 }else if(division.includes('Junior')){
                     result.juniorsStandings = standings;
+                    result.allStandings = standings;
                 }else{
                     result.allStandings = standings;
                 }
@@ -112,8 +127,8 @@ const TOM = {
             if(rounds){
                 const split = rounds.match(/\d+/g);
                 if(split.length == 2){
-                    result.currentRound = Number(split[0]);
-                    result.totalRounds = Number(split[1]);
+                    result.currentRound = Number(split[0] ?? 0);
+                    result.totalRounds = Number(split[1] ?? 0);
                 }
             }
         }

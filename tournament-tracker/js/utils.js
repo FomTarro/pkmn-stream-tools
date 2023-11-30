@@ -9,28 +9,32 @@ function relativeToAbsolutePath(relative) {
 
 /**
  * Ash Ketchum -> Ash K.
- * @param {string} name 
+ * @param {string} name - The name to abbreviate.
  * @returns The abbreviated name.
  */
 function abbreviateName(name){
     return name.substring(0, name.indexOf(' ')+2)+'.' 
 }
 
+/**
+ * Takes a word over 25 characters and inserts a ... in the center.
+ * @param {string} word - The word to abridge.
+ * @returns The abridged word.
+ */
 function abridgeWord(word) {
     if (word.length > 25) {
-      return word.substr(0, 11) + '...' + word.substr(word.length-11, word.length);
+      return word.substring(0, 11) + '...' + word.substring(word.length-11, word.length);
     }
     return word;
   }
 
 /**
- * Loads a File from the File API.
+ * Loads a File from the File API as text.
  * @param {File} file - The file to load.
  * @returns {Promise<string>}
  */
 function loadFile(file){
-    var reader = new FileReader();
-    reader.readAsText(file,'UTF-8');
+    const reader = new FileReader();
     // here we tell the reader what to do when it's done reading...
     const promise = new Promise((resolve, reject) =>
     reader.onload = readerEvent => {
@@ -41,6 +45,7 @@ function loadFile(file){
             reject(e);
         }
     });
+    reader.readAsText(file,'UTF-8');
     return promise;
 }
 
@@ -51,10 +56,13 @@ function loadFile(file){
  * @param {number} [interval=2000] - The frequency to chekc for updates, in milliseconds. 
  */
 function watchFile(fileHandle, onChange, interval = 2000){
+    /**
+     * @type {File}
+     */
     let oldFile = undefined;
     const timer = window.setInterval(async () => {
         const file = await fileHandle.getFile();
-        if(oldFile !== file){
+        if(oldFile?.lastModified !== file?.lastModified){
             await onChange(file);
         }
         oldFile = file;

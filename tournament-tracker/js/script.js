@@ -35,7 +35,6 @@ function createFromTemplates(){
     for(let j = 1; j <= 2; j++){
         for(let i = 4; i > 0; i--){
             const item = monModuleTemplate.content.cloneNode(true).querySelector(".monModule");
-            console.log(item);
             const node = document.getElementById(`player_${j}_name`);
             const elements = item.querySelectorAll('*');
             const uuid = `p${j}_mon${i}`;
@@ -164,9 +163,10 @@ function attachEventListeners(){
         })
     }
 
-    const resetAllButton = document.querySelector('.resetAllButton');
-    resetAllButton.addEventListener('click', e => {
-        if(window.confirm("Do you really want to reset the round?\nThis will reset both players to 'None' and set both scores to 0.")){
+    const resetRoundButton = document.querySelector('.resetRoundButton');
+    resetRoundButton.addEventListener('click', e => {
+        const description = [...resetRoundButton.querySelectorAll('li')].map(item => `• ${item.innerText}`).join('\n');
+        if(window.confirm(`Do you really want to reset the round?\nThis action will do the following:\n${description}`)){
             const playerSelectors = document.getElementById('battle').querySelectorAll('.playerSelect');
             // Set both players to 'None'
             for(let playerSelector of playerSelectors){
@@ -174,6 +174,27 @@ function attachEventListeners(){
                 const event = new Event('change');
                 playerSelector.dispatchEvent(event);
             }
+            const scoreModules = document.getElementById('battle').querySelectorAll('.scoreModule');
+            for(let scoreModule of scoreModules){
+                scoreModule.querySelector('.scoreDisplay').innerText = 0;
+                const event = new Event('click');
+                const button = scoreModule.querySelector('.minus');
+                button.dispatchEvent(event);
+
+            }
+            // Effectively 'click' both reset buttons
+            for(let resetButton of resetButtons){
+                const event = new Event('click');
+                resetButton.dispatchEvent(event);
+            }
+        }
+    });
+
+    const resetGameButton = document.querySelector('.resetGameButton');
+    resetGameButton.addEventListener('click', e => {
+        const description = [...resetGameButton.querySelectorAll('li')].map(item => `• ${item.innerText}`).join('\n');
+        if(window.confirm(`Do you really want to reset the game?\nThis action will do the following:\n${description}`)){
+            const playerSelectors = document.getElementById('battle').querySelectorAll('.playerSelect');
             // Effectively 'click' both reset buttons
             for(let resetButton of resetButtons){
                 const event = new Event('click');
@@ -420,4 +441,8 @@ window.onload = async() => {
     loadSourceSettings();
     loadPlayerList();
     connectToOBS();
+}
+const urlParams = new URLSearchParams(window.location.search);
+if(urlParams.get('unown')){
+    document.getElementsByTagName('body')[0].classList.add('unown');
 }

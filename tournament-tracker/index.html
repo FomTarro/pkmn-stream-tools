@@ -102,7 +102,7 @@
                                         </div>
                                     </div>
                                     <!-- Mon Modules Go Here  -->
-                                    <button class="resetButton" type='button'>Reset All Mons</button>
+                                    <button class="resetButton" type='button'>Reset all Mons</button>
                                 </div>
 
                                 <div id="player_2_dashboard" class="playerModule flex flex-col rounded-corner">
@@ -130,11 +130,24 @@
                                         </div>
                                     </div>
                                     <!-- Mon Modules Go Here -->
-                                    <button class="resetButton" type='button'>Reset All Mons</button>
+                                    <button class="resetButton" type='button'>Reset all Mons</button>
                                 </div>
                             </div>
-                            <div class="flex flex-col rounded-corner">
-                                <button class="resetAllButton" type='button'>Reset All Mons, Players and Scores</button>
+                            <div class="flex flex-col reset-col rounded-corner">
+                                <button class="resetGameButton" type='button'>Reset Game
+                                    <ul class="resetDescription font-small">
+                                        <li>Keep both players</li>
+                                        <li>Keep both scores</li>
+                                        <li>Reset all mons to 'None'</li>
+                                    </ul>
+                                </button>
+                                <button class="resetRoundButton" type='button'>Reset Round
+                                    <ul class="resetDescription font-small">
+                                        <li>Reset both players to 'None'</li>
+                                        <li>Reset both scores to 0</li>
+                                        <li>Reset all mons to 'None'</li>
+                                    </ul>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -148,6 +161,10 @@
                         <div class="flex flex-col rounded-corner">
                             <p>
                                 You can either select a TOM <span class="code">...standings.html</span> file to display a live set of tournament standings that will be automatically updated in real-time, or you can update them by hand here.
+                            </p>
+                            <p>
+                                <span class="bold important">IMPORTANT!</span><br>
+                                In order for players to properly be displayed in the standings, they must already be resigetered in the <a href='#players'>player table below</a>.
                             </p>
                             <div>
                                 <label for="standingsSceneSelect" class="bold">Standings Overlay OBS Scene Selection</label>
@@ -261,7 +278,8 @@
         <!-- Footer -->
             <footer class="flex flex-col center">
                 <span class="font-small">Developed by Professor <a href="https://www.skeletom.net" target="_blank">Tom "Skeletom" Farro</a> - Open Source: <a href="https://github.com/FomTarro/pkmn-stream-tools/tree/main/tournament-tracker" target="_blank">GitHub</a> - Contact: <a href="mailto:pokemon@skeletom.net?subject=About the Tournament Tracker">pokemon@skeletom.net</a></span>
-                <span class="unown font-medium">thank you for your support!</span>
+                <span class="font-small">(This tool is not officially affiliated with or endorsed by <a href="https://www.pokemon.com/us/about-pokemon/" target="_blank">The Pokémon Company International (TPCi)</a> or the <a href="https://www.pokemon.com/us/play-pokemon" target="_blank">Play! Pokémon</a> program)</span>
+                <span class="unown font-medium">thank you for your support! we all live in a pokemon world!</span>
             </footer>
         <!-- Templates  -->
             <div hidden id="templates">

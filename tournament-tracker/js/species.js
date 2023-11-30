@@ -4088,6 +4088,7 @@ const SPECIES = [
 for(let i = 0; i < SPECIES.length; i++){
     const makeSpeciesOption = (species) => {
         const opt = document.createElement("option");
+        opt.classList.add('monOption');
         opt.id = species.name;
         opt.innerHTML = species.name;
         opt.setAttribute('number', species.number);
@@ -4720,6 +4721,7 @@ for(let i = 0; i < ITEMS.length; i++){
      */
     const makeItemOption = (item) => {
         const opt = document.createElement("option");
+        opt.classList.add('itemOption');
         opt.id = item.name;
         opt.innerHTML = item.name;
         opt.key = item.name.toLowerCase().replaceAll(' ', '_').replaceAll('\'', '');

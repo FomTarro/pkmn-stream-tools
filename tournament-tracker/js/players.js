@@ -21,7 +21,7 @@
 * @constant - List of all players.
 * @type {Player[]}
 */
-var PLAYER_LIST = [];
+let PLAYER_LIST = [];
 const PLAYER_LIST_KEY = "tournament_overlay_players";
 const PLAYER_NONE_VALUE = 'None';
 
@@ -39,10 +39,10 @@ function uuidv4() {
 }
 
 function loadPlayerList() {
-    var loaded = JSON.parse(localStorage.getItem(PLAYER_LIST_KEY));
+    let loaded = JSON.parse(localStorage.getItem(PLAYER_LIST_KEY));
     loaded = loaded ? loaded : [];
     if (loaded.length > 0) {
-        for (var player of loaded) {
+        for (let player of loaded) {
             addPlayer(player);
         }
     } else {
@@ -98,7 +98,7 @@ function addPlayer(existingData) {
     // Add player to dashboard dropdowns
     const playerSelectors = document.getElementsByClassName("playerSelect");
     const opts = [];
-    for (var selector of playerSelectors) {
+    for (let selector of playerSelectors) {
         const opt = document.createElement('option');
         // opt.id = `player_${playerData.uuid}_option`;
         opt.value = playerData.uuid;
@@ -115,7 +115,7 @@ function addPlayer(existingData) {
     }
     nameInput.addEventListener('change', e => {
         playerData.name = e.target.value;
-        for (var opt of opts) {
+        for (let opt of opts) {
             opt.innerText = playerData.name;
         }
     });
@@ -123,18 +123,37 @@ function addPlayer(existingData) {
     // Hook up setting team mons
     for (let monIndex = 1; monIndex <= 6; monIndex++) {
         const monInput = row.querySelector(`#player_${playerData.uuid}_mon_${monIndex}`);
+        const validateMon = () => {
+            const valid = [...document.getElementsByClassName('monOption')].find(opt => opt.id === monInput.value);
+            if(!valid && monInput.value){
+                monInput.classList.add('typo');
+            }else{
+                monInput.classList.remove('typo');
+            }
+        }
         if (playerData && playerData[`mon${monIndex}`]) {
             monInput.value = playerData[`mon${monIndex}`];
+            validateMon();
         }
         monInput.addEventListener('change', e => {
             const entry = PLAYER_LIST.find(player => player.uuid === playerData.uuid)
             if (entry) {
                 entry[`mon${monIndex}`] = e.target.value;
             }
+            validateMon();
         });
         const itemInput = row.querySelector(`#player_${playerData.uuid}_mon_${monIndex}_item`);
+        const validateItem = () => {
+            const valid = [...document.getElementsByClassName('itemOption')].find(opt => opt.id === itemInput.value);
+            if(!valid && itemInput.value){
+                itemInput.classList.add('typo');
+            }else{
+                itemInput.classList.remove('typo');
+            }
+        }
         if (playerData && playerData[`item${monIndex}`]) {
             itemInput.value = playerData[`item${monIndex}`];
+            validateItem();
         }
         if(itemInput){
             itemInput.addEventListener('change', e => {
@@ -142,6 +161,7 @@ function addPlayer(existingData) {
                 if (entry) {
                     entry[`item${monIndex}`] = e.target.value;
                 }
+                validateItem();
             });
         }
     }
@@ -149,7 +169,7 @@ function addPlayer(existingData) {
     // Hook up delete button
     const deleteButton = row.querySelector(`#player_${playerData.uuid}_delete`);
     deleteButton.addEventListener('click', e => {
-        for (var opt of opts) {
+        for (let opt of opts) {
             opt.remove();
         }
         row.remove();
@@ -182,7 +202,7 @@ function populatePlayerModule(element, uuid) {
     for (let item of modules) {
         const monSelector = item.querySelector(".monSelect");
         const opts = monSelector.querySelectorAll(".monOption")
-        for (var i = 1; i <= 6; i++) {
+        for (let i = 1; i <= 6; i++) {
             const mon = entry ? entry[`mon${i}`] : undefined;
             if (mon) {
                 opts[i].innerText = mon;
