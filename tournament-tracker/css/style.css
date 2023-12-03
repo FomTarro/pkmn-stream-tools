@@ -345,3 +345,11 @@ select {
 #standingsList li:nth-child(3)::marker {
     content: '🥉'
 }
+
+#standingsList {
+    margin: 0;
+}
+
+#standingsSingleSplitter {
+    width: 4em;
+}

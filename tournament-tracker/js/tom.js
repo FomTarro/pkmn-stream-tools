@@ -68,7 +68,7 @@ const TOM = {
      * @property {StandingsPlayer[]} mastersStandings - The relative standings of all Masters-division players.
      * @property {StandingsPlayer[]} allStandings - The relative standings of all players.
      */
-
+    
     /**
      * Parses the TOM ...standings.html file contents into JSON.
      * @param {string} fileContent - The contents of the TOM file.
@@ -132,6 +132,52 @@ const TOM = {
                 }
             }
         }
+        el.remove();
+        return result;
+    },
+
+    /**
+     * A tournament pairings report data structure.
+     * @typedef {Object} Pairings
+     * @property {number} currentRound - The current round this tournament is in.
+     * @property {Pairing[]} pairings - The list of all pairings.
+     */
+
+    /**
+     * A tournament standings report data structure.
+     * @typedef {Object} Pairing
+     * @property {number} table - The table of the pairing.
+     * @property {string} player1 - The first player in the pairing.
+     * @property {string} player2 - The second player inthe pairing.
+     */
+
+    /**
+     * 
+     * @param {string} fileContent 
+     * @returns {Pairings}
+     */
+    parsePairingsFile(fileContent){
+        const result = {
+            currentRound: 0,
+            pairings: []
+        }
+        const el = document.createElement('html');
+        el.innerHTML = fileContent;
+        const rows = el.querySelectorAll('table.report tbody tr');
+        const map = new Map();
+        for(let i = 1; i < rows.length; i++){
+            const cells = rows[i].querySelectorAll('td');
+            const table = Number(cells[0].innerText ?? 0);
+            if(!map.has(table)){
+                map.set(table, {
+                    table: table,
+                    player1: cells[1].innerText?.split('(')[0].trim(),
+                    player2: cells[3].innerText?.split('(')[0].trim(),
+                })
+            }
+        }
+        result.currentRound = el.querySelector('h3').innerText.match(/\d+/g)[0];
+        result.pairings = [...map.values()].sort((a, b) => a.table - b.table);
         el.remove();
         return result;
     }

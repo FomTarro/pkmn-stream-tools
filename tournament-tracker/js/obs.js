@@ -230,7 +230,7 @@ OBS.obs.on('SceneItemRemoved', () => {
     }
 });
 
-OBS.obs.on('SceneItemAdded', () => {
+OBS.obs.on('SceneItemCreated', () => {
     const sceneSelectors = document.getElementsByClassName('sceneSelect');
     for(let sceneSelector of sceneSelectors){
         if(sceneSelector.value){

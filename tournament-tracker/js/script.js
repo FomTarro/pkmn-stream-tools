@@ -28,6 +28,8 @@ function createFromTemplates(){
                 element.id = element.id.replace('_x', `_${i}`);
             }
         }
+        item.querySelector('select').setAttribute('standing', i+1);
+        item.querySelector('select').setAttribute('ordinalToggle', 'standingsOrdinalToggle');
         standingsList.appendChild(item);
     }
 
@@ -123,14 +125,23 @@ function attachEventListeners(){
     for(let nameModule of nameModules){
         const playerSelector = nameModule.querySelector('.playerSelect');
         const sourceSelector = nameModule.querySelector('.sourceSelect');
-        const updatePlayer = (e) => {
+        const updatePlayer = () => {
+            let prefix = '';
+            let suffix = '';
+            // If there's an associated Battle Module, update it
             const playerModule = nameModule.closest('.playerModule');
             if(playerModule){
-                populatePlayerModule(playerModule, e.target.value);
+                populatePlayerModule(playerModule, playerSelector.value);
+            }
+            // If there's an associated Ordinal Toggle, check it
+            const ordinalToggle = playerSelector.getAttribute('ordinalToggle');
+            if(ordinalToggle && document.getElementById(ordinalToggle).checked){
+                prefix = applyOrdinalSuffix(playerSelector.getAttribute('standing')) + ' ';
             }
             // TODO: this might break if the browser is translated (fragile string matching)
-            const playerName = e.target.value === PLAYER_NONE_VALUE ? "???" : e.target.options[e.target.options.selectedIndex]?.innerText;
-            OBS.setTextSourceText(sourceSelector.value, playerName);
+            const playerName = playerSelector.value === PLAYER_NONE_VALUE ? "???" : playerSelector.options[playerSelector.options.selectedIndex]?.innerText;
+            // console.log(`Updating OBS for ${playerName}`);
+            OBS.setTextSourceText(sourceSelector.value, `${prefix}${playerName}${suffix}`);
         }
         // changed via dropdown
         playerSelector.addEventListener('change', e => {
@@ -195,7 +206,6 @@ function attachEventListeners(){
     resetGameButton.addEventListener('click', e => {
         const description = [...resetGameButton.querySelectorAll('li')].map(item => `• ${item.innerText}`).join('\n');
         if(window.confirm(`Do you really want to reset the game?\nThis action will do the following:\n${description}`)){
-            const playerSelectors = document.getElementById('battle').querySelectorAll('.playerSelect');
             // Effectively 'click' both reset buttons
             for(let resetButton of resetButtons){
                 const event = new Event('click');
@@ -301,7 +311,49 @@ function attachEventListeners(){
             document.getElementById('standingsImportFile').innerText = '';
             document.getElementById('standingsTrackingStop').disabled = true;
         }
-    })
+    });
+
+    const updateStandingsSingle = () => {
+        const sourceSelector = document.getElementById('standingsSingleSource');
+        const singleLine = document.getElementById('standingsSingle');
+        const splitter = document.getElementById('standingsSingleSplitter')?.value ?? "";
+        const includeOrdinal = document.getElementById('standingsSingleOrdinalToggle').checked;
+        const playerSelectors = [...document.getElementById('standingsList').querySelectorAll('.playerSelect')];
+        const placements = [];
+        for(let i = 0; i < playerSelectors.length; i++){
+            const placeSuffix = includeOrdinal ? applyOrdinalSuffix(i+1) + ' ' : '';
+            const playerName = playerSelectors[i].value === PLAYER_NONE_VALUE ? "???" : playerSelectors[i].options[playerSelectors[i].options.selectedIndex]?.innerText;
+            if(playerName !== "???"){
+                placements.push(`${placeSuffix}${playerName} ${splitter} `);
+            }
+        }
+        singleLine.value = placements.join('');
+        OBS.setTextSourceText(sourceSelector.value, singleLine.value);
+    }
+
+    const standingsPlayerSelectors = document.getElementById('standingsList').querySelectorAll('.playerSelect');
+    for(let playerSelector of standingsPlayerSelectors){
+        playerSelector.addEventListener('change', e => { 
+            updateStandingsSingle(); 
+        });
+        playerSelector.addEventListener('refresh', e => { 
+            updateStandingsSingle(); 
+        });
+    }
+    document.getElementById('standingsSingleSplitter').addEventListener('change', e => {
+        updateStandingsSingle();
+    });
+
+    document.getElementById('standingsSingleOrdinalToggle').addEventListener('change', e => {
+        updateStandingsSingle();
+    });
+
+    document.getElementById('standingsOrdinalToggle').addEventListener('change', e => {
+        for(let playerSelector of standingsPlayerSelectors){
+            const event = new Event('change');
+            playerSelector.dispatchEvent(event);
+        }
+    });
 
     // Hook up Minimize Buttons
     const minimize = document.getElementsByClassName('minimizeButton');
@@ -311,7 +363,7 @@ function attachEventListeners(){
             const element = document.getElementById(target);
             element.hidden = !element.hidden;
             button.setAttribute('status', element.hidden ? 'off' : 'on');
-        })
+        });
     }
 
     // Save settings every time we change a source setting
@@ -348,6 +400,7 @@ function loadSourceSettings(){
         battleSources: [],
         standingsScene: '',
         standingsSources: [],
+        standingsSingleSource: '',
     };
     const battleScene = document.getElementById('battleSceneSelect');
     battleScene.value = settings.battleScene ? settings.battleScene : '';
@@ -376,6 +429,9 @@ function loadSourceSettings(){
             standingsSourceSelectors[i].dispatchEvent(event);
         }
     }
+    if(settings.standingsSingleSource){
+        document.getElementById('standingsSingleSource').value = settings.standingsSingleSource;
+    }
 
     const sceneSelectors = document.getElementsByClassName('sceneSelect');
     for(let sceneSelector of sceneSelectors){
@@ -389,7 +445,8 @@ function saveSourceSettings(){
         battleScene: undefined,
         battleSources: [],
         standingsScene: undefined,
-        standingsSources: []
+        standingsSources: [],
+        standingsSingleSource: undefined,
     };
     const scene = document.getElementById('battleSceneSelect').value;
     settings.battleScene = scene;
@@ -406,6 +463,7 @@ function saveSourceSettings(){
     for(let source of standingsSources){
         settings.standingsSources.push(source.value)
     }
+    settings.standingsSingleSource = document.getElementById('standingsSingleSource').value;
 
     localStorage.setItem(SOURCE_SETTINGS_KEY, JSON.stringify(settings));
 }
@@ -418,17 +476,27 @@ function loadGeneralSettings(){
         abbreviateJuniors: false,
         abbreviateSeniors: false,
         abbreviateSeniors: false,
+        standingsIncludeOrdinal: true,
+        standingsSingleIncludeOrdinal: true,
+        standingsSingleSplitter: '/',
     };
     document.getElementById('abbreviateJuniorsToggle').checked = settings.abbreviateJuniors;
     document.getElementById('abbreviateSeniorsToggle').checked = settings.abbreviateSeniors;
     document.getElementById('abbreviateMastersToggle').checked = settings.abbreviateMasters;
+
+    document.getElementById('standingsOrdinalToggle').checked = settings.standingsIncludeOrdinal;
+    document.getElementById('standingsSingleOrdinalToggle').checked = settings.standingsSingleIncludeOrdinal;
+    document.getElementById('standingsSingleSplitter').value = settings.standingsSingleSplitter ?? '/';
 }
 
 function saveGeneralSettings(){
     const settings = {
         abbreviateJuniors: document.getElementById('abbreviateJuniorsToggle').checked,
         abbreviateSeniors: document.getElementById('abbreviateSeniorsToggle').checked,
-        abbreviateMasters: document.getElementById('abbreviateMastersToggle').checked
+        abbreviateMasters: document.getElementById('abbreviateMastersToggle').checked,
+        standingsIncludeOrdinal: document.getElementById('standingsOrdinalToggle').checked,
+        standingsSingleIncludeOrdinal: document.getElementById('standingsSingleOrdinalToggle').checked,
+        standingsSingleSplitter: document.getElementById('standingsSingleSplitter').value,
     };
     localStorage.setItem(GENERAL_SETTINGS_KEY, JSON.stringify(settings));
 }

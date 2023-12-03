@@ -179,7 +179,8 @@ function addPlayer(existingData) {
             savePlayerList();
         }
     });
-    for(let element of elements){
+    const inputs = [...row.querySelectorAll('select'), ...row.querySelectorAll('input')];
+    for(let element of inputs){
         element.addEventListener('change', e => {
             savePlayerList();
         });
@@ -277,4 +278,17 @@ async function importStandingsFromTOM(file){
         }
     }
 
+}
+
+/**
+ * 
+ * @param {File} file 
+ */
+async function importPairingsFromTOM(file){
+    const content = await loadFile(file);
+    if(!content.includes('Pairings - ')){
+        throw 'Not a Pairings File!'
+    }
+    const standings = TOM.parsePairingsFile(content);
+    console.log(standings);
 }
