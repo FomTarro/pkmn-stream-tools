@@ -38,7 +38,7 @@
                             <ol>
                                 <li>Make sure that your OBS WebSocket Server is Enabled (accessed via Tools → WebSocket Server Settings).</li>
                                 <ul>
-                                    <li>For OBS Versions <span class="code">28.0.0</span> and above, OBS WebSocket Server is built-in.</li>
+                                    <li>For OBS Versions <span class="code notranslate">28.0.0</span> and above, OBS WebSocket Server is built-in.</li>
                                     <li>For older OBS Versions, you can <a href="https://github.com/obsproject/obs-websocket/releases">download a plugin</a>.</li>
                                 </ul>
                                 <li><a href="#obs_settings">Connect to OBS</a>.
@@ -152,6 +152,27 @@
                         </div>
                     </div>
                 </div>
+            <!-- Pairings -->
+                <!-- <div id="pairings">
+                    <div class="rounded-corner">
+                        <h1 class="heading rounded-corner-small">Pairings<button class="minimizeButton" title="Expand/Collapse the Pairings Dashboard" target="pairingsContent" status="on"></button></h1>
+                    </div>
+                    <div id="pairingsContent">
+                        <div class="flex flex-col rounded-corner">
+                            <p>
+                                You can either select a TOM <span class="code notranslate">...standings.html</span> file to display a live set of tournament standings that will be automatically updated in real-time, or you can update them by hand here.
+                            </p>
+                            <p>
+                                <span class="bold important">IMPORTANT!</span><br>
+                                In order for players to properly be displayed in the pairings, they must already be resigetered in the <a href='#players'>player table below</a>.
+                            </p>
+                            <div>
+                                <label for="pairingsSceneSelect" class="bold">Pairings Overlay OBS Scene Selection</label>
+                            </div>
+                            <input id="pairingsSceneSelect" class="sceneSelect sourceSetting" target="pairings" placeholder="Select OBS scene..." autoComplete="on" list="sceneOptions" type="text"/>
+                        </div>
+                    </div>
+                </div> -->
             <!-- Standings -->
                 <div id="standings">
                     <div class="rounded-corner">
@@ -160,7 +181,7 @@
                     <div id="standingsContent">
                         <div class="flex flex-col rounded-corner">
                             <p>
-                                You can either select a TOM <span class="code">...standings.html</span> file to display a live set of tournament standings that will be automatically updated in real-time, or you can update them by hand here.
+                                You can either select a TOM <span class="code notranslate">...standings.html</span> file to display a live set of tournament standings that will be automatically updated in real-time, or you can update them by hand here.
                             </p>
                             <p>
                                 <span class="bold important">IMPORTANT!</span><br>
@@ -173,10 +194,10 @@
                         </div>
                         <div class="flex flex-col rounded-corner">
                             <label for="standingsImport" class="bold">Import from TOM</label>
-                            <span class="font-small">(These will be in your <span class="code">TOM/data/reports</span> directory!)</span>
+                            <span class="font-small">(These will be in your <span class="code notranslate">TOM/data/reports</span> directory!)</span>
                             <div>
-                                <button id="standingsImport">Choose File</button>
-                                <span id="standingsImportFile" class="font-small basic-ui">No file chosen</span>
+                                <button id="standingsImport" class="notranslate">Choose File</button>
+                                <span id="standingsImportFile" class="font-small basic-ui notranslate">No file chosen</span>
                                 <span id="standingsImportStatus" class="font-small bold"></span>
                             </div>
                             <div>
@@ -216,10 +237,10 @@
                     <div id="playersContent">
                         <div class="flex flex-col rounded-corner">
                             <p>
-                                You can either import a complete player list from a TOM <span class="code">...roster.html</span> file, or you can add player records by hand in the table below.
+                                You can either import a complete player list from a TOM <span class="code notranslate">...roster.html</span> file, or you can add player records by hand in the table below.
                             </p>
                             <label for="playerImport" class="bold">Import from TOM</label>
-                            <span class="font-small">(These will be in your <span class="code">TOM/data/reports</span> directory!)</span>
+                            <span class="font-small">(These will be in your <span class="code notranslate">TOM/data/reports</span> directory!)</span>
                             <div class="font-small">
                                 <span>Abbreviate names (ex. 'Ash Ketchum' → 'Ash K.') for... </span> 
                                 <label for="abbreviateJuniorsToggle">Juniors?</label>
@@ -345,7 +366,7 @@
                         <div class="nameModule">
                             <select id="pos_x_player_name" class="playerSelect">
                                 <optgroup label="Default">
-                                    <option>None</option>
+                                    <option >None</option>
                                 </optgroup>
                                 <optgroup label="Players" class="optionContent">
 
@@ -420,6 +441,9 @@
                 </datalist>
                 <datalist id="textSourceOptions_standings">
                     <!-- Text Sources in OBS for the Standings Scene -->
+                </datalist>
+                <datalist id="textSourceOptions_pairings">
+                    <!-- Text Sources in OBS for the Pairings Scene -->
                 </datalist>
                 <datalist id="pokemonOptions">
                     <!-- Every single Pokemon -->

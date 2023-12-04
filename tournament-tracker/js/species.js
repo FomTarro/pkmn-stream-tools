@@ -3672,7 +3672,12 @@ const SPECIES = [
         name: 'Kleavor'
     },
     {
-        name: 'Ursaluna'
+        name: 'Ursaluna',
+        formes: [
+            {
+                name: 'Bloodmoon Ursaluna'
+            }
+        ]
     },
     {
         name: 'Basculegion-M',

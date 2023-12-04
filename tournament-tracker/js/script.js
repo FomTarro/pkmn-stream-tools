@@ -322,6 +322,7 @@ function attachEventListeners(){
         const placements = [];
         for(let i = 0; i < playerSelectors.length; i++){
             const placeSuffix = includeOrdinal ? applyOrdinalSuffix(i+1) + ' ' : '';
+            console.log(playerSelectors[i]);
             const playerName = playerSelectors[i].value === PLAYER_NONE_VALUE ? "???" : playerSelectors[i].options[playerSelectors[i].options.selectedIndex]?.innerText;
             if(playerName !== "???"){
                 placements.push(`${placeSuffix}${playerName} ${splitter} `);
