@@ -289,6 +289,28 @@ async function importPairingsFromTOM(file){
     if(!content.includes('Pairings - ')){
         throw 'Not a Pairings File!'
     }
-    const standings = TOM.parsePairingsFile(content);
-    console.log(standings);
+    const pairings = TOM.parsePairingsFile(content);
+    console.log(pairings);
+    const pairingsList = document.getElementById('pairingsList')
+    const pairingModules = pairingsList.querySelectorAll('.pairingsModule');
+    for(let i = 0; i < pairingModules.length; i++){
+        if(pairings.pairings.length > i){
+            const playerSelectors = pairingModules[i].querySelectorAll('.playerSelect');
+            // TODO: this is kind of a kludge; necessary because we can abbreviate names even when TOM doesn't...
+            const uuid1 = PLAYER_LIST.find(player => {
+                return player.name &&
+                (player.name.includes(pairings.pairings[i].player1) 
+                || abbreviateName(player.name).includes(abbreviateName(pairings.pairings[i].player1)))
+            })?.uuid;
+            const uuid2 = PLAYER_LIST.find(player => {
+                return player.name &&
+                (player.name.includes(pairings.pairings[i].player2) 
+                || abbreviateName(player.name).includes(abbreviateName(pairings.pairings[i].player2)))
+            })?.uuid;
+            playerSelectors[0].value = uuid1 ? uuid1 : PLAYER_NONE_VALUE;
+            playerSelectors[1].value = uuid2 ? uuid2 : PLAYER_NONE_VALUE;
+            const event = new Event('change');
+            playerSelectors[0].dispatchEvent(event);
+        }
+    }
 }

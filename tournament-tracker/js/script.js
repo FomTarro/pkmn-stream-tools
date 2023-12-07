@@ -18,6 +18,19 @@ function connectToOBS() {
  * Creates DOM elements from template tags.
  */
 function createFromTemplates(){
+    const pairingsTemplate = document.getElementById("pairings_template_item");
+    for(let i = 0; i < 8; i++){
+        const item = pairingsTemplate.content.cloneNode(true).querySelector("li");
+        const pairingsList = document.getElementById("pairingsList");
+        const elements = item.querySelectorAll('*');
+        for(let element of elements) {
+            if (element.id) {
+                element.id = element.id.replace('_x', `_${i}`);
+            }
+        }
+        pairingsList.appendChild(item);
+    }
+
     const standingsTemplate = document.getElementById("standings_template_item");
     for(let i = 0; i < 8; i++){
         const item = standingsTemplate.content.cloneNode(true).querySelector("li");
@@ -136,10 +149,14 @@ function attachEventListeners(){
             // If there's an associated Ordinal Toggle, check it
             const ordinalToggle = playerSelector.getAttribute('ordinalToggle');
             if(ordinalToggle && document.getElementById(ordinalToggle).checked){
-                prefix = applyOrdinalSuffix(playerSelector.getAttribute('standing')) + ' ';
+                prefix = `${applyOrdinalSuffix(playerSelector.getAttribute('standing'))} `;
             }
-            // TODO: this might break if the browser is translated (fragile string matching)
-            const playerName = playerSelector.value === PLAYER_NONE_VALUE ? "???" : playerSelector.options[playerSelector.options.selectedIndex]?.innerText;
+            const scoreField = playerSelector.getAttribute('scoreField');
+            if(scoreField){
+                suffix = `0/0/0`
+            }
+            const selectedOption = playerSelector.options[playerSelector.options.selectedIndex];
+            const playerName = (selectedOption && (selectedOption.value !== selectedOption.innerText)) ? selectedOption.innerText : "???";
             // console.log(`Updating OBS for ${playerName}`);
             OBS.setTextSourceText(sourceSelector.value, `${prefix}${playerName}${suffix}`);
         }
@@ -262,7 +279,99 @@ function attachEventListeners(){
         }
     });
 
-    // Hook up Standings Import
+    // Hook up Pairings/Pairings Import
+    document.getElementById('pairingsImport').addEventListener('click', async e => {
+        try{
+            [fileHandle] = await window.showOpenFilePicker({
+                id: 'tomPairings',
+                types: [
+                    {
+                        accept: {
+                            'text/plain': ".html"
+                        }
+                    }
+                ],
+                excludeAcceptAllOption: true,
+            });
+            window.clearInterval(pairingsInterval);
+            const file = await fileHandle.getFile();
+            document.getElementById('pairingsImportFile').innerText = abridgeWord(file.name);
+            const status = document.getElementById('pairingsImportStatus');
+            try{
+                await importPairingsFromTOM(file);
+                status.classList.add('connected');
+                status.classList.remove('disconnected');
+                status.innerText = 'Successfully tracking live pairings!';
+                document.getElementById('pairingsTrackingStop').disabled = false
+
+            }catch(e){
+                status.classList.remove('connected');
+                status.classList.add('disconnected');
+                status.innerText = 'Selected file is either malformed or not the ...pairings.html file!';
+            }
+            pairingsInterval = watchFile(fileHandle, async (content) => {
+                await importPairingsFromTOM(content)
+            });
+        }catch(e){
+            console.warn(e);
+        }
+    });
+
+    // TODO: I think a lot of refactoring can happen 
+    // around how names are displayed for all three module types (battle, standings, pairings)
+    const updatePairingsSingle = () => {
+        const sourceSelector = document.getElementById('pairingsSingleSource');
+        const singleLine = document.getElementById('pairingsSingle');
+        const splitter = document.getElementById('pairingsSingleSplitter')?.value ?? "";
+        const pairingsModules = [...document.getElementById('pairingsList').querySelectorAll('.pairingsModule')];
+        const pairings = [];
+        for(let i = 0; i < pairingsModules.length; i++){
+            const playerSelectors = [...pairingsModules[i].querySelectorAll('.playerSelect')];
+            const selectedOption1 = playerSelectors[0].options[playerSelectors[0].options.selectedIndex];
+            const player1Name = (selectedOption1 && (selectedOption1.value !== selectedOption1.innerText)) ? selectedOption1.innerText : "???";
+            
+            const selectedOption2 = playerSelectors[1].options[playerSelectors[1].options.selectedIndex];
+            const player2Name = (selectedOption2 && (selectedOption2.value !== selectedOption2.innerText)) ? selectedOption2.innerText : "???";
+            if(player1Name !== "???" && player2Name !== "???"){
+                pairings.push(`Table ${i+1}: ${player1Name} vs. ${player2Name} ${splitter} `);
+            }
+    
+        }
+        singleLine.value = pairings.join('');
+        OBS.setTextSourceText(sourceSelector.value, singleLine.value);
+    }
+
+    const pairingsModules = document.getElementById('pairingsList').querySelectorAll('.pairingsModule');
+    for(let pairingsModule of pairingsModules){
+        const updatePairingsPlayers = () => {
+            const sourceSelector = pairingsModule.querySelector('.sourceSelect');
+            const playerNames = [];
+            const playerSelectors = pairingsModule.querySelectorAll('.playerSelect')
+            for(let playerSelector of playerSelectors){
+                const selectedOption = playerSelector.options[playerSelector.options.selectedIndex];
+                const playerName = (selectedOption && (selectedOption.value !== selectedOption.innerText)) ? selectedOption.innerText : "???";
+                playerNames.push(playerName);
+            }
+            OBS.setTextSourceText(sourceSelector.value, playerNames.join(' vs. '));
+        }
+        const playerSelectors = pairingsModule.querySelectorAll('.playerSelect')
+        for(let playerSelector of playerSelectors){
+            playerSelector.addEventListener('change', e => { 
+                updatePairingsPlayers();
+                updatePairingsSingle(); 
+            });
+            playerSelector.addEventListener('refresh', e => { 
+                updatePairingsPlayers();
+                updatePairingsSingle();  
+            });
+        }
+    }
+
+    document.getElementById('pairingsSingleSplitter').addEventListener('change', e => {
+        updatePairingsSingle();
+    });
+
+    // Hook up Standings/Standings Import
     document.getElementById('standingsImport').addEventListener('click', async e => {
         try{
             [fileHandle] = await window.showOpenFilePicker({
@@ -322,8 +431,8 @@ function attachEventListeners(){
         const placements = [];
         for(let i = 0; i < playerSelectors.length; i++){
             const placeSuffix = includeOrdinal ? applyOrdinalSuffix(i+1) + ' ' : '';
-            console.log(playerSelectors[i]);
-            const playerName = playerSelectors[i].value === PLAYER_NONE_VALUE ? "???" : playerSelectors[i].options[playerSelectors[i].options.selectedIndex]?.innerText;
+            const selectedOption = playerSelectors[i].options[playerSelectors[i].options.selectedIndex];
+            const playerName = (selectedOption && (selectedOption.value !== selectedOption.innerText)) ? selectedOption.innerText : "???";
             if(playerName !== "???"){
                 placements.push(`${placeSuffix}${playerName} ${splitter} `);
             }
@@ -341,6 +450,7 @@ function attachEventListeners(){
             updateStandingsSingle(); 
         });
     }
+
     document.getElementById('standingsSingleSplitter').addEventListener('change', e => {
         updateStandingsSingle();
     });
@@ -396,9 +506,12 @@ const SOURCE_SETTINGS_KEY = "tournament_overlay_settings";
 
 function loadSourceSettings(){
     var settings = JSON.parse(localStorage.getItem(SOURCE_SETTINGS_KEY));
-    settings = settings ? settings : {
+    settings = settings ?? {
         battleScene: '',
         battleSources: [],
+        pairingsScene: '',
+        pairingsSources: [],
+        pairingsSingleSource: '',
         standingsScene: '',
         standingsSources: [],
         standingsSingleSource: '',
@@ -420,11 +533,11 @@ function loadSourceSettings(){
     }
 
     const standingScene = document.getElementById('standingsSceneSelect');
-    standingScene.value = settings.standingsScene ? settings.standingsScene : '';
+    standingScene.value = settings.standingsScene ?? '';
     if(settings.standingsSources){
         const standingsSourceSelectors = document.getElementById('standingsList').querySelectorAll('.sourceSelect');
         for(let i = 0; i < standingsSourceSelectors.length; i++){
-            const source = settings.standingsSources[i] ? settings.standingsSources[i] : '';
+            const source = settings.standingsSources[i] ?? '';
             standingsSourceSelectors[i].value = source;
             const event = new Event('change');
             standingsSourceSelectors[i].dispatchEvent(event);
@@ -432,6 +545,21 @@ function loadSourceSettings(){
     }
     if(settings.standingsSingleSource){
         document.getElementById('standingsSingleSource').value = settings.standingsSingleSource;
+    }
+
+    const pairingsScene = document.getElementById('pairingsSceneSelect');
+    pairingsScene.value = settings.pairingsScene ?? '';
+    if(settings.pairingsSources){
+        const pairingsSourceSelectors = document.getElementById('pairingsList').querySelectorAll('.sourceSelect');
+        for(let i = 0; i < pairingsSourceSelectors.length; i++){
+            const source = settings.pairingsSources[i] ?? '';
+            pairingsSourceSelectors[i].value = source;
+            const event = new Event('change');
+            pairingsSourceSelectors[i].dispatchEvent(event);
+        }
+    }
+    if(settings.pairingsSingleSource){
+        document.getElementById('pairingsSingleSource').value = settings.pairingsSingleSource;
     }
 
     const sceneSelectors = document.getElementsByClassName('sceneSelect');
@@ -445,6 +573,9 @@ function saveSourceSettings(){
     const settings = {
         battleScene: undefined,
         battleSources: [],
+        pairingsScene: undefined,
+        pairingsSources: [],
+        pairingsSingleSource: undefined,
         standingsScene: undefined,
         standingsSources: [],
         standingsSingleSource: undefined,
@@ -466,6 +597,14 @@ function saveSourceSettings(){
     }
     settings.standingsSingleSource = document.getElementById('standingsSingleSource').value;
 
+    const pairingsScene = document.getElementById('pairingsSceneSelect').value;
+    settings.pairingsScene = pairingsScene;
+    const pairingsSources = document.getElementById('pairingsList').querySelectorAll('.sourceSelect');
+    for(let source of pairingsSources){
+        settings.pairingsSources.push(source.value)
+    }
+    settings.pairingsSingleSource = document.getElementById('pairingsSingleSource').value;
+
     localStorage.setItem(SOURCE_SETTINGS_KEY, JSON.stringify(settings));
 }
 
@@ -473,10 +612,11 @@ const GENERAL_SETTINGS_KEY = "tournament_overlay_general_settings";
 
 function loadGeneralSettings(){
     var settings = JSON.parse(localStorage.getItem(GENERAL_SETTINGS_KEY));
-    settings = settings ? settings : {
+    settings = settings ?? {
         abbreviateJuniors: false,
         abbreviateSeniors: false,
         abbreviateSeniors: false,
+        pairingsSingleSplitter: '/',
         standingsIncludeOrdinal: true,
         standingsSingleIncludeOrdinal: true,
         standingsSingleSplitter: '/',
@@ -484,6 +624,8 @@ function loadGeneralSettings(){
     document.getElementById('abbreviateJuniorsToggle').checked = settings.abbreviateJuniors;
     document.getElementById('abbreviateSeniorsToggle').checked = settings.abbreviateSeniors;
     document.getElementById('abbreviateMastersToggle').checked = settings.abbreviateMasters;
+
+    document.getElementById('pairingsSingleSplitter').value = settings.pairingsSingleSplitter ?? '/';
 
     document.getElementById('standingsOrdinalToggle').checked = settings.standingsIncludeOrdinal;
     document.getElementById('standingsSingleOrdinalToggle').checked = settings.standingsSingleIncludeOrdinal;
@@ -495,6 +637,7 @@ function saveGeneralSettings(){
         abbreviateJuniors: document.getElementById('abbreviateJuniorsToggle').checked,
         abbreviateSeniors: document.getElementById('abbreviateSeniorsToggle').checked,
         abbreviateMasters: document.getElementById('abbreviateMastersToggle').checked,
+        pairingsSingleSplitter: document.getElementById('pairingsSingleSplitter').value,
         standingsIncludeOrdinal: document.getElementById('standingsOrdinalToggle').checked,
         standingsSingleIncludeOrdinal: document.getElementById('standingsSingleOrdinalToggle').checked,
         standingsSingleSplitter: document.getElementById('standingsSingleSplitter').value,
@@ -503,6 +646,7 @@ function saveGeneralSettings(){
 }
 
 let standingsInterval = undefined;
+let pairingsInterval = undefined;
 let connectionInterval = window.setInterval(OBS.checkConnectionStatus, 1000);
 window.onload = async() => {
     createFromTemplates();

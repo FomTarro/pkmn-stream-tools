@@ -2,9 +2,9 @@
 <html>
     <head>
         <title>Tournament Dashboard - v0.1.3</title>
-        <meta name="description" content="Enhance your Pokémon Tournament's stream overlays with this online OBS plugin!">
+        <meta name="description" content="Enhance your Pokémon Tournament's stream overlays with team displays and real-time standings using this online OBS plugin!">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta property="og:title" content="Tournament Dashboard - v0.1.3!">
+        <meta property="og:title" content="Tournament Dashboard - v0.2.0!">
         <meta property="og:image" content="https://www.skeletom.net/pkmn/tournament-overlay/img/pkmn/poke_icon_0.png">
         <meta property="og:type" content="website">
         <meta property="og:description" content="Enhance your Pokémon Tournament's stream overlays with team displays and real-time standings using this online OBS plugin!">
@@ -17,7 +17,7 @@
             <!-- README and OBS Settings -->
                 <div id="general">
                     <div class="rounded-corner">
-                        <h1 class="heading rounded-corner-small">TourKOAL - v0.1.3<button class="minimizeButton" title="Expand/Collapse the About Section" target="generalContent" status="on"></button></h1>
+                        <h1 class="heading rounded-corner-small">TourKOAL - v0.2.0<button class="minimizeButton" title="Expand/Collapse the About Section" target="generalContent" status="on"></button></h1>
                     </div>
                     <div id="generalContent">
                         <div id="readme" class="rounded-corner">
@@ -47,6 +47,13 @@
                                 <li>Enter player data in the <a href="#players">table at the bottom of the page</a>, or import your tournament roster from a TOM file.</li>
                                 <li>You're all set! <a href="#battle">Pick your players from the dropdown</a> and easily display information about their team!</li>
                             </ol>
+                            <p id="privacy">
+                                <span class="bold important">IMPORTANT!</span><br>
+                                Your privacy, and the privacy of your players, is extremely important! As such, this tool runs entirely within the user's browser. No data, be it manually entered or imported from TOM reports, is being collected or sent to a remote server.
+                            </p>
+                            <p>
+                                Please be sure to obtain express permission from your players before featuring them and/or their names on stream!
+                            </p>
                         </div>
                         <div id="obs_settings" class="flex flex-col rounded-corner">
                             <div class="flex flex-col">
@@ -153,16 +160,15 @@
                     </div>
                 </div>
             <!-- Pairings -->
-                <!-- <div id="pairings">
+                <div id="pairings">
                     <div class="rounded-corner">
                         <h1 class="heading rounded-corner-small">Pairings<button class="minimizeButton" title="Expand/Collapse the Pairings Dashboard" target="pairingsContent" status="on"></button></h1>
                     </div>
                     <div id="pairingsContent">
                         <div class="flex flex-col rounded-corner">
                             <p>
-                                You can either select a TOM <span class="code notranslate">...standings.html</span> file to display a live set of tournament standings that will be automatically updated in real-time, or you can update them by hand here.
-                            </p>
-                            <p>
+                                You can either select a TOM <span class="code notranslate">...pairings.html</span> file to display a live set of tournament standings that will be automatically updated in real-time, or you can update them by hand here.
+                                <br><br>
                                 <span class="bold important">IMPORTANT!</span><br>
                                 In order for players to properly be displayed in the pairings, they must already be resigetered in the <a href='#players'>player table below</a>.
                             </p>
@@ -171,8 +177,36 @@
                             </div>
                             <input id="pairingsSceneSelect" class="sceneSelect sourceSetting" target="pairings" placeholder="Select OBS scene..." autoComplete="on" list="sceneOptions" type="text"/>
                         </div>
+                        <div class="flex flex-col rounded-corner">
+                            <label for="pairingsImport" class="bold">Import from TOM</label>
+                            <span class="font-small">(These will be in your <span class="code notranslate">TOM/data/reports</span> directory!)</span>
+                            <div>
+                                <button id="pairingsImport" class="notranslate">Choose File</button>
+                                <span id="pairingsImportFile" class="font-small basic-ui notranslate">No file chosen</span>
+                                <span id="pairingsImportStatus" class="font-small bold"></span>
+                            </div>
+                            <div>
+                                <button id="pairingsTrackingStop" disabled>Stop Tracking</button>
+                            </div>
+                        </div>
+                        <div class="flex flex-col rounded-corner">
+                            <ol id="pairingsList">
+                            </ol>
+                        </div>
+                        <div class="flex flex-col rounded-corner">
+                            <label for="pairingsSceneSelect" class="bold">Pairings as Single Line</label>
+                            <span class="font-small">(Optional, useful for a ticker/marquee element.)</span>
+                            <div class="font-small flex flex-center">
+                                <label for="pairingsSingleSplitter">Dividing Text:</label>
+                                <input id="pairingsSingleSplitter" class="input-small generalSetting" value="/" min="3" max="3" size="3" type="text"/>
+                            </div>
+                            <div>
+                                <input id="pairingsSingle" readonly> → 
+                                <input id="pairingsSingleSource" class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="textSourceOptions_pairings"/>
+                            </div>
+                        </div>
                     </div>
-                </div> -->
+                </div>
             <!-- Standings -->
                 <div id="standings">
                     <div class="rounded-corner">
@@ -182,8 +216,7 @@
                         <div class="flex flex-col rounded-corner">
                             <p>
                                 You can either select a TOM <span class="code notranslate">...standings.html</span> file to display a live set of tournament standings that will be automatically updated in real-time, or you can update them by hand here.
-                            </p>
-                            <p>
+                                <br><br>
                                 <span class="bold important">IMPORTANT!</span><br>
                                 In order for players to properly be displayed in the standings, they must already be resigetered in the <a href='#players'>player table below</a>.
                             </p>
@@ -206,7 +239,7 @@
                         </div>
                         <div class="flex flex-col rounded-corner">
                             <!-- <div class="bold">Show top: <input type="number" min="1" max="32" size="2"></div> -->
-                            <div class="font-small">
+                            <div class="font-small flex flex-center">
                                 <label for="standingsOrdinalToggle">Include ordinal? (ex. 1st, 2nd...)</label>
                                 <input id="standingsOrdinalToggle" class="generalSetting ordinalToggle" type="checkbox" checked>
                             </div>
@@ -216,9 +249,9 @@
                         <div class="flex flex-col rounded-corner">
                             <label for="standingsSceneSelect" class="bold">Standings as Single Line</label>
                             <span class="font-small">(Optional, useful for a ticker/marquee element.)</span>
-                            <div class="font-small">
+                            <div class="font-small flex flex-center">
                                 <label for="standingsSingleSplitter">Dividing Text:</label>
-                                <input id="standingsSingleSplitter" class="generalSetting" value="/" min="3" max="3" size="3" type="text"/>
+                                <input id="standingsSingleSplitter" class="input-small generalSetting" value="/" min="3" max="3" size="3" type="text"/>
                                 <label for="standingsSingleOrdinalToggle">Include ordinal? (ex. 1st, 2nd...)</label>
                                 <input id="standingsSingleOrdinalToggle" class="generalSetting ordinalToggle" type="checkbox" checked>
                             </div>
@@ -241,7 +274,7 @@
                             </p>
                             <label for="playerImport" class="bold">Import from TOM</label>
                             <span class="font-small">(These will be in your <span class="code notranslate">TOM/data/reports</span> directory!)</span>
-                            <div class="font-small">
+                            <div class="font-small flex flex-center">
                                 <span>Abbreviate names (ex. 'Ash Ketchum' → 'Ash K.') for... </span> 
                                 <label for="abbreviateJuniorsToggle">Juniors?</label>
                                 <input id="abbreviateJuniorsToggle" class="generalSetting" type="checkbox">
@@ -350,7 +383,7 @@
                                 <div>
                                     <input id="mon_held_item_x" class="itemSelect" placeholder="Held Item..." type="text" list="itemOptions">
                                 </div>
-                                <div class="font-small">
+                                <div class="font-small flex flex-center">
                                     <label for="fainted_toggle_x">Fainted?</label>
                                     <input id="fainted_toggle_x" class="faintedToggle" type="checkbox">
                                     <label for="item_toggle_x">Item Used?</label>
@@ -359,6 +392,31 @@
                             </div>
                         </div>
                     </div>
+                </template>
+
+                <template id="pairings_template_item">
+                    <li class="pairingsModule">
+                        <div>
+                            <select id="table_x_player1_name" class="playerSelect">
+                                <optgroup label="Default">
+                                    <option >None</option>
+                                </optgroup>
+                                <optgroup label="Players" class="optionContent">
+
+                                </optgroup>
+                            </select> 
+                            <span class="font-small">vs.</span> 
+                            <select id="table_x_player2_name" class="playerSelect">
+                                <optgroup label="Default">
+                                    <option >None</option>
+                                </optgroup>
+                                <optgroup label="Players" class="optionContent">
+
+                                </optgroup>
+                            </select> → 
+                            <input id="table_x_pairing_obs_output" class="sourceSelect sourceSetting" placeholder="Select OBS source..." autoComplete="on" list="textSourceOptions_pairings"/>
+                        </div>
+                    </li>
                 </template>
 
                 <template id="standings_template_item">

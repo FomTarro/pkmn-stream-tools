@@ -3965,7 +3965,12 @@ const SPECIES = [
         name: 'Farigiraf'
     },
     {
-        name: 'Dudunsparce'
+        name: 'Dudunsparce (Three-Segment)',
+        formes: [
+            {
+                name: 'Dudunsparce (Four-Segment)'
+            }
+        ]
     },
     {
         name: 'Kingambit'
