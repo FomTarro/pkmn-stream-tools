@@ -9,10 +9,14 @@
         <meta property="og:type" content="website">
         <meta property="og:description" content="Enhance your Pokémon Tournament's stream overlays with team displays and real-time standings using this online OBS plugin!">
         <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lexend"> -->
         <link rel="stylesheet" href="./css/style.css">
     </head>
-    <body>
+    <body class="bg">
         <div class="flex-col container">
+            <div class="nav rounded-corner">
+                <div id="navContent" class="heading rounded-corner-small no-margins font-small bold nav-content"><span>🔎</span> <a href=#general>Setup</a> - <a href="#battle">Battle</a> - <a href="#pairings">Pairings</a> - <a href="#standings">Standings</a> - <a href="#players">Players and Teams</a> - <a href=#about>Contact</a></div>
+            </div>
             <div>
             <!-- README and OBS Settings -->
                 <div id="general">
@@ -33,9 +37,10 @@
                                     No longer will you need to scramble through hundreds of image files by hand as players reveal which of their Pokémon they brought to the game, 
                                     nor will you need to manually adjust OBS sources when items are consumed or Pokémon faint! 
                                 </p>
-                                    <h3>Getting Started</h3>
                             </div>
-                            <ol>
+                            <p>
+                            <span for="gettingStarted" class="font-medium bold">Getting Started</span>
+                            <ol id="gettingStarted">
                                 <li>Make sure that your OBS WebSocket Server is Enabled (accessed via Tools → WebSocket Server Settings).</li>
                                 <ul>
                                     <li>For OBS Versions <span class="code notranslate">28.0.0</span> and above, OBS WebSocket Server is built-in.</li>
@@ -48,7 +53,7 @@
                                 <li>You're all set! <a href="#battle">Pick your players from the dropdown</a> and easily display information about their team!</li>
                             </ol>
                             <p id="privacy">
-                                <span class="bold important">IMPORTANT!</span><br>
+                                <div class="bold important">IMPORTANT!</div>
                                 Your privacy, and the privacy of your players, is extremely important! As such, this tool runs entirely within the user's browser. No data, be it manually entered or imported from TOM reports, is being collected or sent to a remote server.
                             </p>
                             <p>
@@ -75,6 +80,7 @@
                     </div>
                     <div id="battleContent">
                         <div class="flex flex-col rounded-corner">
+                            <p>You can select which players are currently battling, and then easily select which Pokémon they reveal, as they reveal them. You can also display the Pokémon's condition, as well as its held item and the item's condition.</p>
                             <div id="obs_scene_selection" class="flex flex-col">
                                 <div>
                                     <label for="battleSceneSelect" class="bold">Battle Overlay OBS Scene Selection</label>
@@ -167,10 +173,10 @@
                     <div id="pairingsContent">
                         <div class="flex flex-col rounded-corner">
                             <p>
-                                You can either select a TOM <span class="code notranslate">...pairings.html</span> file to display a live set of tournament standings that will be automatically updated in real-time, or you can update them by hand here.
+                                You can either select a TOM <span class="code notranslate">...pairings.html</span> file to display a live set of player pairings that will be automatically updated any time you generate a Pairings Report in TOM, or you can update them by hand here.
                                 <br><br>
                                 <span class="bold important">IMPORTANT!</span><br>
-                                In order for players to properly be displayed in the pairings, they must already be resigetered in the <a href='#players'>player table below</a>.
+                                In order for players to be displayed in the pairings, they must already be registered in the <a href='#players'>player table below</a>.
                             </p>
                             <div>
                                 <label for="pairingsSceneSelect" class="bold">Pairings Overlay OBS Scene Selection</label>
@@ -179,17 +185,26 @@
                         </div>
                         <div class="flex flex-col rounded-corner">
                             <label for="pairingsImport" class="bold">Import from TOM</label>
-                            <span class="font-small">(These will be in your <span class="code notranslate">TOM/data/reports</span> directory!)</span>
+                            <span class="font-small">(These will be in your <code class="code notranslate">TOM/data/reports</code> directory!)</span>
                             <div>
                                 <button id="pairingsImport" class="notranslate">Choose File</button>
                                 <span id="pairingsImportFile" class="font-small basic-ui notranslate">No file chosen</span>
                                 <span id="pairingsImportStatus" class="font-small bold"></span>
                             </div>
                             <div>
-                                <button id="pairingsTrackingStop" disabled>Stop Tracking</button>
+                                <button id="pairingsTrackingStop" disabled>Stop Tracking File</button>
                             </div>
                         </div>
                         <div class="flex flex-col rounded-corner">
+                            <div class="flex-center font-small">
+                                <span>
+                                    <label for="pairingsSlider">Number of pairings displayed: </label>
+                                    <span id="pairingsCount">8</span>
+                                </span>
+                            </div>
+                            <div>
+                                <input id="pairingsSlider" class="generalSetting" type="range" step="1" min="1" max="32" value="16">
+                            </div>
                             <ol id="pairingsList">
                             </ol>
                         </div>
@@ -215,10 +230,10 @@
                     <div id="standingsContent">
                         <div class="flex flex-col rounded-corner">
                             <p>
-                                You can either select a TOM <span class="code notranslate">...standings.html</span> file to display a live set of tournament standings that will be automatically updated in real-time, or you can update them by hand here.
+                                You can either select a TOM <code class="code notranslate">...standings.html</code> file to display a live set of tournament standings that will be automatically updated any time you generate a Standings Report in TOM, or you can update them by hand here.
                                 <br><br>
                                 <span class="bold important">IMPORTANT!</span><br>
-                                In order for players to properly be displayed in the standings, they must already be resigetered in the <a href='#players'>player table below</a>.
+                                In order for players to be displayed in the standings, they must already be registered in the <a href='#players'>player table below</a>.
                             </p>
                             <div>
                                 <label for="standingsSceneSelect" class="bold">Standings Overlay OBS Scene Selection</label>
@@ -227,14 +242,14 @@
                         </div>
                         <div class="flex flex-col rounded-corner">
                             <label for="standingsImport" class="bold">Import from TOM</label>
-                            <span class="font-small">(These will be in your <span class="code notranslate">TOM/data/reports</span> directory!)</span>
+                            <span class="font-small">(These will be in your <code class="code notranslate">TOM/data/reports</code> directory!)</span>
                             <div>
                                 <button id="standingsImport" class="notranslate">Choose File</button>
                                 <span id="standingsImportFile" class="font-small basic-ui notranslate">No file chosen</span>
                                 <span id="standingsImportStatus" class="font-small bold"></span>
                             </div>
                             <div>
-                                <button id="standingsTrackingStop" disabled>Stop Tracking</button>
+                                <button id="standingsTrackingStop" disabled>Stop Tracking File</button>
                             </div>
                         </div>
                         <div class="flex flex-col rounded-corner">
@@ -243,17 +258,28 @@
                                 <label for="standingsOrdinalToggle">Include ordinal? (ex. 1st, 2nd...)</label>
                                 <input id="standingsOrdinalToggle" class="generalSetting ordinalToggle" type="checkbox" checked>
                             </div>
+                            <div class="flex-center font-small">
+                                <span>
+                                    <label for="standingsSlider">Number of standings displayed: </label>
+                                    <span id="standingsCount">8</span>
+                                </span>
+                            </div>
+                            <div>
+                                <input id="standingsSlider" class="generalSetting" type="range" step="1" min="1" max="32" value="16">
+                            </div>
                             <ol id="standingsList">
                             </ol>
                         </div>
                         <div class="flex flex-col rounded-corner">
                             <label for="standingsSceneSelect" class="bold">Standings as Single Line</label>
                             <span class="font-small">(Optional, useful for a ticker/marquee element.)</span>
+                            <div class="font-small flex flex-center">   
+                                <label for="standingsSingleOrdinalToggle">Include ordinal? (ex. 1st, 2nd...)</label>
+                                <input id="standingsSingleOrdinalToggle" class="generalSetting ordinalToggle" type="checkbox" checked>
+                            </div>
                             <div class="font-small flex flex-center">
                                 <label for="standingsSingleSplitter">Dividing Text:</label>
                                 <input id="standingsSingleSplitter" class="input-small generalSetting" value="/" min="3" max="3" size="3" type="text"/>
-                                <label for="standingsSingleOrdinalToggle">Include ordinal? (ex. 1st, 2nd...)</label>
-                                <input id="standingsSingleOrdinalToggle" class="generalSetting ordinalToggle" type="checkbox" checked>
                             </div>
                             <div>
                                 <input id="standingsSingle" readonly> → 
@@ -270,10 +296,10 @@
                     <div id="playersContent">
                         <div class="flex flex-col rounded-corner">
                             <p>
-                                You can either import a complete player list from a TOM <span class="code notranslate">...roster.html</span> file, or you can add player records by hand in the table below.
+                                You can either import a complete player list from a TOM <code class="code notranslate">...roster.html</code> file, or you can add player records by hand in the table below.
                             </p>
                             <label for="playerImport" class="bold">Import from TOM</label>
-                            <span class="font-small">(These will be in your <span class="code notranslate">TOM/data/reports</span> directory!)</span>
+                            <span class="font-small">(These will be in your <code class="code notranslate">TOM/data/reports</code> directory!)</span>
                             <div class="font-small flex flex-center">
                                 <span>Abbreviate names (ex. 'Ash Ketchum' → 'Ash K.') for... </span> 
                                 <label for="abbreviateJuniorsToggle">Juniors?</label>
@@ -348,8 +374,7 @@
                 </div>
             </div>
         <!-- Footer -->
-            <footer class="flex flex-col center">
-                <!-- <input id='debug' placeholder="Import Player Roster from TOM..." type="file" accept=".html" pattern=".*(roster\.html)"> -->
+            <footer id="about" class="flex flex-col center">
                 <span class="font-small">Developed by Professor <a href="https://www.skeletom.net" target="_blank">Tom "Skeletom" Farro</a> - Open Source: <a href="https://github.com/FomTarro/pkmn-stream-tools/tree/main/tournament-tracker" target="_blank">GitHub</a> - Contact: <a href="mailto:pokemon@skeletom.net?subject=About the Tournament Tracker">pokemon@skeletom.net</a></span>
                 <span class="font-small">(This tool is not officially affiliated with or endorsed by <a href="https://www.pokemon.com/us/about-pokemon/" target="_blank">The Pokémon Company International (TPCi)</a> or the <a href="https://www.pokemon.com/us/play-pokemon" target="_blank">Play! Pokémon</a> program)</span>
                 <span class="unown font-medium">thank you for your support! we all live in a pokemon world!</span>

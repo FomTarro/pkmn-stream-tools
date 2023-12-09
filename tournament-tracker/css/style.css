@@ -3,7 +3,18 @@
     blue: #E9DEFF
     torkoal-orange: #E89244
     torkoal-grey: #5E5E5E
+    off-grey: #E3DBD7
  */
+
+ /*
+    #A3B2A4
+    #C3C6A8
+    #EFDBB2
+    #E0C6AD
+    #C1B2A2
+    #E4D5D3
+ */
+
 
 @font-face {
     font-family: 'unownregular';
@@ -26,9 +37,11 @@ html {
 }
 
 body {
+    margin-top: 0;
     height: calc(100% - 16px);
     overflow-y: scroll;
     /* color: #333333; */
+    /* font-family: 'Lexend'; */
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
@@ -38,6 +51,15 @@ footer {
 
 footer span {
     text-align: center;
+}
+
+ol,
+ul {
+    margin: 0;
+}
+
+li {
+    width: fit-content;
 }
 
 table {
@@ -75,10 +97,6 @@ th {
     height: 100%;
 }
 
-ol {
-    padding-left: 1.3em;
-}
-
 li::marker {
     font-weight: bold;
     font-size: 1.1em;
@@ -87,6 +105,7 @@ li::marker {
 
 select,
 input[type="text"],
+input[type="range"],
 .sourceSelect {
     width: 12em;
     max-width: 100%;
@@ -117,6 +136,19 @@ select {
     box-sizing: border-box;
 }
 
+.nav {
+    z-index: 100;
+    position: fixed;
+}
+
+#navContent {
+    padding-right: 1em;
+}
+
+.no-margins {
+    margin: 0 !important;
+}
+
 .center {
     align-items: center;
     justify-content: center;
@@ -124,7 +156,7 @@ select {
 
 .flex {
     display: flex;
-    gap: 0.5em;
+    gap: 0.35em;
 }
 
 .flex-col {
@@ -167,6 +199,14 @@ select {
     color: green;
 }
 
+.red {
+    background: #ED533A
+}
+
+.blue {
+    background: #3A53ED;
+}
+
 .bold {
     font-weight: bold;
 }
@@ -186,9 +226,11 @@ select {
 }
 
 .code {
-    font-family: 'Consolas', monospace;
+    padding: 2px 4px;
+    font-family: "Roboto Mono", monospace;
+    line-height: 1.5;
     background-color: rgba(0, 0, 0, .05);
-    border-radius: 5px;
+    border-radius: 4px;
 }
 
 .unown {
@@ -196,6 +238,7 @@ select {
 }
 
 .important {
+    width: fit-content;
     background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 0, 1) 50%, rgba(0, 0, 0, 0) 100%);
 }
 
@@ -204,6 +247,45 @@ select {
     display: inline-block;
     content: '⚠️';
     animation: pulse 1s linear infinite;
+}
+
+.square {
+    width: 2em;
+    height: 2em;
+    padding: 0;
+}
+
+.heading {
+    margin: 1.2em 0 0 0;
+    text-align: center;
+    background-color: antiquewhite;
+    padding: 0.2em;
+    box-shadow: 1px 1px 10px #AAA;
+    position: relative;
+}
+
+.minimizeButton {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border: 0px;
+    width: 2rem;
+    border-radius: 4px 0 0 4px;
+    border-right: 1px solid gainsboro;
+}
+
+.minimizeButton[status="on"]::before {
+    content: "▼";
+}
+
+.minimizeButton[status="off"]::before {
+    content: "▶";
+}
+
+.wiggle {
+    display: inline-block;
+    animation: wiggle 1.5s infinite;
 }
 
 .dashboard {
@@ -218,13 +300,14 @@ select {
 }
 
 .monIcon {
-    height: 5.5em;
-    width: 5.5em;
+    height: 5.75em;
+    width: 5.75em;
     background-color: gainsboro;
     border-radius: 5px;
 }
 
 .monInputs {
+    padding-top: 5px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -268,21 +351,7 @@ select {
 
 .resetDescription li:not(:last-child)::after {
     content: ', ';
-    padding-right: 0.35em;
-}
-
-.square {
-    width: 2em;
-    height: 2em;
-    padding: 0;
-}
-
-.heading {
-    text-align: center;
-    background-color: antiquewhite;
-    padding: 0.2em;
-    box-shadow: 1px 1px 10px #AAA;
-    position: relative;
+    padding-right: 0.30em;
 }
 
 #players_dashboard {
@@ -309,39 +378,16 @@ select {
     margin-right: 1em;
 }
 
-.minimizeButton {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    border: 0px;
-    width: 2rem;
-    border-radius: 4px 0 0 4px;
-    border-right: 1px solid gainsboro;
-}
-
-.minimizeButton[status="on"]::before {
-    content: "▼";
-}
-
-.minimizeButton[status="off"]::before {
-    content: "▶";
-}
-
-.red {
-    background: #ED533A
-}
-
-.blue {
-    background: #3A53ED;
-}
-
 #player_1_dashboard .monModule {
     background: linear-gradient(to right, #FFD4D4, transparent);
 }
 
 #player_2_dashboard .monModule {
     background: linear-gradient(to right, #E9DEFF, transparent);
+}
+
+#standingsList li::marker {
+    text-align: center;
 }
 
 #standingsList li:nth-child(1)::marker {
@@ -354,10 +400,6 @@ select {
 
 #standingsList li:nth-child(3)::marker {
     content: '🥉'
-}
-
-#standingsList {
-    margin: 0;
 }
 
 input.input-small {
@@ -375,5 +417,27 @@ input.input-small {
 
     100% {
         transform: scale(1, 1);
+    }
+}
+
+@keyframes wiggle {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    80% {
+        transform: rotate(0deg);
+    }
+
+    85% {
+        transform: rotate(5deg);
+    }
+
+    95% {
+        transform: rotate(-5deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
     }
 }

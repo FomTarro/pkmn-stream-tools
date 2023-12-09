@@ -19,7 +19,7 @@ function connectToOBS() {
  */
 function createFromTemplates(){
     const pairingsTemplate = document.getElementById("pairings_template_item");
-    for(let i = 0; i < 8; i++){
+    for(let i = 0; i < 32; i++){
         const item = pairingsTemplate.content.cloneNode(true).querySelector("li");
         const pairingsList = document.getElementById("pairingsList");
         const elements = item.querySelectorAll('*');
@@ -32,7 +32,7 @@ function createFromTemplates(){
     }
 
     const standingsTemplate = document.getElementById("standings_template_item");
-    for(let i = 0; i < 8; i++){
+    for(let i = 0; i < 32; i++){
         const item = standingsTemplate.content.cloneNode(true).querySelector("li");
         const standingsList = document.getElementById("standingsList");
         const elements = item.querySelectorAll('*');
@@ -326,16 +326,17 @@ function attachEventListeners(){
         const pairingsModules = [...document.getElementById('pairingsList').querySelectorAll('.pairingsModule')];
         const pairings = [];
         for(let i = 0; i < pairingsModules.length; i++){
-            const playerSelectors = [...pairingsModules[i].querySelectorAll('.playerSelect')];
-            const selectedOption1 = playerSelectors[0].options[playerSelectors[0].options.selectedIndex];
-            const player1Name = (selectedOption1 && (selectedOption1.value !== selectedOption1.innerText)) ? selectedOption1.innerText : "???";
-            
-            const selectedOption2 = playerSelectors[1].options[playerSelectors[1].options.selectedIndex];
-            const player2Name = (selectedOption2 && (selectedOption2.value !== selectedOption2.innerText)) ? selectedOption2.innerText : "???";
-            if(player1Name !== "???" && player2Name !== "???"){
-                pairings.push(`Table ${i+1}: ${player1Name} vs. ${player2Name} ${splitter} `);
+            if(!pairingsModules[i].hidden){
+                const playerSelectors = [...pairingsModules[i].querySelectorAll('.playerSelect')];
+                const selectedOption1 = playerSelectors[0].options[playerSelectors[0].options.selectedIndex];
+                const player1Name = (selectedOption1 && (selectedOption1.value !== selectedOption1.innerText)) ? selectedOption1.innerText : "???";
+                
+                const selectedOption2 = playerSelectors[1].options[playerSelectors[1].options.selectedIndex];
+                const player2Name = (selectedOption2 && (selectedOption2.value !== selectedOption2.innerText)) ? selectedOption2.innerText : "???";
+                if(player1Name !== "???" && player2Name !== "???"){
+                    pairings.push(`Table ${i+1}: ${player1Name} vs. ${player2Name} ${splitter} `);
+                }
             }
-    
         }
         singleLine.value = pairings.join('');
         OBS.setTextSourceText(sourceSelector.value, singleLine.value);
@@ -344,30 +345,42 @@ function attachEventListeners(){
     const pairingsModules = document.getElementById('pairingsList').querySelectorAll('.pairingsModule');
     for(let pairingsModule of pairingsModules){
         const updatePairingsPlayers = () => {
-            const sourceSelector = pairingsModule.querySelector('.sourceSelect');
-            const playerNames = [];
-            const playerSelectors = pairingsModule.querySelectorAll('.playerSelect')
-            for(let playerSelector of playerSelectors){
-                const selectedOption = playerSelector.options[playerSelector.options.selectedIndex];
-                const playerName = (selectedOption && (selectedOption.value !== selectedOption.innerText)) ? selectedOption.innerText : "???";
-                playerNames.push(playerName);
+            if(!pairingsModule.hidden){
+                const sourceSelector = pairingsModule.querySelector('.sourceSelect');
+                const playerNames = [];
+                const playerSelectors = pairingsModule.querySelectorAll('.playerSelect')
+                for(let playerSelector of playerSelectors){
+                    const selectedOption = playerSelector.options[playerSelector.options.selectedIndex];
+                    const playerName = (selectedOption && (selectedOption.value !== selectedOption.innerText)) ? selectedOption.innerText : "???";
+                    playerNames.push(playerName);
+                }
+                OBS.setTextSourceText(sourceSelector.value, playerNames.join(' vs. '));
             }
-            OBS.setTextSourceText(sourceSelector.value, playerNames.join(' vs. '));
         }
         const playerSelectors = pairingsModule.querySelectorAll('.playerSelect')
         for(let playerSelector of playerSelectors){
             playerSelector.addEventListener('change', e => { 
                 updatePairingsPlayers();
-                updatePairingsSingle(); 
+                updatePairingsSingle();
             });
             playerSelector.addEventListener('refresh', e => { 
                 updatePairingsPlayers();
-                updatePairingsSingle();  
+                updatePairingsSingle();
             });
         }
     }
 
     document.getElementById('pairingsSingleSplitter').addEventListener('change', e => {
+        updatePairingsSingle();
+    });
+
+    document.getElementById('pairingsSlider').addEventListener('input', e => {
+        const pairingsModules = document.getElementById('pairingsList').querySelectorAll('.pairingsModule');
+        const val = document.getElementById('pairingsSlider').value
+        for(let i = 0; i < pairingsModules.length; i++){
+            pairingsModules[i].hidden = i >= val;
+        }
+        document.getElementById('pairingsCount').innerText = val;
         updatePairingsSingle();
     });
 
@@ -427,14 +440,17 @@ function attachEventListeners(){
         const singleLine = document.getElementById('standingsSingle');
         const splitter = document.getElementById('standingsSingleSplitter')?.value ?? "";
         const includeOrdinal = document.getElementById('standingsSingleOrdinalToggle').checked;
-        const playerSelectors = [...document.getElementById('standingsList').querySelectorAll('.playerSelect')];
+        const standingsModules = [...document.getElementById('standingsList').querySelectorAll('.standingsModule')];
         const placements = [];
-        for(let i = 0; i < playerSelectors.length; i++){
-            const placeSuffix = includeOrdinal ? applyOrdinalSuffix(i+1) + ' ' : '';
-            const selectedOption = playerSelectors[i].options[playerSelectors[i].options.selectedIndex];
-            const playerName = (selectedOption && (selectedOption.value !== selectedOption.innerText)) ? selectedOption.innerText : "???";
-            if(playerName !== "???"){
-                placements.push(`${placeSuffix}${playerName} ${splitter} `);
+        for(let i = 0; i < standingsModules.length; i++){
+            if(!standingsModules[i].hidden){
+                const playerSelector = standingsModules[i].querySelector('.playerSelect')
+                const placeSuffix = includeOrdinal ? applyOrdinalSuffix(i+1) + ' ' : '';
+                const selectedOption = playerSelector.options[playerSelector.options.selectedIndex];
+                const playerName = (selectedOption && (selectedOption.value !== selectedOption.innerText)) ? selectedOption.innerText : "???";
+                if(playerName !== "???"){
+                    placements.push(`${placeSuffix}${playerName} ${splitter} `);
+                }
             }
         }
         singleLine.value = placements.join('');
@@ -464,6 +480,16 @@ function attachEventListeners(){
             const event = new Event('change');
             playerSelector.dispatchEvent(event);
         }
+    });
+
+    document.getElementById('standingsSlider').addEventListener('input', e => {
+        const standingsModules = document.getElementById('standingsList').querySelectorAll('.standingsModule');
+        const val = document.getElementById('standingsSlider').value
+        for(let i = 0; i < standingsModules.length; i++){
+            standingsModules[i].hidden = i >= val;
+        }
+        document.getElementById('standingsCount').innerText = val;
+        updateStandingsSingle();
     });
 
     // Hook up Minimize Buttons
@@ -617,19 +643,26 @@ function loadGeneralSettings(){
         abbreviateSeniors: false,
         abbreviateSeniors: false,
         pairingsSingleSplitter: '/',
+        pairingsCount: 8,
         standingsIncludeOrdinal: true,
         standingsSingleIncludeOrdinal: true,
         standingsSingleSplitter: '/',
+        standingsCount: 8,
     };
+    const event = new Event('input');
     document.getElementById('abbreviateJuniorsToggle').checked = settings.abbreviateJuniors;
     document.getElementById('abbreviateSeniorsToggle').checked = settings.abbreviateSeniors;
     document.getElementById('abbreviateMastersToggle').checked = settings.abbreviateMasters;
 
     document.getElementById('pairingsSingleSplitter').value = settings.pairingsSingleSplitter ?? '/';
+    document.getElementById('pairingsSlider').value = settings.pairingsCount ?? 8;
+    document.getElementById('pairingsSlider').dispatchEvent(event);
 
     document.getElementById('standingsOrdinalToggle').checked = settings.standingsIncludeOrdinal;
     document.getElementById('standingsSingleOrdinalToggle').checked = settings.standingsSingleIncludeOrdinal;
     document.getElementById('standingsSingleSplitter').value = settings.standingsSingleSplitter ?? '/';
+    document.getElementById('standingsSlider').value = settings.standingsCount ?? 8;
+    document.getElementById('standingsSlider').dispatchEvent(event);
 }
 
 function saveGeneralSettings(){
@@ -638,9 +671,11 @@ function saveGeneralSettings(){
         abbreviateSeniors: document.getElementById('abbreviateSeniorsToggle').checked,
         abbreviateMasters: document.getElementById('abbreviateMastersToggle').checked,
         pairingsSingleSplitter: document.getElementById('pairingsSingleSplitter').value,
+        pairingsCount: document.getElementById('pairingsSlider').value,
         standingsIncludeOrdinal: document.getElementById('standingsOrdinalToggle').checked,
         standingsSingleIncludeOrdinal: document.getElementById('standingsSingleOrdinalToggle').checked,
         standingsSingleSplitter: document.getElementById('standingsSingleSplitter').value,
+        standingsCount: document.getElementById('standingsSlider').value,
     };
     localStorage.setItem(GENERAL_SETTINGS_KEY, JSON.stringify(settings));
 }
