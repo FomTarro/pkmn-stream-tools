@@ -4092,10 +4092,42 @@ const SPECIES = [
                 name: 'Ogerpon (Cornerstone Mask)'
             }
         ]
+    },
+    {
+        name: 'Archaludon'
+    },
+    {
+        name: 'Hydrapple'
+    },
+    {
+        name: 'Gouging Fire'
+    },
+    {
+        name: 'Raging Bolt'
+    },
+    {
+        name: 'Iron Boulder'
+    },
+    {
+        name: 'Iron Crown'
+    },
+    {
+        name: 'Terapagos',
+        formes: [
+            {
+                name: 'Terapagos (Terastal Forme)'
+            }
+        ]
+    },
+    {
+        name: 'Pecharunt'
     }
 ]
 
 for(let i = 0; i < SPECIES.length; i++){
+    /**
+     * @param {Pokemon} species 
+     */
     const makeSpeciesOption = (species) => {
         const opt = document.createElement("option");
         opt.classList.add('monOption');

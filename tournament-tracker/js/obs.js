@@ -10,15 +10,23 @@ const OBS = {
         return OBS.obs.connect(address, password.length > 0 ? password : undefined);
     },
     checkConnectionStatus(){
-        const statusIndicator = document.getElementById("obs_status");
+        const statusIndicators = document.getElementsByClassName("obsStatus");
         OBS.obs.call("GetVersion").then(() => {
-            statusIndicator.innerText = "🟢 Connected!"
-            statusIndicator.classList.remove("disconnected");
-            statusIndicator.classList.add("connected");
+            for(let statusIndicator of statusIndicators){
+                if(!statusIndicator.classList.contains("connected")){
+                    statusIndicator.innerText = "🟢 Connected!"
+                    statusIndicator.classList.remove("disconnected");
+                    statusIndicator.classList.add("connected");
+                }
+            }
         }).catch(() => {
-            statusIndicator.innerText = "🔴 Disconnected!"
-            statusIndicator.classList.add("disconnected");
-            statusIndicator.classList.remove("connected");
+            for(let statusIndicator of statusIndicators){
+                if(!statusIndicator.classList.contains("disconnected")){
+                    statusIndicator.innerText = "🔴 Disconnected!"
+                    statusIndicator.classList.add("disconnected");
+                    statusIndicator.classList.remove("connected");
+                    }
+            }
         });
     },
     populateScenesOptionsFromOBS(){

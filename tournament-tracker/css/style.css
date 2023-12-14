@@ -25,10 +25,14 @@
 
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 720px) {
     #view {
         flex-direction: column;
         align-items: center;
+    }
+
+    .playerModule {
+        width: 100%;
     }
 }
 
@@ -136,6 +140,10 @@ select {
     box-sizing: border-box;
 }
 
+input.input-small {
+    width: 3em;
+}
+
 .nav {
     z-index: 100;
     position: fixed;
@@ -197,14 +205,6 @@ select {
 
 .connected {
     color: green;
-}
-
-.red {
-    background: #ED533A
-}
-
-.blue {
-    background: #3A53ED;
 }
 
 .bold {
@@ -366,7 +366,6 @@ select {
 
 #players_table_header .rounded-corner-small {
     height: 100%;
-    background: #ED533A;
     display: flex;
     align-content: center;
     justify-content: center;
@@ -402,9 +401,17 @@ select {
     content: '🥉'
 }
 
-input.input-small {
-    width: 3em;
+/* Colors */
+
+.red {
+    background: #ED533A
 }
+
+.blue {
+    background: #3A53ED;
+}
+
+/* Animations */
 
 @keyframes pulse {
     0% {
