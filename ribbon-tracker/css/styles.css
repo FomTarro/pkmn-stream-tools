@@ -63,7 +63,7 @@ hr{
     display: flex;
     flex-direction: row;
     gap: 0.5em;
-    align-items: baseline;
+    /* align-items: stretch; */
 }
 
 .wrap {
@@ -85,6 +85,12 @@ hr{
 #container { 
     margin: auto;
     width: 95%;
+}
+
+.wide {
+    left: 1em;
+    position: absolute;
+    bottom: 1em;
 }
 
 #logo {
@@ -138,6 +144,7 @@ hr{
 #ribbon-info-box {
     display: flex;
     padding: 0.75em;
+    min-width: 35%;
 }
 
 #available-in {

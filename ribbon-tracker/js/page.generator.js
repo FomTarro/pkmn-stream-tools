@@ -44,6 +44,11 @@ function getQueryParameters(){
     }else{
         document.getElementById('logo').classList.add('hidden');
     }
+    if(params.wide){
+        document.getElementById('container').classList.remove('stack')
+        document.getElementById('container').classList.add('row')
+        document.getElementById('container').classList.add('wide')
+    }
     console.log(config);
     return config;
 }
